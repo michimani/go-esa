@@ -1,6 +1,8 @@
 gesa
 ===
 
+[![codecov](https://codecov.io/gh/michimani/go-esa/branch/main/graph/badge.svg?token=JL9T8F4GBX)](https://codecov.io/gh/michimani/go-esa)  
+
 Unofficial esa SDK for the Go programming language.
 
 - [esa - 自律的なチームのための情報共有サービス](https://esa.io/)
