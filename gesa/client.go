@@ -44,6 +44,10 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 		return nil, fmt.Errorf("NewGesaClientInput is nil.")
 	}
 
+	if in.AccessToken == "" || in.TeamName == "" {
+		return nil, fmt.Errorf("AccessToken or TeamName or both are empty.")
+	}
+
 	c := GesaClient{
 		client:      defaultHTTPClient,
 		accessToken: in.AccessToken,
@@ -55,6 +59,20 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 	}
 
 	return &c, nil
+}
+
+func (c *GesaClient) AccessToken() string {
+	if c == nil {
+		return ""
+	}
+	return c.accessToken
+}
+
+func (c *GesaClient) TeamName() string {
+	if c == nil {
+		return ""
+	}
+	return c.teamName
 }
 
 func (c *GesaClient) CallAPI(ctx context.Context, endpoint, method string, p internal.IParameters, r internal.IResponse) error {
@@ -115,7 +133,7 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 		return nil, err
 	}
 
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.accessToken))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.AccessToken()))
 
 	return req, nil
 }
