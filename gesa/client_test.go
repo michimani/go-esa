@@ -26,6 +26,9 @@ func (tp testParameter) Body() (io.Reader, error) {
 	return nil, nil
 }
 
+func (tp testParameter) ResolveEndpoint(e string) string { return e }
+func (tp testParameter) ParameterMap() map[string]string { return nil }
+
 func Test_NewGesaClient(t *testing.T) {
 	cases := []struct {
 		name    string

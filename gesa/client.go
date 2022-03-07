@@ -125,8 +125,6 @@ func (c *GesaClient) Exec(req *http.Request, r internal.IResponse) (*EsaAPIError
 		return nil, err
 	}
 
-	fmt.Println("response header: ", res.Header)
-
 	r.SetRateLimitInfo(res.Header)
 
 	return nil, nil
@@ -138,9 +136,7 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 	}
 
 	// resolve query parameters
-	endpoint := c.resolveEndpoint(endpointBase, p)
-	// resolve esa api version
-	endpoint, err := c.apiVersion.ResolveEndpoint(endpoint)
+	endpoint, err := c.resolveEndpoint(endpointBase, p)
 	if err != nil {
 		return nil, err
 	}
@@ -155,8 +151,9 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 	return req, nil
 }
 
-func (c *GesaClient) resolveEndpoint(base string, p internal.IParameters) string {
-	return base
+func (c *GesaClient) resolveEndpoint(base string, p internal.IParameters) (string, error) {
+	endpoint := p.ResolveEndpoint(base)
+	return c.apiVersion.ResolveEndpoint(endpoint)
 }
 
 func newRequest(ctx context.Context, endpoint, method string, p internal.IParameters) (*http.Request, error) {
