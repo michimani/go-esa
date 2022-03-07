@@ -78,3 +78,48 @@ func Test_TeamsGetParam_PerPageValue(t *testing.T) {
 		})
 	}
 }
+
+func Test_TeamsGetParam_ResolveEndpoint(t *testing.T) {
+	const endpoint = "test/endpoint/"
+
+	cases := []struct {
+		name   string
+		params *types.TeamsGetParam
+		expect string
+	}{
+		{
+			name:   "ok",
+			params: &types.TeamsGetParam{},
+			expect: endpoint,
+		},
+		{
+			name: "with page",
+			params: &types.TeamsGetParam{
+				Page: gesa.NewPageNumber(1),
+			},
+			expect: endpoint + "?page=1",
+		},
+		{
+			name: "with per_page",
+			params: &types.TeamsGetParam{
+				PerPage: gesa.NewPageNumber(2),
+			},
+			expect: endpoint + "?per_page=2",
+		},
+		{
+			name: "with page",
+			params: &types.TeamsGetParam{
+				Page:    gesa.NewPageNumber(1),
+				PerPage: gesa.NewPageNumber(2),
+			},
+			expect: endpoint + "?page=1&per_page=2",
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep := c.params.ResolveEndpoint(endpoint)
+			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}

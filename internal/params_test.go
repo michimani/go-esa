@@ -3,6 +3,7 @@ package internal_test
 import (
 	"testing"
 
+	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
 	"github.com/stretchr/testify/assert"
 )
@@ -95,6 +96,70 @@ func Test_QueryString(t *testing.T) {
 		t.Run(c.name, func(tt *testing.T) {
 			q := internal.QueryString(c.params, c.includes)
 			assert.Equal(tt, c.expect, q)
+		})
+	}
+}
+
+type testParameter struct {
+	Page    *gesa.PageNumber
+	PerPage *gesa.PageNumber
+}
+
+func (p *testParameter) PageValue() (int, bool) {
+	if p.Page.IsNull() {
+		return 0, false
+	}
+	return p.Page.SafeInt(), true
+}
+
+func (p *testParameter) PerPageValue() (int, bool) {
+	if p.PerPage.IsNull() {
+		return 0, false
+	}
+	return p.PerPage.SafeInt(), true
+}
+
+func Test_GeneratePaginationParamsMap(t *testing.T) {
+	cases := []struct {
+		name   string
+		p      *testParameter
+		m      map[string]string
+		expect map[string]string
+	}{
+		{
+			name:   "both not null",
+			p:      &testParameter{Page: gesa.NewPageNumber(1), PerPage: gesa.NewPageNumber(2)},
+			m:      map[string]string{"hoge": "hogevalue"},
+			expect: map[string]string{"hoge": "hogevalue", "page": "1", "per_page": "2"},
+		},
+		{
+			name:   "both not null: map nil",
+			p:      &testParameter{Page: gesa.NewPageNumber(1), PerPage: gesa.NewPageNumber(2)},
+			m:      nil,
+			expect: map[string]string{"page": "1", "per_page": "2"},
+		},
+		{
+			name:   "page",
+			p:      &testParameter{Page: gesa.NewPageNumber(1)},
+			expect: map[string]string{"page": "1"},
+		},
+		{
+			name:   "perPage",
+			p:      &testParameter{PerPage: gesa.NewPageNumber(2)},
+			expect: map[string]string{"per_page": "2"},
+		},
+		{
+			name:   "both null",
+			p:      &testParameter{},
+			expect: map[string]string{},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+			am := internal.GeneratePaginationParamsMap(c.p, c.m)
+			asst.Equal(c.expect, am)
 		})
 	}
 }
