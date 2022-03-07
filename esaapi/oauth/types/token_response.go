@@ -7,18 +7,14 @@ import (
 )
 
 type OAuthTokenInfoGetResponse struct {
-	Status        string                     `json:"-"`
-	StatusCode    int                        `json:"-"`
-	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
-
 	ResourceOwnerID *int            `json:"resource_owner_id,omitempty"`
 	Scope           []string        `json:"scope,omitempty"`
 	ExpiresIn       *gesa.Timestamp `json:"expires_in,omitempty"`
 	Application     *Application    `json:"application,omitempty"`
 	CreatedAt       *gesa.Timestamp `json:"created_at,omitempty"`
 	User            *User           `json:"user,omitempty"`
-	Error           *string         `json:"error,omitempty"`
-	Message         *string         `json:"message,omitempty"`
+
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
 type Application struct {
