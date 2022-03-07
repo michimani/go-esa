@@ -17,6 +17,7 @@ type NewGesaClientInput struct {
 	HTTPClient  *http.Client
 	AccessToken string
 	TeamName    string
+	APIVersion  EsaAPIVersion
 }
 
 type IGesaClient interface {
@@ -27,6 +28,7 @@ type GesaClient struct {
 	client      *http.Client
 	accessToken string
 	teamName    string
+	apiVersion  EsaAPIVersion
 }
 
 type ClientResponse struct {
@@ -48,10 +50,18 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 		return nil, fmt.Errorf("AccessToken or TeamName or both are empty.")
 	}
 
+	apiVersion := in.APIVersion
+	if apiVersion.IsEmpty() {
+		apiVersion = DefaultAPIVersion
+	} else if !apiVersion.IsValid() {
+		return nil, fmt.Errorf("Invalid esa API version.")
+	}
+
 	c := GesaClient{
 		client:      defaultHTTPClient,
 		accessToken: in.AccessToken,
 		teamName:    in.TeamName,
+		apiVersion:  apiVersion,
 	}
 
 	if in.HTTPClient != nil {
@@ -127,7 +137,14 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 		return nil, errors.New("parameter is nil")
 	}
 
+	// resolve query parameters
 	endpoint := c.resolveEndpoint(endpointBase, p)
+	// resolve esa api version
+	endpoint, err := c.apiVersion.ResolveEndpoint(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
 	req, err := newRequest(ctx, endpoint, method, p)
 	if err != nil {
 		return nil, err
