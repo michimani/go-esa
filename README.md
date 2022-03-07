@@ -1,4 +1,4 @@
-gesa
+go-esa
 ===
 
 [![codecov](https://codecov.io/gh/michimani/go-esa/branch/main/graph/badge.svg?token=JL9T8F4GBX)](https://codecov.io/gh/michimani/go-esa)  
@@ -80,7 +80,7 @@ func oauthTokenInfoGet(c *gesa.GesaClient) {
 
 # Licence
 
-[MIT](https://github.com/michimani/gesa/blob/main/LICENCE)
+[MIT](https://github.com/michimani/go-esa/blob/main/LICENCE)
 
 # Author
 
