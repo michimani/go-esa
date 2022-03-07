@@ -14,6 +14,8 @@ Progress of supporting APIs...
 
 - **OAuth**
   - `GET /oauth/token/info`
+- **Teams**
+  - `GET /v1/teams`
 
 # Sample
 

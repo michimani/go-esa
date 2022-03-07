@@ -26,6 +26,9 @@ func (tp testParameter) Body() (io.Reader, error) {
 	return nil, nil
 }
 
+func (tp testParameter) ResolveEndpoint(e string) string { return e }
+func (tp testParameter) ParameterMap() map[string]string { return nil }
+
 func Test_NewGesaClient(t *testing.T) {
 	cases := []struct {
 		name    string
@@ -50,6 +53,14 @@ func Test_NewGesaClient(t *testing.T) {
 			},
 		},
 		{
+			name: "ok: api version",
+			in: &gesa.NewGesaClientInput{
+				AccessToken: "test-token",
+				TeamName:    "test-team",
+				APIVersion:  gesa.DefaultAPIVersion,
+			},
+		},
+		{
 			name:    "ng: empty parameters",
 			in:      &gesa.NewGesaClientInput{},
 			wantErr: true,
@@ -65,6 +76,15 @@ func Test_NewGesaClient(t *testing.T) {
 			name: "ng: empty parameter",
 			in: &gesa.NewGesaClientInput{
 				TeamName: "test-team",
+			},
+			wantErr: true,
+		},
+		{
+			name: "ng: invalid api version",
+			in: &gesa.NewGesaClientInput{
+				AccessToken: "test-token",
+				TeamName:    "test-team",
+				APIVersion:  gesa.EsaAPIVersion("invalid version"),
 			},
 			wantErr: true,
 		},
@@ -105,7 +125,7 @@ func Test_CallAPI(t *testing.T) {
 		wantErr     bool
 	}{
 		{
-			name: "ok: OAuth 1.0",
+			name: "ok",
 			mockInput: &mockInput{
 				ResponseStatusCode: http.StatusOK,
 				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),

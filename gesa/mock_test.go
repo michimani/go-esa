@@ -40,7 +40,9 @@ func newMockHTTPClient(in *mockInput) *http.Client {
 
 type mockAPIParameter struct{}
 
-func (mp mockAPIParameter) Body() (io.Reader, error) { return nil, nil }
+func (mp mockAPIParameter) Body() (io.Reader, error)                   { return nil, nil }
+func (mp mockAPIParameter) ResolveEndpoint(endpointBase string) string { return "" }
+func (mp mockAPIParameter) ParameterMap() map[string]string            { return map[string]string{} }
 
 type mockAPIResponse struct{}
 

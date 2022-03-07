@@ -17,6 +17,7 @@ type NewGesaClientInput struct {
 	HTTPClient  *http.Client
 	AccessToken string
 	TeamName    string
+	APIVersion  EsaAPIVersion
 }
 
 type IGesaClient interface {
@@ -27,6 +28,7 @@ type GesaClient struct {
 	client      *http.Client
 	accessToken string
 	teamName    string
+	apiVersion  EsaAPIVersion
 }
 
 type ClientResponse struct {
@@ -48,10 +50,18 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 		return nil, fmt.Errorf("AccessToken or TeamName or both are empty.")
 	}
 
+	apiVersion := in.APIVersion
+	if apiVersion.IsEmpty() {
+		apiVersion = DefaultAPIVersion
+	} else if !apiVersion.IsValid() {
+		return nil, fmt.Errorf("Invalid esa API version.")
+	}
+
 	c := GesaClient{
 		client:      defaultHTTPClient,
 		accessToken: in.AccessToken,
 		teamName:    in.TeamName,
+		apiVersion:  apiVersion,
 	}
 
 	if in.HTTPClient != nil {
@@ -115,8 +125,6 @@ func (c *GesaClient) Exec(req *http.Request, r internal.IResponse) (*EsaAPIError
 		return nil, err
 	}
 
-	fmt.Println("response header: ", res.Header)
-
 	r.SetRateLimitInfo(res.Header)
 
 	return nil, nil
@@ -127,7 +135,12 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 		return nil, errors.New("parameter is nil")
 	}
 
-	endpoint := c.resolveEndpoint(endpointBase, p)
+	// resolve query parameters
+	endpoint, err := c.resolveEndpoint(endpointBase, p)
+	if err != nil {
+		return nil, err
+	}
+
 	req, err := newRequest(ctx, endpoint, method, p)
 	if err != nil {
 		return nil, err
@@ -138,8 +151,9 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 	return req, nil
 }
 
-func (c *GesaClient) resolveEndpoint(base string, p internal.IParameters) string {
-	return base
+func (c *GesaClient) resolveEndpoint(base string, p internal.IParameters) (string, error) {
+	endpoint := p.ResolveEndpoint(base)
+	return c.apiVersion.ResolveEndpoint(endpoint)
 }
 
 func newRequest(ctx context.Context, endpoint, method string, p internal.IParameters) (*http.Request, error) {

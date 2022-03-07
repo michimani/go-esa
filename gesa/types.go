@@ -26,3 +26,30 @@ type RateLimitInformation struct {
 	Remaining int
 	Reset     *Timestamp
 }
+
+// PageNumber is int type for nullable value
+// included pagination response
+type PageNumber int
+
+// NewPageNumber generates *PageNumber.
+// If a negative value is passed,
+// a value equivalent to 0 is returned.
+func NewPageNumber(n int) *PageNumber {
+	if n < 0 {
+		n = 0
+	}
+	p := PageNumber(n)
+	return &p
+}
+
+func (pn *PageNumber) IsNull() bool {
+	return pn == nil || *pn == 0
+}
+
+func (pn *PageNumber) SafeInt() int {
+	if pn == nil {
+		return 0
+	}
+
+	return int(*pn)
+}
