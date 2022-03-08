@@ -12,11 +12,13 @@ Unofficial esa SDK for the Go programming language.
 
 Progress of supporting APIs...
 
-- **OAuth**
+- **OAuth - 認証と認可**
   - `GET /oauth/token/info`
-- **Teams**
+- **Teams - チーム**
   - `GET /v1/teams`
   - `GET /v1/teams/:team_name`
+- **Stats - 統計情報**
+  - `GET /v1/teams/:team_name/stats`
 
 # Sample
 
