@@ -8,12 +8,22 @@ import (
 )
 
 const (
-	TeamsGetEndpoint = "https://api.esa.io/v1/teams"
+	TeamsGetEndpoint         = "https://api.esa.io/:esa_api_version/teams"
+	TeamsTeamNameGetEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name"
 )
 
 func TeamsGet(ctx context.Context, c *gesa.GesaClient, p *types.TeamsGetParam) (*types.TeamsGetResponse, error) {
 	res := &types.TeamsGetResponse{}
 	if err := c.CallAPI(ctx, TeamsGetEndpoint, "GET", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func TeamsTeamNameGet(ctx context.Context, c *gesa.GesaClient, p *types.TeamsTeamNameGetParam) (*types.TeamsTeamNameGetResponse, error) {
+	res := &types.TeamsTeamNameGetResponse{}
+	if err := c.CallAPI(ctx, TeamsTeamNameGetEndpoint, "GET", p, res); err != nil {
 		return nil, err
 	}
 

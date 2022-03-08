@@ -2,6 +2,8 @@ package types
 
 import (
 	"io"
+	"net/url"
+	"strings"
 
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
@@ -36,6 +38,10 @@ var teamsGetParamQueryParams = map[string]struct{}{
 }
 
 func (p *TeamsGetParam) ResolveEndpoint(endpointBase string) string {
+	if p == nil {
+		return ""
+	}
+
 	endpoint := endpointBase
 
 	pm := p.ParameterMap()
@@ -50,4 +56,31 @@ func (p *TeamsGetParam) ResolveEndpoint(endpointBase string) string {
 
 func (p *TeamsGetParam) ParameterMap() map[string]string {
 	return internal.GeneratePaginationParamsMap(p, nil)
+}
+
+type TeamsTeamNameGetParam struct {
+	TeamName string
+}
+
+func (p *TeamsTeamNameGetParam) Body() (io.Reader, error) {
+	return nil, nil
+}
+
+func (p *TeamsTeamNameGetParam) ResolveEndpoint(endpointBase string) string {
+	if p == nil {
+		return ""
+	}
+
+	if p.TeamName == "" {
+		return ""
+	}
+
+	encoded := url.QueryEscape(p.TeamName)
+	endpoint := strings.Replace(endpointBase, ":team_name", encoded, 1)
+
+	return endpoint
+}
+
+func (p *TeamsTeamNameGetParam) ParameterMap() map[string]string {
+	return nil
 }
