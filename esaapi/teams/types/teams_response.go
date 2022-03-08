@@ -31,3 +31,15 @@ func (r *TeamsGetResponse) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+type TeamsTeamNameGetResponse struct {
+	Team
+
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *TeamsTeamNameGetResponse) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
