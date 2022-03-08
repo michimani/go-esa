@@ -16,6 +16,7 @@ Progress of supporting APIs...
   - `GET /oauth/token/info`
 - **Teams**
   - `GET /v1/teams`
+  - `GET /v1/teams/:team_name`
 
 # Sample
 
@@ -33,7 +34,6 @@ import (
 )
 
 func main() {
-	teamName := "your-team-name"
 	token := "your-access-token"
 	c, err := gesa.NewGesaClient(&gesa.NewGesaClientInput{
 		AccessToken: token,
