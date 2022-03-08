@@ -37,7 +37,6 @@ func main() {
 	token := "your-access-token"
 	c, err := gesa.NewGesaClient(&gesa.NewGesaClientInput{
 		AccessToken: token,
-		TeamName:    teamName,
 	})
 
 	if err != nil {

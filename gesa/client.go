@@ -16,7 +16,6 @@ import (
 type NewGesaClientInput struct {
 	HTTPClient  *http.Client
 	AccessToken string
-	TeamName    string
 	APIVersion  EsaAPIVersion
 }
 
@@ -27,7 +26,6 @@ type IGesaClient interface {
 type GesaClient struct {
 	client      *http.Client
 	accessToken string
-	teamName    string
 	apiVersion  EsaAPIVersion
 }
 
@@ -46,8 +44,8 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 		return nil, fmt.Errorf("NewGesaClientInput is nil.")
 	}
 
-	if in.AccessToken == "" || in.TeamName == "" {
-		return nil, fmt.Errorf("AccessToken or TeamName or both are empty.")
+	if in.AccessToken == "" {
+		return nil, fmt.Errorf("AccessToken is empty.")
 	}
 
 	apiVersion := in.APIVersion
@@ -60,7 +58,6 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 	c := GesaClient{
 		client:      defaultHTTPClient,
 		accessToken: in.AccessToken,
-		teamName:    in.TeamName,
 		apiVersion:  apiVersion,
 	}
 
@@ -76,13 +73,6 @@ func (c *GesaClient) AccessToken() string {
 		return ""
 	}
 	return c.accessToken
-}
-
-func (c *GesaClient) TeamName() string {
-	if c == nil {
-		return ""
-	}
-	return c.teamName
 }
 
 func (c *GesaClient) CallAPI(ctx context.Context, endpoint, method string, p internal.IParameters, r internal.IResponse) error {

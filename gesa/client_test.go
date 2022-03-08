@@ -39,7 +39,6 @@ func Test_NewGesaClient(t *testing.T) {
 			name: "ok",
 			in: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			},
 		},
 		{
@@ -49,14 +48,12 @@ func Test_NewGesaClient(t *testing.T) {
 					Timeout: time.Duration(300) * time.Second,
 				},
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			},
 		},
 		{
 			name: "ok: api version",
 			in: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 				APIVersion:  gesa.DefaultAPIVersion,
 			},
 		},
@@ -66,24 +63,14 @@ func Test_NewGesaClient(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "ng: empty parameter",
-			in: &gesa.NewGesaClientInput{
-				AccessToken: "test-token",
-			},
-			wantErr: true,
-		},
-		{
-			name: "ng: empty parameter",
-			in: &gesa.NewGesaClientInput{
-				TeamName: "test-team",
-			},
+			name:    "ng: empty parameter",
+			in:      &gesa.NewGesaClientInput{},
 			wantErr: true,
 		},
 		{
 			name: "ng: invalid api version",
 			in: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 				APIVersion:  gesa.EsaAPIVersion("invalid version"),
 			},
 			wantErr: true,
@@ -107,7 +94,6 @@ func Test_NewGesaClient(t *testing.T) {
 			}
 
 			asst.NotNil(client)
-			asst.Equal(c.in.TeamName, client.TeamName())
 			asst.Equal(c.in.AccessToken, client.AccessToken())
 		})
 	}
@@ -132,7 +118,6 @@ func Test_CallAPI(t *testing.T) {
 			},
 			clientInput: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			},
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
@@ -148,7 +133,6 @@ func Test_CallAPI(t *testing.T) {
 			},
 			clientInput: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			},
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
@@ -164,7 +148,6 @@ func Test_CallAPI(t *testing.T) {
 			},
 			clientInput: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			},
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
@@ -180,7 +163,6 @@ func Test_CallAPI(t *testing.T) {
 			},
 			clientInput: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			},
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
@@ -196,7 +178,6 @@ func Test_CallAPI(t *testing.T) {
 			},
 			clientInput: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			},
 			endpoint: "test-endpoint",
 			method:   "invalid method",
@@ -286,7 +267,6 @@ func Test_Exec(t *testing.T) {
 			client, _ := gesa.NewGesaClient(&gesa.NewGesaClientInput{
 				HTTPClient:  mockClient,
 				AccessToken: "test-token",
-				TeamName:    "test-team",
 			})
 
 			esaAPIError, err := client.Exec(c.req, &mockAPIResponse{})
