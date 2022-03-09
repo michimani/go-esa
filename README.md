@@ -19,6 +19,8 @@ Progress of supporting APIs...
   - `GET /v1/teams/:team_name`
 - **Stats - 統計情報**
   - `GET /v1/teams/:team_name/stats`
+- **Members - メンバー**
+  - `GET /v1/teams/:team_name/members`
 
 # Sample
 
