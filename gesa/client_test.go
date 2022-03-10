@@ -99,6 +99,26 @@ func Test_NewGesaClient(t *testing.T) {
 	}
 }
 
+func Test_GesaClient_AccessToken(t *testing.T) {
+	okClient, _ := gesa.NewGesaClient(&gesa.NewGesaClientInput{AccessToken: "test-token"})
+	cases := []struct {
+		name   string
+		client *gesa.GesaClient
+		expect string
+	}{
+		{"not nil", okClient, "test-token"},
+		{"nil", nil, ""},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+			a := c.client.AccessToken()
+			asst.Equal(c.expect, a)
+		})
+	}
+}
+
 func Test_CallAPI(t *testing.T) {
 	cases := []struct {
 		name        string
