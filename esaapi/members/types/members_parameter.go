@@ -101,3 +101,33 @@ func (p *MembersGetParam) ParameterMap() map[string]string {
 
 	return m
 }
+
+type MembersScreenNameDeleteParam struct {
+	TeamName   string
+	ScreenName string
+}
+
+func (p *MembersScreenNameDeleteParam) Body() (io.Reader, error) {
+	return nil, nil
+}
+
+func (p *MembersScreenNameDeleteParam) ResolveEndpoint(endpointBase string) string {
+	if p == nil {
+		return ""
+	}
+
+	if p.TeamName == "" || p.ScreenName == "" {
+		return ""
+	}
+
+	encodedTeamName := url.QueryEscape(p.TeamName)
+	encodedScreenName := url.QueryEscape(p.ScreenName)
+	endpoint := strings.Replace(endpointBase, ":team_name", encodedTeamName, 1)
+	endpoint = strings.Replace(endpoint, ":screen_name", encodedScreenName, 1)
+
+	return endpoint
+}
+
+func (p *MembersScreenNameDeleteParam) ParameterMap() map[string]string {
+	return nil
+}
