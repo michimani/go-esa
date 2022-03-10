@@ -200,3 +200,111 @@ func Test_MembersGetParam_ResolveEndpoint(t *testing.T) {
 		})
 	}
 }
+
+func Test_MembersScreenNameDeleteParam_Body(t *testing.T) {
+	cases := []struct {
+		name    string
+		p       *types.MembersScreenNameDeleteParam
+		want    io.Reader
+		wantErr bool
+	}{
+		{"ok, nil", nil, nil, false},
+		{"ok: empty", &types.MembersScreenNameDeleteParam{}, nil, false},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+
+			r, err := c.p.Body()
+			if c.wantErr {
+				asst.NotNil(err)
+				asst.Nil(r)
+				return
+			}
+
+			asst.Nil(err)
+			asst.Equal(c.want, r)
+		})
+	}
+}
+
+func Test_MembersScreenNameDeleteParam_ResolveEndpoint(t *testing.T) {
+	const endpointBase = "test/endpoint/:team_name/:screen_name"
+
+	cases := []struct {
+		name   string
+		params *types.MembersScreenNameDeleteParam
+		expect string
+	}{
+		{
+			name: "ok",
+			params: &types.MembersScreenNameDeleteParam{
+				TeamName:   "test-team",
+				ScreenName: "test-screen-name",
+			},
+			expect: "test/endpoint/test-team/test-screen-name",
+		},
+		{
+			name: "ng: empty value: team_name",
+			params: &types.MembersScreenNameDeleteParam{
+				TeamName:   "",
+				ScreenName: "test-screen-name",
+			},
+			expect: "",
+		},
+		{
+			name: "ng: empty value: screen_name",
+			params: &types.MembersScreenNameDeleteParam{
+				TeamName:   "test-team",
+				ScreenName: "",
+			},
+			expect: "",
+		},
+		{
+			name: "ng: empty value: both",
+			params: &types.MembersScreenNameDeleteParam{
+				TeamName:   "",
+				ScreenName: "",
+			},
+			expect: "",
+		},
+		{
+			name:   "ng: empty params",
+			params: &types.MembersScreenNameDeleteParam{},
+			expect: "",
+		},
+		{
+			name:   "ng: nil",
+			params: nil,
+			expect: "",
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep := c.params.ResolveEndpoint(endpointBase)
+			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}
+
+func Test_MembersScreenNameDeleteParam_ParameterMap(t *testing.T) {
+	cases := []struct {
+		name string
+		p    *types.MembersScreenNameDeleteParam
+		want map[string]string
+	}{
+		{"ok, nil", nil, nil},
+		{"ok: empty", &types.MembersScreenNameDeleteParam{}, nil},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+
+			m := c.p.ParameterMap()
+			asst.Equal(c.want, m)
+		})
+	}
+}

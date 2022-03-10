@@ -21,6 +21,7 @@ Progress of supporting APIs...
   - `GET /v1/teams/:team_name/stats`
 - **Members - メンバー**
   - `GET /v1/teams/:team_name/members`
+  - `DELETE /v1/teams/:team_name/members/:screen_name`
 
 # Sample
 

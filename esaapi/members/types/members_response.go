@@ -37,3 +37,13 @@ func (r *MembersGetResponse) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+type MembersScreenNameDeleteResponse struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *MembersScreenNameDeleteResponse) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
