@@ -1,11 +1,11 @@
 package types_test
 
 import (
-	"io"
 	"testing"
 
 	"github.com/michimani/go-esa/esaapi/members/types"
 	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/internal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -44,34 +44,6 @@ func Test_MembersGetOrder_IsValid(t *testing.T) {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
 			asst.Equal(c.expect, types.MembersGetOrder(c.s).IsValid())
-		})
-	}
-}
-
-func Test_MembersGetParam_Body(t *testing.T) {
-	cases := []struct {
-		name    string
-		p       *types.MembersGetParam
-		want    io.Reader
-		wantErr bool
-	}{
-		{"ok, nil", nil, nil, false},
-		{"ok: empty", &types.MembersGetParam{}, nil, false},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(tt *testing.T) {
-			asst := assert.New(tt)
-
-			r, err := c.p.Body()
-			if c.wantErr {
-				asst.NotNil(err)
-				asst.Nil(r)
-				return
-			}
-
-			asst.Nil(err)
-			asst.Equal(c.want, r)
 		})
 	}
 }
@@ -118,193 +90,180 @@ func Test_MembersGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_MembersGetParam_ResolveEndpoint(t *testing.T) {
-	const endpoint = "test/endpoint/"
-
+func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name   string
-		params *types.MembersGetParam
-		expect string
+		p      *types.MembersGetParam
+		expect *internal.EsaAPIParameter
 	}{
 		{
 			name: "ok",
-			params: &types.MembersGetParam{
+			p: &types.MembersGetParam{
 				TeamName: "test-team",
 			},
-			expect: endpoint,
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{},
+			},
 		},
 		{
 			name: "with page",
-			params: &types.MembersGetParam{
+			p: &types.MembersGetParam{
 				TeamName: "test-team",
 				Page:     gesa.NewPageNumber(1),
 			},
-			expect: endpoint + "?page=1",
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "page", Value: "1"},
+				},
+			},
 		},
 		{
 			name: "with per_page",
-			params: &types.MembersGetParam{
+			p: &types.MembersGetParam{
 				TeamName: "test-team",
 				PerPage:  gesa.NewPageNumber(2),
 			},
-			expect: endpoint + "?per_page=2",
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "per_page", Value: "2"},
+				},
+			},
 		},
 		{
 			name: "with sort",
-			params: &types.MembersGetParam{
+			p: &types.MembersGetParam{
 				TeamName: "test-team",
 				Sort:     types.MembersGetSortJoined,
 			},
-			expect: endpoint + "?sort=joined",
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "sort", Value: "joined"},
+				},
+			},
 		},
 		{
 			name: "with order",
-			params: &types.MembersGetParam{
+			p: &types.MembersGetParam{
 				TeamName: "test-team",
 				Order:    types.MembersGetOrderAsc,
 			},
-			expect: endpoint + "?order=asc",
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "order", Value: "asc"},
+				},
+			},
 		},
 		{
 			name: "with all",
-			params: &types.MembersGetParam{
+			p: &types.MembersGetParam{
 				TeamName: "test-team",
 				Sort:     types.MembersGetSortPostsCount,
 				Order:    types.MembersGetOrderDesc,
 				Page:     gesa.NewPageNumber(1),
 				PerPage:  gesa.NewPageNumber(2),
 			},
-			expect: endpoint + "?order=desc&page=1&per_page=2&sort=posts_count",
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "sort", Value: "posts_count"},
+					{Key: "order", Value: "desc"},
+					{Key: "page", Value: "1"},
+					{Key: "per_page", Value: "2"},
+				},
+			},
 		},
 		{
 			name: "ng: not has required parameter",
-			params: &types.MembersGetParam{
+			p: &types.MembersGetParam{
 				Sort:    types.MembersGetSortPostsCount,
 				Order:   types.MembersGetOrderDesc,
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},
-			expect: "",
+			expect: nil,
 		},
 		{
 			name:   "ng: nil",
-			params: nil,
-			expect: "",
+			p:      nil,
+			expect: nil,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.params.ResolveEndpoint(endpoint)
+			ep := c.p.EsaAPIParameter()
 			assert.Equal(tt, c.expect, ep)
 		})
 	}
 }
 
-func Test_MembersScreenNameDeleteParam_Body(t *testing.T) {
-	cases := []struct {
-		name    string
-		p       *types.MembersScreenNameDeleteParam
-		want    io.Reader
-		wantErr bool
-	}{
-		{"ok, nil", nil, nil, false},
-		{"ok: empty", &types.MembersScreenNameDeleteParam{}, nil, false},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(tt *testing.T) {
-			asst := assert.New(tt)
-
-			r, err := c.p.Body()
-			if c.wantErr {
-				asst.NotNil(err)
-				asst.Nil(r)
-				return
-			}
-
-			asst.Nil(err)
-			asst.Equal(c.want, r)
-		})
-	}
-}
-
-func Test_MembersScreenNameDeleteParam_ResolveEndpoint(t *testing.T) {
-	const endpointBase = "test/endpoint/:team_name/:screen_name"
-
+func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name   string
-		params *types.MembersScreenNameDeleteParam
-		expect string
+		p      *types.MembersScreenNameDeleteParam
+		expect *internal.EsaAPIParameter
 	}{
 		{
 			name: "ok",
-			params: &types.MembersScreenNameDeleteParam{
+			p: &types.MembersScreenNameDeleteParam{
 				TeamName:   "test-team",
 				ScreenName: "test-screen-name",
 			},
-			expect: "test/endpoint/test-team/test-screen-name",
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":screen_name", Value: "test-screen-name"},
+				},
+				Query: internal.QueryParameterList{},
+			},
 		},
 		{
-			name: "ng: empty value: team_name",
-			params: &types.MembersScreenNameDeleteParam{
-				TeamName:   "",
+			name: "ng: not has required parameter: only team_name",
+			p: &types.MembersScreenNameDeleteParam{
+				TeamName: "test-team",
+			},
+			expect: nil,
+		},
+		{
+			name: "ng: not has required parameter: only screen_name",
+			p: &types.MembersScreenNameDeleteParam{
 				ScreenName: "test-screen-name",
 			},
-			expect: "",
+			expect: nil,
 		},
 		{
-			name: "ng: empty value: screen_name",
-			params: &types.MembersScreenNameDeleteParam{
-				TeamName:   "test-team",
-				ScreenName: "",
-			},
-			expect: "",
-		},
-		{
-			name: "ng: empty value: both",
-			params: &types.MembersScreenNameDeleteParam{
-				TeamName:   "",
-				ScreenName: "",
-			},
-			expect: "",
-		},
-		{
-			name:   "ng: empty params",
-			params: &types.MembersScreenNameDeleteParam{},
-			expect: "",
+			name:   "ng: not has required parameter: both",
+			p:      &types.MembersScreenNameDeleteParam{},
+			expect: nil,
 		},
 		{
 			name:   "ng: nil",
-			params: nil,
-			expect: "",
+			p:      nil,
+			expect: nil,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.params.ResolveEndpoint(endpointBase)
+			ep := c.p.EsaAPIParameter()
 			assert.Equal(tt, c.expect, ep)
-		})
-	}
-}
-
-func Test_MembersScreenNameDeleteParam_ParameterMap(t *testing.T) {
-	cases := []struct {
-		name string
-		p    *types.MembersScreenNameDeleteParam
-		want map[string]string
-	}{
-		{"ok, nil", nil, nil},
-		{"ok: empty", &types.MembersScreenNameDeleteParam{}, nil},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(tt *testing.T) {
-			asst := assert.New(tt)
-
-			m := c.p.ParameterMap()
-			asst.Equal(c.want, m)
 		})
 	}
 }

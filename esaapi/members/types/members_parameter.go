@@ -1,10 +1,6 @@
 package types
 
 import (
-	"io"
-	"net/url"
-	"strings"
-
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
 )
@@ -56,50 +52,33 @@ func (p *MembersGetParam) PerPageValue() (int, bool) {
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *MembersGetParam) Body() (io.Reader, error) {
-	return nil, nil
-}
-
-var membersGetParamQueryParams = map[string]struct{}{
-	"sort":     {},
-	"order":    {},
-	"page":     {},
-	"per_page": {},
-}
-
-func (p *MembersGetParam) ResolveEndpoint(endpointBase string) string {
+func (p *MembersGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 	if p == nil {
-		return ""
+		return nil
 	}
 
+	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return ""
+		return nil
 	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
-	encoded := url.QueryEscape(p.TeamName)
-	endpoint := strings.Replace(endpointBase, ":team_name", encoded, 1)
-
-	pm := p.ParameterMap()
-	if len(pm) > 0 {
-		qs := internal.QueryString(pm, membersGetParamQueryParams)
-		endpoint += "?" + qs
-	}
-
-	return endpoint
-}
-
-func (p *MembersGetParam) ParameterMap() map[string]string {
-	m := internal.GeneratePaginationParamsMap(p, nil)
-
+	qp := internal.QueryParameterList{}
 	if p.Sort.IsValid() {
-		m["sort"] = string(p.Sort)
+		qp = append(qp, internal.QueryParameter{Key: "sort", Value: string(p.Sort)})
 	}
-
 	if p.Order.IsValid() {
-		m["order"] = string(p.Order)
+		qp = append(qp, internal.QueryParameter{Key: "order", Value: string(p.Order)})
 	}
 
-	return m
+	pagination := internal.GeneratePaginationParameter(p)
+	qp = append(qp, pagination...)
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: qp,
+		Body:  nil,
+	}
 }
 
 type MembersScreenNameDeleteParam struct {
@@ -107,27 +86,21 @@ type MembersScreenNameDeleteParam struct {
 	ScreenName string
 }
 
-func (p *MembersScreenNameDeleteParam) Body() (io.Reader, error) {
-	return nil, nil
-}
-
-func (p *MembersScreenNameDeleteParam) ResolveEndpoint(endpointBase string) string {
+func (p *MembersScreenNameDeleteParam) EsaAPIParameter() *internal.EsaAPIParameter {
 	if p == nil {
-		return ""
+		return nil
 	}
 
+	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.ScreenName == "" {
-		return ""
+		return nil
 	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":screen_name", Value: p.ScreenName})
 
-	encodedTeamName := url.QueryEscape(p.TeamName)
-	encodedScreenName := url.QueryEscape(p.ScreenName)
-	endpoint := strings.Replace(endpointBase, ":team_name", encodedTeamName, 1)
-	endpoint = strings.Replace(endpoint, ":screen_name", encodedScreenName, 1)
-
-	return endpoint
-}
-
-func (p *MembersScreenNameDeleteParam) ParameterMap() map[string]string {
-	return nil
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  nil,
+	}
 }

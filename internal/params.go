@@ -1,42 +1,55 @@
 package internal
 
 import (
+	"io"
 	"net/url"
 	"strconv"
-	"strings"
 )
 
-func QueryValue(params []string) string {
-	if len(params) == 0 {
+type QueryParameter struct {
+	Key   string
+	Value string
+}
+
+type QueryParameterList []QueryParameter
+
+func (qpl QueryParameterList) QueryString() string {
+	q := url.Values{}
+	for _, qp := range qpl {
+		q.Add(qp.Key, qp.Value)
+	}
+
+	qs := q.Encode()
+	if qs == "" {
 		return ""
 	}
 
-	return strings.Join(params, ",")
+	return "?" + qs
 }
 
-func QueryString(paramsMap map[string]string, includes map[string]struct{}) string {
-	q := url.Values{}
-	for k, v := range paramsMap {
-		if _, ok := includes[k]; ok {
-			q.Add(k, v)
-		}
-	}
-
-	return q.Encode()
+type PathParameter struct {
+	Key   string
+	Value string
 }
 
-func GeneratePaginationParamsMap(p IPaginationParameters, paramsMap map[string]string) map[string]string {
-	if paramsMap == nil {
-		paramsMap = map[string]string{}
-	}
+type PathParameterList []PathParameter
+
+type EsaAPIParameter struct {
+	Query QueryParameterList
+	Path  PathParameterList
+	Body  io.Reader
+}
+
+func GeneratePaginationParameter(p IPaginationParameters) QueryParameterList {
+	qp := QueryParameterList{}
 
 	if page, ok := p.PageValue(); ok && page > 0 {
-		paramsMap["page"] = strconv.Itoa(page)
+		qp = append(qp, QueryParameter{Key: "page", Value: strconv.Itoa(page)})
 	}
 
 	if perPage, ok := p.PerPageValue(); ok && perPage > 0 {
-		paramsMap["per_page"] = strconv.Itoa(perPage)
+		qp = append(qp, QueryParameter{Key: "per_page", Value: strconv.Itoa(perPage)})
 	}
 
-	return paramsMap
+	return qp
 }

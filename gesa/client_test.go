@@ -2,7 +2,6 @@ package gesa_test
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -19,15 +18,9 @@ type testParameter struct {
 	BodyResErr bool
 }
 
-func (tp testParameter) Body() (io.Reader, error) {
-	if tp.BodyResErr {
-		return nil, fmt.Errorf("body error")
-	}
-	return nil, nil
+func (mp testParameter) EsaAPIParameter() *internal.EsaAPIParameter {
+	return &internal.EsaAPIParameter{}
 }
-
-func (tp testParameter) ResolveEndpoint(e string) string { return e }
-func (tp testParameter) ParameterMap() map[string]string { return nil }
 
 func Test_NewGesaClient(t *testing.T) {
 	cases := []struct {
@@ -157,6 +150,21 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
 			params:   nil,
+			response: &mockAPIResponse{},
+			wantErr:  true,
+		},
+		{
+			name: "error: required parameters are empty",
+			mockInput: &mockInput{
+				ResponseStatusCode: http.StatusOK,
+				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),
+			},
+			clientInput: &gesa.NewGesaClientInput{
+				AccessToken: "test-token",
+			},
+			endpoint: "test-endpoint",
+			method:   http.MethodGet,
+			params:   &mockAPIParameter{EsaAPINil: true},
 			response: &mockAPIResponse{},
 			wantErr:  true,
 		},
@@ -346,19 +354,12 @@ func Test_newRequest(t *testing.T) {
 				},
 			},
 		},
-		{
-			name:     "error: Body() returns error",
-			method:   "GET",
-			endpoint: "endpoint",
-			p:        testParameter{BodyResErr: true},
-			wantErr:  true,
-			expect:   nil,
-		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			r, err := gesa.ExportNewRequest(context.Background(), c.endpoint, c.method, c.p)
+			eap := c.p.EsaAPIParameter()
+			r, err := gesa.ExportNewRequest(context.Background(), c.endpoint, c.method, eap.Body)
 			if c.wantErr {
 				assert.Error(tt, err)
 				assert.Nil(tt, r)

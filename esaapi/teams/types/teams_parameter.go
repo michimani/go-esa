@@ -1,10 +1,6 @@
 package types
 
 import (
-	"io"
-	"net/url"
-	"strings"
-
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
 )
@@ -28,59 +24,40 @@ func (p *TeamsGetParam) PerPageValue() (int, bool) {
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *TeamsGetParam) Body() (io.Reader, error) {
-	return nil, nil
-}
-
-var teamsGetParamQueryParams = map[string]struct{}{
-	"page":     {},
-	"per_page": {},
-}
-
-func (p *TeamsGetParam) ResolveEndpoint(endpointBase string) string {
+func (p *TeamsGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 	if p == nil {
-		return ""
+		return nil
 	}
 
-	endpoint := endpointBase
+	qp := internal.QueryParameterList{}
+	pagination := internal.GeneratePaginationParameter(p)
+	qp = append(qp, pagination...)
 
-	pm := p.ParameterMap()
-	qs := internal.QueryString(pm, teamsGetParamQueryParams)
-
-	if qs == "" {
-		return endpoint
+	return &internal.EsaAPIParameter{
+		Path:  internal.PathParameterList{},
+		Query: qp,
+		Body:  nil,
 	}
-
-	return endpoint + "?" + qs
-}
-
-func (p *TeamsGetParam) ParameterMap() map[string]string {
-	return internal.GeneratePaginationParamsMap(p, nil)
 }
 
 type TeamsTeamNameGetParam struct {
 	TeamName string
 }
 
-func (p *TeamsTeamNameGetParam) Body() (io.Reader, error) {
-	return nil, nil
-}
-
-func (p *TeamsTeamNameGetParam) ResolveEndpoint(endpointBase string) string {
+func (p *TeamsTeamNameGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 	if p == nil {
-		return ""
+		return nil
 	}
 
+	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return ""
+		return nil
 	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
-	encoded := url.QueryEscape(p.TeamName)
-	endpoint := strings.Replace(endpointBase, ":team_name", encoded, 1)
-
-	return endpoint
-}
-
-func (p *TeamsTeamNameGetParam) ParameterMap() map[string]string {
-	return nil
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  nil,
+	}
 }
