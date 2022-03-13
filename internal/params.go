@@ -1,10 +1,45 @@
 package internal
 
 import (
+	"io"
 	"net/url"
 	"strconv"
 	"strings"
 )
+
+type QueryParameter struct {
+	Key   string
+	Value string
+}
+
+type QueryParameterList []QueryParameter
+
+func (qpl QueryParameterList) QueryString() string {
+	q := url.Values{}
+	for _, qp := range qpl {
+		q.Add(qp.Key, qp.Value)
+	}
+
+	qs := q.Encode()
+	if qs == "" {
+		return ""
+	}
+
+	return "?" + qs
+}
+
+type PathParameter struct {
+	Key   string
+	Value string
+}
+
+type PathParameterList []PathParameter
+
+type EsaAPIParameter struct {
+	Query QueryParameterList
+	Path  PathParameterList
+	Body  io.Reader
+}
 
 func QueryValue(params []string) string {
 	if len(params) == 0 {
