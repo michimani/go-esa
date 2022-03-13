@@ -125,13 +125,18 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 		return nil, errors.New("parameter is nil")
 	}
 
+	eap := p.EsaAPIParameter()
+	if eap == nil {
+		return nil, errors.New("required parameters are empty")
+	}
+
 	// resolve query parameters
-	endpoint, err := c.resolveEndpoint(endpointBase, p)
+	endpoint, err := c.resolveEndpoint(endpointBase, *eap)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := newRequest(ctx, endpoint, method, p)
+	req, err := newRequest(ctx, endpoint, method, eap.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -141,16 +146,12 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 	return req, nil
 }
 
-func (c *GesaClient) resolveEndpoint(base string, p internal.IParameters) (string, error) {
-	endpoint := p.ResolveEndpoint(base)
+func (c *GesaClient) resolveEndpoint(base string, eap internal.EsaAPIParameter) (string, error) {
+	endpoint := internal.ResolveEndpoint(base, eap.Path, eap.Query)
 	return c.apiVersion.ResolveEndpoint(endpoint)
 }
 
-func newRequest(ctx context.Context, endpoint, method string, p internal.IParameters) (*http.Request, error) {
-	body, err := p.Body()
-	if err != nil {
-		return nil, err
-	}
+func newRequest(ctx context.Context, endpoint, method string, body io.Reader) (*http.Request, error) {
 	req, err := http.NewRequestWithContext(ctx, method, endpoint, body)
 	if err != nil {
 		return nil, err

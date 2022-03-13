@@ -1,34 +1,25 @@
 package types
 
-import (
-	"io"
-	"net/url"
-	"strings"
-)
+import "github.com/michimani/go-esa/internal"
 
 type StatsGetParam struct {
 	TeamName string
 }
 
-func (p *StatsGetParam) Body() (io.Reader, error) {
-	return nil, nil
-}
-
-func (p *StatsGetParam) ResolveEndpoint(endpointBase string) string {
+func (p *StatsGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 	if p == nil {
-		return ""
+		return nil
 	}
 
+	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return ""
+		return nil
 	}
+	pp = append(pp, internal.PathParameter{Key: ":team", Value: p.TeamName})
 
-	encoded := url.QueryEscape(p.TeamName)
-	endpoint := strings.Replace(endpointBase, ":team_name", encoded, 1)
-
-	return endpoint
-}
-
-func (p *StatsGetParam) ParameterMap() map[string]string {
-	return nil
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  nil,
+	}
 }

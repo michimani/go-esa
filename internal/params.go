@@ -75,3 +75,17 @@ func GeneratePaginationParamsMap(p IPaginationParameters, paramsMap map[string]s
 
 	return paramsMap
 }
+
+func GeneratePaginationParameter(p IPaginationParameters) QueryParameterList {
+	qp := QueryParameterList{}
+
+	if page, ok := p.PageValue(); ok && page > 0 {
+		qp = append(qp, QueryParameter{Key: "page", Value: strconv.Itoa(page)})
+	}
+
+	if perPage, ok := p.PerPageValue(); ok && perPage > 0 {
+		qp = append(qp, QueryParameter{Key: "per_page", Value: strconv.Itoa(perPage)})
+	}
+
+	return qp
+}

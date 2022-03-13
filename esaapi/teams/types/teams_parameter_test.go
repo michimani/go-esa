@@ -1,41 +1,13 @@
 package types_test
 
 import (
-	"io"
 	"testing"
 
 	"github.com/michimani/go-esa/esaapi/teams/types"
 	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/internal"
 	"github.com/stretchr/testify/assert"
 )
-
-func Test_TeamsGetParam_Body(t *testing.T) {
-	cases := []struct {
-		name    string
-		p       *types.TeamsGetParam
-		want    io.Reader
-		wantErr bool
-	}{
-		{"ok, nil", nil, nil, false},
-		{"ok: empty", &types.TeamsGetParam{}, nil, false},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(tt *testing.T) {
-			asst := assert.New(tt)
-
-			r, err := c.p.Body()
-			if c.wantErr {
-				asst.NotNil(err)
-				asst.Nil(r)
-				return
-			}
-
-			asst.Nil(err)
-			asst.Equal(c.want, r)
-		})
-	}
-}
 
 func Test_TeamsGetParam_PageValue(t *testing.T) {
 	cases := []struct {
@@ -79,142 +51,107 @@ func Test_TeamsGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_TeamsGetParam_ResolveEndpoint(t *testing.T) {
-	const endpoint = "test/endpoint/"
-
+func Test_TeamsGetParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name   string
-		params *types.TeamsGetParam
-		expect string
-	}{
-		{
-			name:   "ok",
-			params: &types.TeamsGetParam{},
-			expect: endpoint,
-		},
-		{
-			name: "with page",
-			params: &types.TeamsGetParam{
-				Page: gesa.NewPageNumber(1),
-			},
-			expect: endpoint + "?page=1",
-		},
-		{
-			name: "with per_page",
-			params: &types.TeamsGetParam{
-				PerPage: gesa.NewPageNumber(2),
-			},
-			expect: endpoint + "?per_page=2",
-		},
-		{
-			name: "with page",
-			params: &types.TeamsGetParam{
-				Page:    gesa.NewPageNumber(1),
-				PerPage: gesa.NewPageNumber(2),
-			},
-			expect: endpoint + "?page=1&per_page=2",
-		},
-		{
-			name:   "ng: nil",
-			params: nil,
-			expect: "",
-		},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(tt *testing.T) {
-			ep := c.params.ResolveEndpoint(endpoint)
-			assert.Equal(tt, c.expect, ep)
-		})
-	}
-}
-
-func Test_TeamsTeamNameGetParam_Body(t *testing.T) {
-	cases := []struct {
-		name    string
-		p       *types.TeamsTeamNameGetParam
-		want    io.Reader
-		wantErr bool
-	}{
-		{"ok, nil", nil, nil, false},
-		{"ok: empty", &types.TeamsTeamNameGetParam{}, nil, false},
-	}
-
-	for _, c := range cases {
-		t.Run(c.name, func(tt *testing.T) {
-			asst := assert.New(tt)
-
-			r, err := c.p.Body()
-			if c.wantErr {
-				asst.NotNil(err)
-				asst.Nil(r)
-				return
-			}
-
-			asst.Nil(err)
-			asst.Equal(c.want, r)
-		})
-	}
-}
-
-func Test_TeamsTeamNameGetParam_ResolveEndpoint(t *testing.T) {
-	const endpoint = "test/endpoint/"
-
-	cases := []struct {
-		name   string
-		params *types.TeamsTeamNameGetParam
-		expect string
+		p      *types.TeamsGetParam
+		expect *internal.EsaAPIParameter
 	}{
 		{
 			name: "ok",
-			params: &types.TeamsTeamNameGetParam{
-				TeamName: "test-team",
+			p:    &types.TeamsGetParam{},
+			expect: &internal.EsaAPIParameter{
+				Path:  internal.PathParameterList{},
+				Query: internal.QueryParameterList{},
 			},
-			expect: endpoint,
 		},
 		{
-			name: "ng: empty value",
-			params: &types.TeamsTeamNameGetParam{
-				TeamName: "",
+			name: "with page",
+			p: &types.TeamsGetParam{
+				Page: gesa.NewPageNumber(1),
 			},
-			expect: "",
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{},
+				Query: internal.QueryParameterList{
+					{Key: "page", Value: "1"},
+				},
+			},
 		},
 		{
-			name:   "ng: empty params",
-			params: &types.TeamsTeamNameGetParam{},
-			expect: "",
+			name: "with per_page",
+			p: &types.TeamsGetParam{
+				PerPage: gesa.NewPageNumber(2),
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{},
+				Query: internal.QueryParameterList{
+					{Key: "per_page", Value: "2"},
+				},
+			},
+		},
+		{
+			name: "with all",
+			p: &types.TeamsGetParam{
+				Page:    gesa.NewPageNumber(1),
+				PerPage: gesa.NewPageNumber(2),
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{},
+				Query: internal.QueryParameterList{
+					{Key: "page", Value: "1"},
+					{Key: "per_page", Value: "2"},
+				},
+			},
 		},
 		{
 			name:   "ng: nil",
-			params: nil,
-			expect: "",
+			p:      nil,
+			expect: nil,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.params.ResolveEndpoint(endpoint)
+			ep := c.p.EsaAPIParameter()
 			assert.Equal(tt, c.expect, ep)
 		})
 	}
 }
 
-func Test_TeamsTeamNameGetParam_ParameterMap(t *testing.T) {
+func Test_TeamsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
-		name string
-		p    *types.TeamsTeamNameGetParam
-		want map[string]string
+		name   string
+		p      *types.TeamsTeamNameGetParam
+		expect *internal.EsaAPIParameter
 	}{
-		{"ok, nil", nil, nil},
-		{"ok: empty", &types.TeamsTeamNameGetParam{}, nil},
+		{
+			name: "ok",
+			p: &types.TeamsTeamNameGetParam{
+				TeamName: "test-team",
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{},
+			},
+		},
+		{
+			name:   "ng: not has required parameter",
+			p:      &types.TeamsTeamNameGetParam{},
+			expect: nil,
+		},
+		{
+			name:   "ng: nil",
+			p:      nil,
+			expect: nil,
+		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			asst := assert.New(tt)
-
-			m := c.p.ParameterMap()
-			asst.Equal(c.want, m)
+			ep := c.p.EsaAPIParameter()
+			assert.Equal(tt, c.expect, ep)
 		})
 	}
 }

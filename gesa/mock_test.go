@@ -3,6 +3,8 @@ package gesa_test
 import (
 	"io"
 	"net/http"
+
+	"github.com/michimani/go-esa/internal"
 )
 
 type RoundTripFunc func(req *http.Request) *http.Response
@@ -40,9 +42,9 @@ func newMockHTTPClient(in *mockInput) *http.Client {
 
 type mockAPIParameter struct{}
 
-func (mp mockAPIParameter) Body() (io.Reader, error)                   { return nil, nil }
-func (mp mockAPIParameter) ResolveEndpoint(endpointBase string) string { return "" }
-func (mp mockAPIParameter) ParameterMap() map[string]string            { return map[string]string{} }
+func (mp mockAPIParameter) EsaAPIParameter() *internal.EsaAPIParameter {
+	return &internal.EsaAPIParameter{}
+}
 
 type mockAPIResponse struct{}
 

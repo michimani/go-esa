@@ -1,14 +1,11 @@
 package internal
 
 import (
-	"io"
 	"net/http"
 )
 
 type IParameters interface {
-	Body() (io.Reader, error)
-	ResolveEndpoint(endpointBase string) string
-	ParameterMap() map[string]string
+	EsaAPIParameter() *EsaAPIParameter
 }
 
 type IPaginationParameters interface {
