@@ -51,6 +51,13 @@ func Test_NewGesaClient(t *testing.T) {
 			},
 		},
 		{
+			name: "ok: debug",
+			in: &gesa.NewGesaClientInput{
+				AccessToken: "test-token",
+				Debug:       true,
+			},
+		},
+		{
 			name:    "ng: empty parameters",
 			in:      &gesa.NewGesaClientInput{},
 			wantErr: true,
@@ -131,6 +138,22 @@ func Test_CallAPI(t *testing.T) {
 			},
 			clientInput: &gesa.NewGesaClientInput{
 				AccessToken: "test-token",
+			},
+			endpoint: "test-endpoint",
+			method:   http.MethodGet,
+			params:   &mockAPIParameter{},
+			response: &mockAPIResponse{},
+			wantErr:  false,
+		},
+		{
+			name: "ok: debug",
+			mockInput: &mockInput{
+				ResponseStatusCode: http.StatusOK,
+				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),
+			},
+			clientInput: &gesa.NewGesaClientInput{
+				AccessToken: "test-token",
+				Debug:       true,
 			},
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,

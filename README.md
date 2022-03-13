@@ -22,6 +22,8 @@ Progress of supporting APIs...
 - **Members - メンバー**
   - `GET /v1/teams/:team_name/members`
   - `DELETE /v1/teams/:team_name/members/:screen_name`
+- **Posts - 記事**
+  - `GET /v1/teams/docs/posts`
 
 # Sample
 
