@@ -154,6 +154,21 @@ func Test_CallAPI(t *testing.T) {
 			wantErr:  true,
 		},
 		{
+			name: "error: required parameters are empty",
+			mockInput: &mockInput{
+				ResponseStatusCode: http.StatusOK,
+				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),
+			},
+			clientInput: &gesa.NewGesaClientInput{
+				AccessToken: "test-token",
+			},
+			endpoint: "test-endpoint",
+			method:   http.MethodGet,
+			params:   &mockAPIParameter{EsaAPINil: true},
+			response: &mockAPIResponse{},
+			wantErr:  true,
+		},
+		{
 			name: "error: not 200 response",
 			mockInput: &mockInput{
 				ResponseStatusCode: http.StatusInternalServerError,

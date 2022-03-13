@@ -40,9 +40,14 @@ func newMockHTTPClient(in *mockInput) *http.Client {
 	})
 }
 
-type mockAPIParameter struct{}
+type mockAPIParameter struct {
+	EsaAPINil bool
+}
 
 func (mp mockAPIParameter) EsaAPIParameter() *internal.EsaAPIParameter {
+	if mp.EsaAPINil {
+		return nil
+	}
 	return &internal.EsaAPIParameter{}
 }
 
