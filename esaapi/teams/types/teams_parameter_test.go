@@ -131,7 +131,7 @@ func Test_TeamsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
-					{Key: ":team", Value: "test-team"},
+					{Key: ":team_name", Value: "test-team"},
 				},
 				Query: internal.QueryParameterList{},
 			},

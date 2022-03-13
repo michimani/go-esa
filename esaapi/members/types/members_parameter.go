@@ -61,7 +61,7 @@ func (p *MembersGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 	if p.TeamName == "" {
 		return nil
 	}
-	pp = append(pp, internal.PathParameter{Key: ":team", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
 	qp := internal.QueryParameterList{}
 	if p.Sort.IsValid() {

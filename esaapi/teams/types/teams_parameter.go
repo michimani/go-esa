@@ -53,7 +53,7 @@ func (p *TeamsTeamNameGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 	if p.TeamName == "" {
 		return nil
 	}
-	pp = append(pp, internal.PathParameter{Key: ":team", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
 	return &internal.EsaAPIParameter{
 		Path:  pp,

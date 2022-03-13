@@ -103,7 +103,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
-					{Key: ":team", Value: "test-team"},
+					{Key: ":team_name", Value: "test-team"},
 				},
 				Query: internal.QueryParameterList{},
 			},
@@ -116,7 +116,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
-					{Key: ":team", Value: "test-team"},
+					{Key: ":team_name", Value: "test-team"},
 				},
 				Query: internal.QueryParameterList{
 					{Key: "page", Value: "1"},
@@ -131,7 +131,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
-					{Key: ":team", Value: "test-team"},
+					{Key: ":team_name", Value: "test-team"},
 				},
 				Query: internal.QueryParameterList{
 					{Key: "per_page", Value: "2"},
@@ -146,7 +146,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
-					{Key: ":team", Value: "test-team"},
+					{Key: ":team_name", Value: "test-team"},
 				},
 				Query: internal.QueryParameterList{
 					{Key: "sort", Value: "joined"},
@@ -161,7 +161,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
-					{Key: ":team", Value: "test-team"},
+					{Key: ":team_name", Value: "test-team"},
 				},
 				Query: internal.QueryParameterList{
 					{Key: "order", Value: "asc"},
@@ -179,7 +179,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
-					{Key: ":team", Value: "test-team"},
+					{Key: ":team_name", Value: "test-team"},
 				},
 				Query: internal.QueryParameterList{
 					{Key: "sort", Value: "posts_count"},
@@ -197,6 +197,60 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},
+			expect: nil,
+		},
+		{
+			name:   "ng: nil",
+			p:      nil,
+			expect: nil,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep := c.p.EsaAPIParameter()
+			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}
+
+func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name   string
+		p      *types.MembersScreenNameDeleteParam
+		expect *internal.EsaAPIParameter
+	}{
+		{
+			name: "ok",
+			p: &types.MembersScreenNameDeleteParam{
+				TeamName:   "test-team",
+				ScreenName: "test-screen-name",
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":screen_name", Value: "test-screen-name"},
+				},
+				Query: internal.QueryParameterList{},
+			},
+		},
+		{
+			name: "ng: not has required parameter: only team_name",
+			p: &types.MembersScreenNameDeleteParam{
+				TeamName: "test-team",
+			},
+			expect: nil,
+		},
+		{
+			name: "ng: not has required parameter: only screen_name",
+			p: &types.MembersScreenNameDeleteParam{
+				ScreenName: "test-screen-name",
+			},
+			expect: nil,
+		},
+		{
+			name:   "ng: not has required parameter: both",
+			p:      &types.MembersScreenNameDeleteParam{},
 			expect: nil,
 		},
 		{
