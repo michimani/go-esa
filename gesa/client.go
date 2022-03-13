@@ -1,6 +1,7 @@
 package gesa
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -17,6 +18,7 @@ type NewGesaClientInput struct {
 	HTTPClient  *http.Client
 	AccessToken string
 	APIVersion  EsaAPIVersion
+	Debug       bool
 }
 
 type IGesaClient interface {
@@ -27,6 +29,7 @@ type GesaClient struct {
 	client      *http.Client
 	accessToken string
 	apiVersion  EsaAPIVersion
+	debug       bool
 }
 
 type ClientResponse struct {
@@ -59,6 +62,10 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 		client:      defaultHTTPClient,
 		accessToken: in.AccessToken,
 		apiVersion:  apiVersion,
+	}
+
+	if in.Debug {
+		c.debug = true
 	}
 
 	if in.HTTPClient != nil {
@@ -111,8 +118,20 @@ func (c *GesaClient) Exec(req *http.Request, r internal.IResponse) (*EsaAPIError
 		return non200err, nil
 	}
 
-	if err := json.NewDecoder(res.Body).Decode(r); err != nil {
+	var tr io.Reader
+	debugBuf := new(bytes.Buffer)
+	if c.debug {
+		tr = io.TeeReader(res.Body, debugBuf)
+	} else {
+		tr = res.Body
+	}
+
+	if err := json.NewDecoder(tr).Decode(r); err != nil {
 		return nil, err
+	}
+
+	if c.debug {
+		fmt.Printf("------DEBUG------\nraw response\n%s\n------DEBUG END------\n", debugBuf.String())
 	}
 
 	r.SetRateLimitInfo(res.Header)
