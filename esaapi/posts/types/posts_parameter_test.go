@@ -251,3 +251,74 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		})
 	}
 }
+
+func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name   string
+		p      *types.PostsPostNumberGetParam
+		expect *internal.EsaAPIParameter
+	}{
+		{
+			name: "ok",
+			p: &types.PostsPostNumberGetParam{
+				TeamName:   "test-team",
+				PostNumber: 1,
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":post_number", Value: "1"},
+				},
+				Query: internal.QueryParameterList{},
+			},
+		},
+		{
+			name: "with include",
+			p: &types.PostsPostNumberGetParam{
+				TeamName:   "test-team",
+				PostNumber: 1,
+				Include:    "include1,include2",
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":post_number", Value: "1"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "include", Value: "include1,include2"},
+				},
+			},
+		},
+		{
+			name: "ng: not has required parameter: team_name is empty",
+			p: &types.PostsPostNumberGetParam{
+				PostNumber: 1,
+			},
+			expect: nil,
+		},
+		{
+			name: "ng: not has required parameter: post_number is empty",
+			p: &types.PostsPostNumberGetParam{
+				TeamName: "test-team",
+			},
+			expect: nil,
+		},
+		{
+			name:   "ng: not has required parameter: both are empty",
+			p:      &types.PostsPostNumberGetParam{},
+			expect: nil,
+		},
+		{
+			name:   "ng: nil",
+			p:      nil,
+			expect: nil,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep := c.p.EsaAPIParameter()
+			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}

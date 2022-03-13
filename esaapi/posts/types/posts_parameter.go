@@ -1,6 +1,8 @@
 package types
 
 import (
+	"strconv"
+
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
 )
@@ -93,6 +95,39 @@ func (p *PostsGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 
 	pagination := internal.GeneratePaginationParameter(p)
 	qp = append(qp, pagination...)
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: qp,
+		Body:  nil,
+	}
+}
+
+type PostsPostNumberGetParam struct {
+	// Path parameter
+	TeamName   string
+	PostNumber int
+
+	// Query parameters
+	Include string
+}
+
+func (p *PostsPostNumberGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
+	if p == nil {
+		return nil
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.PostNumber == 0 {
+		return nil
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
+
+	qp := internal.QueryParameterList{}
+	if p.Include != "" {
+		qp = append(qp, internal.QueryParameter{Key: "include", Value: p.Include})
+	}
 
 	return &internal.EsaAPIParameter{
 		Path:  pp,
