@@ -1,7 +1,9 @@
 package types
 
 import (
+	"encoding/json"
 	"strconv"
+	"strings"
 
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
@@ -133,5 +135,74 @@ func (p *PostsPostNumberGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 		Path:  pp,
 		Query: qp,
 		Body:  nil,
+	}
+}
+
+type PostsPostParam struct {
+	// Path parameter
+	TeamName string `json:"-"`
+
+	// Payload
+	Name     string // required
+	BodyMD   *string
+	Tags     []*string
+	Category *string
+	Wip      *bool
+	Message  *string
+	User     *string
+}
+
+type postsPostPayload struct {
+	Post postsPostPayloadPost `json:"post"`
+}
+
+type postsPostPayloadPost struct {
+	Name     string    `json:"name"` // required
+	BodyMD   *string   `json:"body_md,omitempty"`
+	Tags     []*string `json:"tags,omitempty"`
+	Category *string   `json:"category,omitempty"`
+	Wip      *bool     `json:"wip,omitempty"`
+	Message  *string   `json:"message,omitempty"`
+	User     *string   `json:"user,omitempty"`
+}
+
+func (p *PostsPostParam) EsaAPIParameter() *internal.EsaAPIParameter {
+	if p == nil {
+		return nil
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" {
+		return nil
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+
+	if p.Name == "" {
+		return nil
+	}
+
+	payload := &postsPostPayload{
+		Post: postsPostPayloadPost{
+			Name:     p.Name,
+			BodyMD:   p.BodyMD,
+			Tags:     p.Tags,
+			Category: p.Category,
+			Wip:      p.Wip,
+			Message:  p.Message,
+			User:     p.User,
+		},
+	}
+
+	json, err := json.Marshal(payload)
+	if err != nil {
+		return nil
+	}
+
+	body := strings.NewReader(string(json))
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  body,
 	}
 }
