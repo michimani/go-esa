@@ -41,3 +41,17 @@ func (r *PostsPostNumberGetResponse) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// PostsPostResponse is struct for the response of
+// POST /v1/teams/:team_name/posts
+type PostsPostResponse struct {
+	models.Post
+
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *PostsPostResponse) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}

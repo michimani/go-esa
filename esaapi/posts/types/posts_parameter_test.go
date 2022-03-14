@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/michimani/go-esa/esaapi/posts/types"
@@ -306,6 +307,60 @@ func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 		{
 			name:   "ng: not has required parameter: both are empty",
 			p:      &types.PostsPostNumberGetParam{},
+			expect: nil,
+		},
+		{
+			name:   "ng: nil",
+			p:      nil,
+			expect: nil,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep := c.p.EsaAPIParameter()
+			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}
+
+func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name   string
+		p      *types.PostsPostParam
+		expect *internal.EsaAPIParameter
+	}{
+		{
+			name: "ok",
+			p: &types.PostsPostParam{
+				TeamName: "test-team",
+				Name:     "test-post",
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{},
+				Body:  strings.NewReader(`{"post":{"name":"test-post"}}`),
+			},
+		},
+		{
+			name: "ng: not has required parameter: team_name is empty",
+			p: &types.PostsPostParam{
+				Name: "test-post",
+			},
+			expect: nil,
+		},
+		{
+			name: "ng: not has required parameter: post_name is empty",
+			p: &types.PostsPostParam{
+				TeamName: "test-team",
+			},
+			expect: nil,
+		},
+		{
+			name:   "ng: not has required parameter: both are empty",
+			p:      &types.PostsPostParam{},
 			expect: nil,
 		},
 		{
