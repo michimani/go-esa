@@ -10,6 +10,7 @@ import (
 const (
 	PostsGetEndpoint           = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
 	PostsPostNumberGetEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
+	PostsPostEndpoint          = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
 )
 
 func PostsGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsGetParam) (*types.PostsGetResponse, error) {
@@ -24,6 +25,15 @@ func PostsGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsGetParam) (
 func PostsPostNumberGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostNumberGetParam) (*types.PostsPostNumberGetResponse, error) {
 	res := &types.PostsPostNumberGetResponse{}
 	if err := c.CallAPI(ctx, PostsPostNumberGetEndpoint, "GET", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func PostsPost(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostParam) (*types.PostsPostResponse, error) {
+	res := &types.PostsPostResponse{}
+	if err := c.CallAPI(ctx, PostsPostEndpoint, "POST", p, res); err != nil {
 		return nil, err
 	}
 
