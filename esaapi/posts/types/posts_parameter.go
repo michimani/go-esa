@@ -142,7 +142,7 @@ func (p *PostsPostNumberGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, 
 
 type PostsPostParam struct {
 	// Path parameter
-	TeamName string `json:"-"`
+	TeamName string `json:"-,omitempty"`
 
 	// Payload
 	Name     string // required
@@ -192,6 +192,83 @@ func (p *PostsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 			Wip:      p.Wip,
 			Message:  p.Message,
 			User:     p.User,
+		},
+	}
+
+	json, err := json.Marshal(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  strings.NewReader(string(json)),
+	}, nil
+}
+
+type PostsPostNumberPatchParam struct {
+	// Path parameter
+	TeamName   string `json:"-"`
+	PostNumber int    `json:"-"`
+
+	// Payload
+	Name             string // required
+	BodyMD           *string
+	Tags             []*string
+	Category         *string
+	Wip              *bool
+	Message          *string
+	CreatedBy        *string // screen_name, enabled only owner
+	UpdatedBy        *string // screen_name, enabled only owner
+	OriginalRevision *OriginalRevision
+}
+
+type OriginalRevision struct {
+	BodyMD *string `json:"body_md,omitempty"`
+	Number *int    `json:"number,omitempty"`
+	User   *string `json:"user,omitempty"`
+}
+
+type postsPostNumberPatchPayload struct {
+	Post postsPostNumberPatchPayloadPost `json:"post"`
+}
+
+type postsPostNumberPatchPayloadPost struct {
+	Name             string            `json:"name,omitempty"`
+	BodyMD           *string           `json:"body_md,omitempty"`
+	Tags             []*string         `json:"tags,omitempty"`
+	Category         *string           `json:"category,omitempty"`
+	Wip              *bool             `json:"wip,omitempty"`
+	Message          *string           `json:"message,omitempty"`
+	CreatedBy        *string           `json:"created_by,omitempty"`
+	UpdatedBy        *string           `json:"updated_by,omitempty"`
+	OriginalRevision *OriginalRevision `json:"original_revision,omitempty"`
+}
+
+func (p *PostsPostNumberPatchParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.PostNumber == 0 {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostNumberPatchParam.TeamName, PostsPostNumberPatchParam.PostNumber")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
+
+	payload := &postsPostNumberPatchPayload{
+		Post: postsPostNumberPatchPayloadPost{
+			Name:             p.Name,
+			BodyMD:           p.BodyMD,
+			Tags:             p.Tags,
+			Category:         p.Category,
+			Wip:              p.Wip,
+			Message:          p.Message,
+			CreatedBy:        p.CreatedBy,
+			UpdatedBy:        p.UpdatedBy,
+			OriginalRevision: p.OriginalRevision,
 		},
 	}
 

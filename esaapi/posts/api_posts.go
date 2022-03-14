@@ -8,9 +8,10 @@ import (
 )
 
 const (
-	PostsGetEndpoint           = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
-	PostsPostNumberGetEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
-	PostsPostEndpoint          = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
+	PostsGetEndpoint             = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
+	PostsPostNumberGetEndpoint   = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
+	PostsPostEndpoint            = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
+	PostsPostNumberPatchEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
 )
 
 func PostsGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsGetParam) (*types.PostsGetResponse, error) {
@@ -34,6 +35,15 @@ func PostsPostNumberGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsP
 func PostsPost(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostParam) (*types.PostsPostResponse, error) {
 	res := &types.PostsPostResponse{}
 	if err := c.CallAPI(ctx, PostsPostEndpoint, "POST", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func PostsPostNumberPatch(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostNumberPatchParam) (*types.PostsPostNumberPatchResponse, error) {
+	res := &types.PostsPostNumberPatchResponse{}
+	if err := c.CallAPI(ctx, PostsPostNumberPatchEndpoint, "PATCH", p, res); err != nil {
 		return nil, err
 	}
 

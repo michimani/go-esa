@@ -26,6 +26,7 @@ Progress of supporting APIs...
   - `GET /v1/teams/docs/posts`
   - `GET /v1/teams/:team_name/posts/:post_number`
   - `POST /v1/teams/:team_name/posts`
+  - `PATCH /v1/teams/:team_name/posts/:post_number`
 
 # Sample
 

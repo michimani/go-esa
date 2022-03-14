@@ -408,3 +408,72 @@ func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
 		})
 	}
 }
+
+func Test_PostsPostNumberPatchParam_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name    string
+		p       *types.PostsPostNumberPatchParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
+	}{
+		{
+			name: "ok",
+			p: &types.PostsPostNumberPatchParam{
+				TeamName:   "test-team",
+				PostNumber: 1,
+				BodyMD:     gesa.String("body"),
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":post_number", Value: "1"},
+				},
+				Query: internal.QueryParameterList{},
+				Body:  strings.NewReader(`{"post":{"body_md":"body"}}`),
+			},
+		},
+		{
+			name: "ng: not has required parameter: post_number is empty",
+			p: &types.PostsPostNumberPatchParam{
+				TeamName: "test-post",
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name: "ng: not has required parameter: post_name is empty",
+			p: &types.PostsPostNumberPatchParam{
+				PostNumber: 1,
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name: "ng: not has required parameter: both are empty",
+			p: &types.PostsPostNumberPatchParam{
+				BodyMD: gesa.String("body"),
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep, err := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			asst.Equal(c.expect, ep)
+		})
+	}
+}
