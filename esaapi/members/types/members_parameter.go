@@ -1,6 +1,9 @@
 package types
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
 )
@@ -52,14 +55,14 @@ func (p *MembersGetParam) PerPageValue() (int, bool) {
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *MembersGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
+func (p *MembersGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
-		return nil
+		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "MembersGetParam.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
@@ -78,7 +81,7 @@ func (p *MembersGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 		Path:  pp,
 		Query: qp,
 		Body:  nil,
-	}
+	}, nil
 }
 
 type MembersScreenNameDeleteParam struct {
@@ -86,14 +89,14 @@ type MembersScreenNameDeleteParam struct {
 	ScreenName string
 }
 
-func (p *MembersScreenNameDeleteParam) EsaAPIParameter() *internal.EsaAPIParameter {
+func (p *MembersScreenNameDeleteParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
-		return nil
+		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.ScreenName == "" {
-		return nil
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "MembersScreenNameDeleteParam.TeamName, MembersScreenNameDeleteParam.ScreenName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":screen_name", Value: p.ScreenName})
@@ -102,5 +105,5 @@ func (p *MembersScreenNameDeleteParam) EsaAPIParameter() *internal.EsaAPIParamet
 		Path:  pp,
 		Query: internal.QueryParameterList{},
 		Body:  nil,
-	}
+	}, nil
 }

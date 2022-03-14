@@ -1,6 +1,7 @@
 package gesa_test
 
 import (
+	"errors"
 	"io"
 	"net/http"
 
@@ -44,11 +45,11 @@ type mockAPIParameter struct {
 	EsaAPINil bool
 }
 
-func (mp mockAPIParameter) EsaAPIParameter() *internal.EsaAPIParameter {
+func (mp mockAPIParameter) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if mp.EsaAPINil {
-		return nil
+		return nil, errors.New("some error")
 	}
-	return &internal.EsaAPIParameter{}
+	return &internal.EsaAPIParameter{}, nil
 }
 
 type mockAPIResponse struct{}

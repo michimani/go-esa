@@ -92,9 +92,10 @@ func Test_MembersGetParam_PerPageValue(t *testing.T) {
 
 func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
-		name   string
-		p      *types.MembersGetParam
-		expect *internal.EsaAPIParameter
+		name    string
+		p       *types.MembersGetParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
 	}{
 		{
 			name: "ok",
@@ -197,18 +198,26 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: nil",
-			p:      nil,
-			expect: nil,
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			ep, err := c.p.EsaAPIParameter()
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
 			assert.Equal(tt, c.expect, ep)
 		})
 	}
@@ -216,9 +225,10 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 
 func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
-		name   string
-		p      *types.MembersScreenNameDeleteParam
-		expect *internal.EsaAPIParameter
+		name    string
+		p       *types.MembersScreenNameDeleteParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
 	}{
 		{
 			name: "ok",
@@ -239,30 +249,40 @@ func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
 			p: &types.MembersScreenNameDeleteParam{
 				TeamName: "test-team",
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
 			name: "ng: not has required parameter: only screen_name",
 			p: &types.MembersScreenNameDeleteParam{
 				ScreenName: "test-screen-name",
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: not has required parameter: both",
-			p:      &types.MembersScreenNameDeleteParam{},
-			expect: nil,
+			name:    "ng: not has required parameter: both",
+			p:       &types.MembersScreenNameDeleteParam{},
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: nil",
-			p:      nil,
-			expect: nil,
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			ep, err := c.p.EsaAPIParameter()
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
 			assert.Equal(tt, c.expect, ep)
 		})
 	}

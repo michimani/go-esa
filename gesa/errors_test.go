@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/internal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -205,7 +206,7 @@ func Test_GesaError_Error(t *testing.T) {
 		{
 			name:   "normal: empty",
 			e:      &gesa.GesaError{},
-			expect: gesa.ErrorUndefined,
+			expect: internal.ErrorUndefined,
 		},
 		{
 			name:   "normal: nil",

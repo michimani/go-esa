@@ -97,9 +97,10 @@ func Test_PostsGetParam_PerPageValue(t *testing.T) {
 
 func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
-		name   string
-		p      *types.PostsGetParam
-		expect *internal.EsaAPIParameter
+		name    string
+		p       *types.PostsGetParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
 	}{
 		{
 			name: "ok",
@@ -236,28 +237,37 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: nil",
-			p:      nil,
-			expect: nil,
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.p.EsaAPIParameter()
-			assert.Equal(tt, c.expect, ep)
+			ep, err := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			asst.Equal(c.expect, ep)
 		})
 	}
 }
 
 func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
-		name   string
-		p      *types.PostsPostNumberGetParam
-		expect *internal.EsaAPIParameter
+		name    string
+		p       *types.PostsPostNumberGetParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
 	}{
 		{
 			name: "ok",
@@ -295,40 +305,51 @@ func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 			p: &types.PostsPostNumberGetParam{
 				PostNumber: 1,
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
 			name: "ng: not has required parameter: post_number is empty",
 			p: &types.PostsPostNumberGetParam{
 				TeamName: "test-team",
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: not has required parameter: both are empty",
-			p:      &types.PostsPostNumberGetParam{},
-			expect: nil,
+			name:    "ng: not has required parameter: both are empty",
+			p:       &types.PostsPostNumberGetParam{},
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: nil",
-			p:      nil,
-			expect: nil,
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.p.EsaAPIParameter()
-			assert.Equal(tt, c.expect, ep)
+			ep, err := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			asst.Equal(c.expect, ep)
 		})
 	}
 }
 
 func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
-		name   string
-		p      *types.PostsPostParam
-		expect *internal.EsaAPIParameter
+		name    string
+		p       *types.PostsPostParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
 	}{
 		{
 			name: "ok",
@@ -349,31 +370,41 @@ func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
 			p: &types.PostsPostParam{
 				Name: "test-post",
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
 			name: "ng: not has required parameter: post_name is empty",
 			p: &types.PostsPostParam{
 				TeamName: "test-team",
 			},
-			expect: nil,
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: not has required parameter: both are empty",
-			p:      &types.PostsPostParam{},
-			expect: nil,
+			name:    "ng: not has required parameter: both are empty",
+			p:       &types.PostsPostParam{},
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: nil",
-			p:      nil,
-			expect: nil,
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.p.EsaAPIParameter()
-			assert.Equal(tt, c.expect, ep)
+			ep, err := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			asst.Equal(c.expect, ep)
 		})
 	}
 }

@@ -4,10 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-)
 
-var (
-	ErrorUndefined string = "Undefined error."
+	"github.com/michimani/go-esa/internal"
 )
 
 type GesaError struct {
@@ -56,7 +54,7 @@ func (e *GesaError) Error() string {
 		return e.err.Error()
 	}
 
-	return ErrorUndefined
+	return internal.ErrorUndefined
 }
 
 func (e *GesaError) Unwrap() error {

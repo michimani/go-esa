@@ -30,7 +30,8 @@ func Test_OAuthTokenInfoGetParam_EsaAPIParameter(t *testing.T) {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
 
-			s := c.p.EsaAPIParameter()
+			s, err := c.p.EsaAPIParameter()
+			asst.NoError(err)
 			asst.Equal(c.expect, s)
 		})
 	}
