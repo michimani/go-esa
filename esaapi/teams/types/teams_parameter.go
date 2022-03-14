@@ -1,6 +1,9 @@
 package types
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
 )
@@ -24,9 +27,9 @@ func (p *TeamsGetParam) PerPageValue() (int, bool) {
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *TeamsGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
+func (p *TeamsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
-		return nil
+		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	qp := internal.QueryParameterList{}
@@ -37,21 +40,21 @@ func (p *TeamsGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 		Path:  internal.PathParameterList{},
 		Query: qp,
 		Body:  nil,
-	}
+	}, nil
 }
 
 type TeamsTeamNameGetParam struct {
 	TeamName string
 }
 
-func (p *TeamsTeamNameGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
+func (p *TeamsTeamNameGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
-		return nil
+		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "TeamsTeamNameGetParam.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
@@ -59,5 +62,5 @@ func (p *TeamsTeamNameGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 		Path:  pp,
 		Query: internal.QueryParameterList{},
 		Body:  nil,
-	}
+	}, nil
 }

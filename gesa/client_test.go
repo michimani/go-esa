@@ -18,8 +18,8 @@ type testParameter struct {
 	BodyResErr bool
 }
 
-func (mp testParameter) EsaAPIParameter() *internal.EsaAPIParameter {
-	return &internal.EsaAPIParameter{}
+func (mp testParameter) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	return &internal.EsaAPIParameter{}, nil
 }
 
 func Test_NewGesaClient(t *testing.T) {
@@ -381,17 +381,24 @@ func Test_newRequest(t *testing.T) {
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			eap := c.p.EsaAPIParameter()
-			r, err := gesa.ExportNewRequest(context.Background(), c.endpoint, c.method, eap.Body)
+			asst := assert.New(tt)
+			eap, err := c.p.EsaAPIParameter()
 			if c.wantErr {
-				assert.Error(tt, err)
-				assert.Nil(tt, r)
+				asst.Error(err)
+				asst.Nil(eap)
 				return
 			}
 
-			assert.Equal(tt, c.expect.Method, r.Method)
-			assert.Equal(tt, c.expect.URL, r.URL)
-			assert.Equal(tt, c.expect.Header, r.Header)
+			r, err := gesa.ExportNewRequest(context.Background(), c.endpoint, c.method, eap.Body)
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(r)
+				return
+			}
+
+			asst.Equal(c.expect.Method, r.Method)
+			asst.Equal(c.expect.URL, r.URL)
+			asst.Equal(c.expect.Header, r.Header)
 		})
 	}
 }

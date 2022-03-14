@@ -2,6 +2,8 @@ package types
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -70,14 +72,14 @@ func (p *PostsGetParam) PerPageValue() (int, bool) {
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *PostsGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
+func (p *PostsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
-		return nil
+		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsGetParam.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
@@ -102,7 +104,7 @@ func (p *PostsGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 		Path:  pp,
 		Query: qp,
 		Body:  nil,
-	}
+	}, nil
 }
 
 type PostsPostNumberGetParam struct {
@@ -114,14 +116,14 @@ type PostsPostNumberGetParam struct {
 	Include string
 }
 
-func (p *PostsPostNumberGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
+func (p *PostsPostNumberGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
-		return nil
+		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.PostNumber == 0 {
-		return nil
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostNumberGetParam.TeamName, PostsPostNumberGetParam.PostNumber")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
@@ -135,7 +137,7 @@ func (p *PostsPostNumberGetParam) EsaAPIParameter() *internal.EsaAPIParameter {
 		Path:  pp,
 		Query: qp,
 		Body:  nil,
-	}
+	}, nil
 }
 
 type PostsPostParam struct {
@@ -166,19 +168,19 @@ type postsPostPayloadPost struct {
 	User     *string   `json:"user,omitempty"`
 }
 
-func (p *PostsPostParam) EsaAPIParameter() *internal.EsaAPIParameter {
+func (p *PostsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
-		return nil
+		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostParam.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
 	if p.Name == "" {
-		return nil
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostParam.Name")
 	}
 
 	payload := &postsPostPayload{
@@ -195,14 +197,12 @@ func (p *PostsPostParam) EsaAPIParameter() *internal.EsaAPIParameter {
 
 	json, err := json.Marshal(payload)
 	if err != nil {
-		return nil
+		return nil, err
 	}
-
-	body := strings.NewReader(string(json))
 
 	return &internal.EsaAPIParameter{
 		Path:  pp,
 		Query: internal.QueryParameterList{},
-		Body:  body,
-	}
+		Body:  strings.NewReader(string(json)),
+	}, nil
 }

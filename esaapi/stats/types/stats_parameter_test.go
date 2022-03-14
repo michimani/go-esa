@@ -10,9 +10,10 @@ import (
 
 func Test_StatsGetParam_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
-		name   string
-		p      *types.StatsGetParam
-		expect *internal.EsaAPIParameter
+		name    string
+		p       *types.StatsGetParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
 	}{
 		{
 			name: "ok",
@@ -27,21 +28,29 @@ func Test_StatsGetParam_EsaAPIParameter(t *testing.T) {
 			},
 		},
 		{
-			name:   "ng: not has required parameter",
-			p:      &types.StatsGetParam{},
-			expect: nil,
+			name:    "ng: not has required parameter",
+			p:       &types.StatsGetParam{},
+			expect:  nil,
+			wantErr: true,
 		},
 		{
-			name:   "ng: nil",
-			p:      nil,
-			expect: nil,
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
 		},
 	}
 
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
-			ep := c.p.EsaAPIParameter()
-			assert.Equal(tt, c.expect, ep)
+			asst := assert.New(tt)
+			ep, err := c.p.EsaAPIParameter()
+			if err != nil {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			asst.Equal(c.expect, ep)
 		})
 	}
 }

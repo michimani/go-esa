@@ -144,9 +144,12 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 		return nil, errors.New("parameter is nil")
 	}
 
-	eap := p.EsaAPIParameter()
+	eap, err := p.EsaAPIParameter()
+	if err != nil {
+		return nil, err
+	}
 	if eap == nil {
-		return nil, errors.New("required parameters are empty")
+		return nil, errors.New("parameter for esa API is nil")
 	}
 
 	// resolve query parameters

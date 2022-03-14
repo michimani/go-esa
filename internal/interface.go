@@ -5,7 +5,7 @@ import (
 )
 
 type IParameters interface {
-	EsaAPIParameter() *EsaAPIParameter
+	EsaAPIParameter() (*EsaAPIParameter, error)
 }
 
 type IPaginationParameters interface {
