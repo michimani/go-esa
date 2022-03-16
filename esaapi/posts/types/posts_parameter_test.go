@@ -477,3 +477,69 @@ func Test_PostsPostNumberPatchParam_EsaAPIParameter(t *testing.T) {
 		})
 	}
 }
+
+func Test_PostsPostNumberDeleteParam_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name    string
+		p       *types.PostsPostNumberDeleteParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
+	}{
+		{
+			name: "ok",
+			p: &types.PostsPostNumberDeleteParam{
+				TeamName:   "test-team",
+				PostNumber: 1,
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":post_number", Value: "1"},
+				},
+				Query: internal.QueryParameterList{},
+				Body:  nil,
+			},
+		},
+		{
+			name: "ng: not has required parameter: post_number is empty",
+			p: &types.PostsPostNumberDeleteParam{
+				TeamName: "test-post",
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name: "ng: not has required parameter: post_name is empty",
+			p: &types.PostsPostNumberDeleteParam{
+				PostNumber: 1,
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name:    "ng: not has required parameter: both are empty",
+			p:       &types.PostsPostNumberDeleteParam{},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep, err := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			asst.Equal(c.expect, ep)
+		})
+	}
+}
