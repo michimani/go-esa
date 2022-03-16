@@ -283,3 +283,28 @@ func (p *PostsPostNumberPatchParam) EsaAPIParameter() (*internal.EsaAPIParameter
 		Body:  strings.NewReader(string(json)),
 	}, nil
 }
+
+type PostsPostNumberDeleteParam struct {
+	// Path parameter
+	TeamName   string `json:"-"`
+	PostNumber int    `json:"-"`
+}
+
+func (p *PostsPostNumberDeleteParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.PostNumber == 0 {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostNumberDeleteParam.TeamName, PostsPostNumberDeleteParam.PostNumber")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  nil,
+	}, nil
+}

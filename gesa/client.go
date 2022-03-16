@@ -127,7 +127,9 @@ func (c *GesaClient) Exec(req *http.Request, r internal.IResponse) (*EsaAPIError
 	}
 
 	if err := json.NewDecoder(tr).Decode(r); err != nil {
-		return nil, err
+		if err != io.EOF {
+			return nil, err
+		}
 	}
 
 	if c.debug {

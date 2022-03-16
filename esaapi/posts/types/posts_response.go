@@ -69,3 +69,15 @@ func (r *PostsPostNumberPatchResponse) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// PostsPostNumberDeleteResponse is struct for the response of
+// DELETE /v1/teams/:team_name/posts/:post_number
+type PostsPostNumberDeleteResponse struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *PostsPostNumberDeleteResponse) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}

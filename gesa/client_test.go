@@ -278,6 +278,26 @@ func Test_Exec(t *testing.T) {
 			wantEsaAPIError: false,
 		},
 		{
+			name: "ok: response body is empty",
+			mockInput: &mockInput{
+				ResponseStatusCode: http.StatusOK,
+				ResponseBody:       io.NopCloser(strings.NewReader("")),
+			},
+			req:             nonErrReq,
+			wantErr:         false,
+			wantEsaAPIError: false,
+		},
+		{
+			name: "ok: invalid json response body",
+			mockInput: &mockInput{
+				ResponseStatusCode: http.StatusOK,
+				ResponseBody:       io.NopCloser(strings.NewReader("///")),
+			},
+			req:             nonErrReq,
+			wantErr:         true,
+			wantEsaAPIError: false,
+		},
+		{
 			name: "error: not 200 error",
 			mockInput: &mockInput{
 				ResponseStatusCode: http.StatusInternalServerError,
