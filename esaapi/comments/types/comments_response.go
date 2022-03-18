@@ -55,3 +55,17 @@ func (r *CommentsPostResponse) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// CommentsCommentIDPatchResponse is struct for the response of
+// PATCH /v1/teams/:team_name/comments/:comment_id
+type CommentsCommentIDPatchResponse struct {
+	models.Comment
+
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *CommentsCommentIDPatchResponse) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
