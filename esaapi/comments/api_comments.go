@@ -8,10 +8,11 @@ import (
 )
 
 const (
-	commentsGetEndpoint            = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number/comments"
-	commentsCommentIDGetEndpoint   = "https://api.esa.io/:esa_api_version/teams/:team_name/comments/:comment_id"
-	commentsPostEndpoint           = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number/comments"
-	commentsCommentIDPatchEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/comments/:comment_id"
+	commentsGetEndpoint             = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number/comments"
+	commentsCommentIDGetEndpoint    = "https://api.esa.io/:esa_api_version/teams/:team_name/comments/:comment_id"
+	commentsPostEndpoint            = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number/comments"
+	commentsCommentIDPatchEndpoint  = "https://api.esa.io/:esa_api_version/teams/:team_name/comments/:comment_id"
+	commentsCommentIDDeleteEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/comments/:comment_id"
 )
 
 // CommentsGet calls getting members API.
@@ -52,6 +53,17 @@ func CommentsPost(ctx context.Context, c *gesa.GesaClient, p *types.CommentsPost
 func CommentsCommentIDPatch(ctx context.Context, c *gesa.GesaClient, p *types.CommentsCommentIDPatchParam) (*types.CommentsCommentIDPatchResponse, error) {
 	res := &types.CommentsCommentIDPatchResponse{}
 	if err := c.CallAPI(ctx, commentsCommentIDPatchEndpoint, "PATCH", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// CommentsCommentIDDelete calls getting members API.
+// DELETE /:esa_api_version/teams/:team_name/comments/:comment_id
+func CommentsCommentIDDelete(ctx context.Context, c *gesa.GesaClient, p *types.CommentsCommentIDDeleteParam) (*types.CommentsCommentIDDeleteResponse, error) {
+	res := &types.CommentsCommentIDDeleteResponse{}
+	if err := c.CallAPI(ctx, commentsCommentIDDeleteEndpoint, "DELETE", p, res); err != nil {
 		return nil, err
 	}
 

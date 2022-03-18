@@ -69,3 +69,15 @@ func (r *CommentsCommentIDPatchResponse) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// CommentsCommentIDDeleteResponse is struct for the response of
+// DELETE /v1/teams/:team_name/comments/:comment_id
+type CommentsCommentIDDeleteResponse struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *CommentsCommentIDDeleteResponse) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
