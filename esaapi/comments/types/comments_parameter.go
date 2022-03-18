@@ -139,3 +139,55 @@ func (p *CommentsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error)
 		Body:  strings.NewReader(string(json)),
 	}, nil
 }
+
+// CommentsCommentIDPatchParam is struct for the parameter for
+// PATCH /v1/teams/:team_name/comments/:comment_id
+type CommentsCommentIDPatchParam struct {
+	// Path parameter
+	TeamName  string
+	CommentID int
+
+	// Payload
+	BodyMD *string
+	User   *string
+}
+
+type CommentsCommentIDPatchPayload struct {
+	Comment CommentsCommentIDPatchPayloadComment `json:"comment"`
+}
+
+type CommentsCommentIDPatchPayloadComment struct {
+	BodyMD *string `json:"body_md,omitempty"`
+	User   *string `json:"user,omitempty"`
+}
+
+func (p *CommentsCommentIDPatchParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.CommentID == 0 {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsCommentIDPatchParam.TeamName, CommentsCommentIDPatchParam.CommentID")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":comment_id", Value: strconv.Itoa(p.CommentID)})
+
+	payload := &CommentsCommentIDPatchPayload{
+		Comment: CommentsCommentIDPatchPayloadComment{
+			BodyMD: p.BodyMD,
+			User:   p.User,
+		},
+	}
+
+	json, err := json.Marshal(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  strings.NewReader(string(json)),
+	}, nil
+}
