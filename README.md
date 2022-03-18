@@ -33,6 +33,7 @@ Progress of supporting APIs...
   - `GET /v1/teams/:team_name/comments/:comment_id`
   - `POST /v1/teams/:team_name/posts/:post_number/comments`
   - `PATCH /v1/teams/:team_name/comments/:comment_id`
+  - `DELETE /v1/teams/:team_name/comments/:comment_id`
 
 # Sample
 

@@ -191,3 +191,29 @@ func (p *CommentsCommentIDPatchParam) EsaAPIParameter() (*internal.EsaAPIParamet
 		Body:  strings.NewReader(string(json)),
 	}, nil
 }
+
+// CommentsCommentIDDeleteParam is struct for the parameter for
+// DELETE /v1/teams/:team_name/comments/:comment_id
+type CommentsCommentIDDeleteParam struct {
+	TeamName  string
+	CommentID int
+}
+
+func (p *CommentsCommentIDDeleteParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.CommentID == 0 {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsCommentIDDeleteParam.TeamName, CommentsCommentIDDeleteParam.CommentID")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":comment_id", Value: strconv.Itoa(p.CommentID)})
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  nil,
+	}, nil
+}
