@@ -9,6 +9,8 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
+// CommentsGetParam is struct for the parameter for
+// GET /v1/teams/:team_name/posts/:post_number/comments
 type CommentsGetParam struct {
 	TeamName   string
 	PostNumber int
@@ -50,6 +52,32 @@ func (p *CommentsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) 
 	return &internal.EsaAPIParameter{
 		Path:  pp,
 		Query: qp,
+		Body:  nil,
+	}, nil
+}
+
+// CommentsCommentIDGetParam is struct for the parameter for
+// GET /v1/teams/:team_name/comments/:comment_id
+type CommentsCommentIDGetParam struct {
+	TeamName  string
+	CommentID int
+}
+
+func (p *CommentsCommentIDGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.CommentID == 0 {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsCommentIDGetParam.TeamName, CommentsCommentIDGetParam.CommentID")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":comment_id", Value: strconv.Itoa(p.CommentID)})
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
 		Body:  nil,
 	}, nil
 }

@@ -30,6 +30,7 @@ Progress of supporting APIs...
   - `DELETE /v1/teams/:team_name/posts/:post_number`
 - **Comments - コメント**
   - `GET /v1/teams/:team_name/posts/:post_number/comments`
+  - `GET /v1/teams/:team_name/comments/:comment_id`
 
 # Sample
 
