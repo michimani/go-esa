@@ -28,6 +28,8 @@ Progress of supporting APIs...
   - `POST /v1/teams/:team_name/posts`
   - `PATCH /v1/teams/:team_name/posts/:post_number`
   - `DELETE /v1/teams/:team_name/posts/:post_number`
+- **Comments - コメント**
+  - `GET /v1/teams/:team_name/posts/:post_number/comments`
 
 # Sample
 
