@@ -8,18 +8,18 @@ import (
 )
 
 const (
-	PostsGetEndpoint              = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
-	PostsPostNumberGetEndpoint    = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
-	PostsPostEndpoint             = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
-	PostsPostNumberPatchEndpoint  = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
-	PostsPostNumberDeleteEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
+	postsGetEndpoint              = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
+	postsPostNumberGetEndpoint    = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
+	postsPostEndpoint             = "https://api.esa.io/:esa_api_version/teams/:team_name/posts"
+	postsPostNumberPatchEndpoint  = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
+	postsPostNumberDeleteEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number"
 )
 
 // PostsGet calls getting posts API.
 // GET /:esa_api_version/teams/:team_name/posts
 func PostsGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsGetParam) (*types.PostsGetResponse, error) {
 	res := &types.PostsGetResponse{}
-	if err := c.CallAPI(ctx, PostsGetEndpoint, "GET", p, res); err != nil {
+	if err := c.CallAPI(ctx, postsGetEndpoint, "GET", p, res); err != nil {
 		return nil, err
 	}
 
@@ -30,7 +30,7 @@ func PostsGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsGetParam) (
 // GET /:esa_api_version/teams/:team_name/posts/:post_number
 func PostsPostNumberGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostNumberGetParam) (*types.PostsPostNumberGetResponse, error) {
 	res := &types.PostsPostNumberGetResponse{}
-	if err := c.CallAPI(ctx, PostsPostNumberGetEndpoint, "GET", p, res); err != nil {
+	if err := c.CallAPI(ctx, postsPostNumberGetEndpoint, "GET", p, res); err != nil {
 		return nil, err
 	}
 
@@ -41,7 +41,7 @@ func PostsPostNumberGet(ctx context.Context, c *gesa.GesaClient, p *types.PostsP
 // POST /:esa_api_version/teams/:team_name/posts
 func PostsPost(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostParam) (*types.PostsPostResponse, error) {
 	res := &types.PostsPostResponse{}
-	if err := c.CallAPI(ctx, PostsPostEndpoint, "POST", p, res); err != nil {
+	if err := c.CallAPI(ctx, postsPostEndpoint, "POST", p, res); err != nil {
 		return nil, err
 	}
 
@@ -52,7 +52,7 @@ func PostsPost(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostParam)
 // PATCH /:esa_api_version/teams/:team_name/posts/:post_number
 func PostsPostNumberPatch(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostNumberPatchParam) (*types.PostsPostNumberPatchResponse, error) {
 	res := &types.PostsPostNumberPatchResponse{}
-	if err := c.CallAPI(ctx, PostsPostNumberPatchEndpoint, "PATCH", p, res); err != nil {
+	if err := c.CallAPI(ctx, postsPostNumberPatchEndpoint, "PATCH", p, res); err != nil {
 		return nil, err
 	}
 
@@ -63,7 +63,7 @@ func PostsPostNumberPatch(ctx context.Context, c *gesa.GesaClient, p *types.Post
 // DELETE /:esa_api_version/teams/:team_name/posts/:post_number
 func PostsPostNumberDelete(ctx context.Context, c *gesa.GesaClient, p *types.PostsPostNumberDeleteParam) (*types.PostsPostNumberDeleteResponse, error) {
 	res := &types.PostsPostNumberDeleteResponse{}
-	if err := c.CallAPI(ctx, PostsPostNumberDeleteEndpoint, "DELETE", p, res); err != nil {
+	if err := c.CallAPI(ctx, postsPostNumberDeleteEndpoint, "DELETE", p, res); err != nil {
 		return nil, err
 	}
 
