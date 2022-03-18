@@ -7,6 +7,8 @@ import (
 	"github.com/michimani/go-esa/gesa"
 )
 
+// CommentsGetResponse is struct for the response of
+// GET /v1/teams/:team_name/posts/:post_number/comments
 type CommentsGetResponse struct {
 	Comments []models.Comment `json:"comments"`
 
@@ -21,6 +23,20 @@ type CommentsGetResponse struct {
 }
 
 func (r *CommentsGetResponse) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
+
+// CommentsCommentIDGetResponse is struct for the response of
+// GET /v1/teams/:team_name/comments/:comment_id
+type CommentsCommentIDGetResponse struct {
+	models.Comment
+
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *CommentsCommentIDGetResponse) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
