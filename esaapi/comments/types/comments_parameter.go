@@ -1,9 +1,11 @@
 package types
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
@@ -79,5 +81,61 @@ func (p *CommentsCommentIDGetParam) EsaAPIParameter() (*internal.EsaAPIParameter
 		Path:  pp,
 		Query: internal.QueryParameterList{},
 		Body:  nil,
+	}, nil
+}
+
+// CommentsPostParam is struct for the parameter for
+// POST /v1/teams/:team_name/posts/:post_number/comments
+type CommentsPostParam struct {
+	// Path parameter
+	TeamName   string
+	PostNumber int
+
+	// Payload
+	BodyMD string // required
+	User   *string
+}
+
+type CommentsPostPayload struct {
+	Comment CommentsPostPayloadComment `json:"comment"`
+}
+
+type CommentsPostPayloadComment struct {
+	BodyMD string  `json:"body_md"`
+	User   *string `json:"user,omitempty"`
+}
+
+func (p *CommentsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.PostNumber == 0 {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsPostParam.TeamName, CommentsPostParam.PostNumber")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
+
+	if p.BodyMD == "" {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsPostParam.BodyMD")
+	}
+
+	payload := &CommentsPostPayload{
+		Comment: CommentsPostPayloadComment{
+			BodyMD: p.BodyMD,
+			User:   p.User,
+		},
+	}
+
+	json, err := json.Marshal(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  strings.NewReader(string(json)),
 	}, nil
 }

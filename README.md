@@ -31,6 +31,7 @@ Progress of supporting APIs...
 - **Comments - コメント**
   - `GET /v1/teams/:team_name/posts/:post_number/comments`
   - `GET /v1/teams/:team_name/comments/:comment_id`
+  - `POST /v1/teams/:team_name/posts/:post_number/comments`
 
 # Sample
 
