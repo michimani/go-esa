@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/michimani/go-esa/esaapi/comments/types"
@@ -222,6 +223,102 @@ func Test_CommentsCommentIDGetParam_EsaAPIParameter(t *testing.T) {
 				return
 			}
 			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}
+
+func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name    string
+		p       *types.CommentsPostParam
+		expect  *internal.EsaAPIParameter
+		wantErr bool
+	}{
+		{
+			name: "ok",
+			p: &types.CommentsPostParam{
+				TeamName:   "test-team",
+				PostNumber: 1,
+				BodyMD:     "test comment",
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":post_number", Value: "1"},
+				},
+				Query: internal.QueryParameterList{},
+				Body:  strings.NewReader(`{"comment":{"body_md":"test comment"}}`),
+			},
+		},
+		{
+			name: "ok: has user",
+			p: &types.CommentsPostParam{
+				TeamName:   "test-team",
+				PostNumber: 1,
+				BodyMD:     "test comment",
+				User:       gesa.String("test-user"),
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":post_number", Value: "1"},
+				},
+				Query: internal.QueryParameterList{},
+				Body:  strings.NewReader(`{"comment":{"body_md":"test comment","user":"test-user"}}`),
+			},
+		},
+		{
+			name: "ng: not has required parameter: team_name is empty",
+			p: &types.CommentsPostParam{
+				PostNumber: 1,
+				BodyMD:     "test comment",
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name: "ng: not has required parameter: post_number is empty",
+			p: &types.CommentsPostParam{
+				TeamName: "test-team",
+				BodyMD:   "test comment",
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+
+		{
+			name: "ng: not has required parameter: body_md is empty",
+			p: &types.CommentsPostParam{
+				TeamName:   "test-team",
+				PostNumber: 1,
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name:    "ng: not has required parameter: all empty",
+			p:       &types.CommentsPostParam{},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			ep, err := c.p.EsaAPIParameter()
+			asst := assert.New(tt)
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			asst.Equal(c.expect, ep)
 		})
 	}
 }
