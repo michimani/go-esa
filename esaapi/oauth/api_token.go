@@ -8,14 +8,14 @@ import (
 )
 
 const (
-	oauthTokenInfoEndpoint = "https://api.esa.io/oauth/token/info"
+	getOAuthTokenInfoEndpoint = "https://api.esa.io/oauth/token/info"
 )
 
-// OAuthTokenInfoGet calls getting OAuth token information API.
+// GetOAuthTokenInfo calls getting OAuth token information API.
 // GET /oauth/token/info
-func OAuthTokenInfoGet(ctx context.Context, c *gesa.GesaClient, p *types.OAuthTokenInfoGetParam) (*types.OAuthTokenInfoGetResponse, error) {
-	res := &types.OAuthTokenInfoGetResponse{}
-	if err := c.CallAPI(ctx, oauthTokenInfoEndpoint, "GET", p, res); err != nil {
+func GetOAuthTokenInfo(ctx context.Context, c *gesa.GesaClient, p *types.GetOAuthTokenInfoInput) (*types.GetOAuthTokenInfoOutput, error) {
+	res := &types.GetOAuthTokenInfoOutput{}
+	if err := c.CallAPI(ctx, getOAuthTokenInfoEndpoint, "GET", p, res); err != nil {
 		return nil, err
 	}
 

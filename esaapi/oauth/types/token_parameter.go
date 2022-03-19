@@ -2,8 +2,8 @@ package types
 
 import "github.com/michimani/go-esa/internal"
 
-type OAuthTokenInfoGetParam struct{}
+type GetOAuthTokenInfoInput struct{}
 
-func (p *OAuthTokenInfoGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *GetOAuthTokenInfoInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	return &internal.EsaAPIParameter{}, nil
 }
