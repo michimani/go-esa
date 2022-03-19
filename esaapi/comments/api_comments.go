@@ -17,7 +17,7 @@ const (
 )
 
 // CommentsGet calls getting all comments in a post API.
-// GET /:esa_api_version//teams/:team_name/posts/:post_number/comments
+// GET /:esa_api_version/teams/:team_name/posts/:post_number/comments
 func CommentsGet(ctx context.Context, c *gesa.GesaClient, p *types.CommentsGetParam) (*types.CommentsGetResponse, error) {
 	res := &types.CommentsGetResponse{}
 	if err := c.CallAPI(ctx, commentsGetEndpoint, "GET", p, res); err != nil {
