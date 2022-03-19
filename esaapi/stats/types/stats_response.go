@@ -6,7 +6,7 @@ import (
 	"github.com/michimani/go-esa/gesa"
 )
 
-type StatsGetResponse struct {
+type GetStatsOutput struct {
 	Members            int `json:"members"`
 	Posts              int `json:"posts"`
 	PostsWip           int `json:"posts_wip"`
@@ -20,7 +20,7 @@ type StatsGetResponse struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *StatsGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *GetStatsOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
