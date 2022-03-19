@@ -11,9 +11,9 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
-// CommentsGetParam is struct for the parameter for
+// ListPostCommentsInput is struct for the parameter for
 // GET /v1/teams/:team_name/posts/:post_number/comments
-type CommentsGetParam struct {
+type ListPostCommentsInput struct {
 	TeamName   string
 	PostNumber int
 
@@ -21,28 +21,28 @@ type CommentsGetParam struct {
 	PerPage *gesa.PageNumber
 }
 
-func (p *CommentsGetParam) PageValue() (int, bool) {
+func (p *ListPostCommentsInput) PageValue() (int, bool) {
 	if p.Page.IsNull() {
 		return 0, false
 	}
 	return p.Page.SafeInt(), true
 }
 
-func (p *CommentsGetParam) PerPageValue() (int, bool) {
+func (p *ListPostCommentsInput) PerPageValue() (int, bool) {
 	if p.PerPage.IsNull() {
 		return 0, false
 	}
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *CommentsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *ListPostCommentsInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.PostNumber == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsGetParam.TeamName, CommentsGetParam.PostNumber")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "ListPostCommentsInput.TeamName, ListPostCommentsInput.PostNumber")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
@@ -58,21 +58,21 @@ func (p *CommentsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) 
 	}, nil
 }
 
-// CommentsCommentIDGetParam is struct for the parameter for
+// GetCommentInput is struct for the parameter for
 // GET /v1/teams/:team_name/comments/:comment_id
-type CommentsCommentIDGetParam struct {
+type GetCommentInput struct {
 	TeamName  string
 	CommentID int
 }
 
-func (p *CommentsCommentIDGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *GetCommentInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.CommentID == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsCommentIDGetParam.TeamName, CommentsCommentIDGetParam.CommentID")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "GetCommentInput.TeamName, GetCommentInput.CommentID")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":comment_id", Value: strconv.Itoa(p.CommentID)})
@@ -84,9 +84,9 @@ func (p *CommentsCommentIDGetParam) EsaAPIParameter() (*internal.EsaAPIParameter
 	}, nil
 }
 
-// CommentsPostParam is struct for the parameter for
+// CreateCommentInput is struct for the parameter for
 // POST /v1/teams/:team_name/posts/:post_number/comments
-type CommentsPostParam struct {
+type CreateCommentInput struct {
 	// Path parameter
 	TeamName   string
 	PostNumber int
@@ -96,33 +96,33 @@ type CommentsPostParam struct {
 	User   *string
 }
 
-type CommentsPostPayload struct {
-	Comment CommentsPostPayloadComment `json:"comment"`
+type createCommentPayload struct {
+	Comment createCommentPayloadComment `json:"comment"`
 }
 
-type CommentsPostPayloadComment struct {
+type createCommentPayloadComment struct {
 	BodyMD string  `json:"body_md"`
 	User   *string `json:"user,omitempty"`
 }
 
-func (p *CommentsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *CreateCommentInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.PostNumber == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsPostParam.TeamName, CommentsPostParam.PostNumber")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CreateCommentInput.TeamName, CreateCommentInput.PostNumber")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
 
 	if p.BodyMD == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsPostParam.BodyMD")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CreateCommentInput.BodyMD")
 	}
 
-	payload := &CommentsPostPayload{
-		Comment: CommentsPostPayloadComment{
+	payload := &createCommentPayload{
+		Comment: createCommentPayloadComment{
 			BodyMD: p.BodyMD,
 			User:   p.User,
 		},
@@ -140,9 +140,9 @@ func (p *CommentsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error)
 	}, nil
 }
 
-// CommentsCommentIDPatchParam is struct for the parameter for
+// UpdateCommentInput is struct for the parameter for
 // PATCH /v1/teams/:team_name/comments/:comment_id
-type CommentsCommentIDPatchParam struct {
+type UpdateCommentInput struct {
 	// Path parameter
 	TeamName  string
 	CommentID int
@@ -152,29 +152,29 @@ type CommentsCommentIDPatchParam struct {
 	User   *string
 }
 
-type CommentsCommentIDPatchPayload struct {
-	Comment CommentsCommentIDPatchPayloadComment `json:"comment"`
+type updateCommentPayload struct {
+	Comment updateCommentPayloadComment `json:"comment"`
 }
 
-type CommentsCommentIDPatchPayloadComment struct {
+type updateCommentPayloadComment struct {
 	BodyMD *string `json:"body_md,omitempty"`
 	User   *string `json:"user,omitempty"`
 }
 
-func (p *CommentsCommentIDPatchParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *UpdateCommentInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.CommentID == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsCommentIDPatchParam.TeamName, CommentsCommentIDPatchParam.CommentID")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "UpdateCommentInput.TeamName, UpdateCommentInput.CommentID")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":comment_id", Value: strconv.Itoa(p.CommentID)})
 
-	payload := &CommentsCommentIDPatchPayload{
-		Comment: CommentsCommentIDPatchPayloadComment{
+	payload := &updateCommentPayload{
+		Comment: updateCommentPayloadComment{
 			BodyMD: p.BodyMD,
 			User:   p.User,
 		},
@@ -192,21 +192,21 @@ func (p *CommentsCommentIDPatchParam) EsaAPIParameter() (*internal.EsaAPIParamet
 	}, nil
 }
 
-// CommentsCommentIDDeleteParam is struct for the parameter for
+// DeleteCommentInput is struct for the parameter for
 // DELETE /v1/teams/:team_name/comments/:comment_id
-type CommentsCommentIDDeleteParam struct {
+type DeleteCommentInput struct {
 	TeamName  string
 	CommentID int
 }
 
-func (p *CommentsCommentIDDeleteParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *DeleteCommentInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.CommentID == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsCommentIDDeleteParam.TeamName, CommentsCommentIDDeleteParam.CommentID")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "DeleteCommentInput.TeamName, DeleteCommentInput.CommentID")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":comment_id", Value: strconv.Itoa(p.CommentID)})
@@ -218,37 +218,37 @@ func (p *CommentsCommentIDDeleteParam) EsaAPIParameter() (*internal.EsaAPIParame
 	}, nil
 }
 
-// CommentsTeamNameGetParam is struct for the parameter for
+// ListTeamCommentsInput is struct for the parameter for
 // GET /v1/teams/:team_name/comments
-type CommentsTeamNameGetParam struct {
+type ListTeamCommentsInput struct {
 	TeamName string
 
 	Page    *gesa.PageNumber
 	PerPage *gesa.PageNumber
 }
 
-func (p *CommentsTeamNameGetParam) PageValue() (int, bool) {
+func (p *ListTeamCommentsInput) PageValue() (int, bool) {
 	if p.Page.IsNull() {
 		return 0, false
 	}
 	return p.Page.SafeInt(), true
 }
 
-func (p *CommentsTeamNameGetParam) PerPageValue() (int, bool) {
+func (p *ListTeamCommentsInput) PerPageValue() (int, bool) {
 	if p.PerPage.IsNull() {
 		return 0, false
 	}
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *CommentsTeamNameGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *ListTeamCommentsInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CommentsTeamNameGetParam.TeamName")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "ListTeamCommentsInput.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
