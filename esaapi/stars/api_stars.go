@@ -10,6 +10,7 @@ import (
 const (
 	listPostStargazersEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number/stargazers"
 	createPostStarEndpoint     = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number/star"
+	deletePostStarEndpoint     = "https://api.esa.io/:esa_api_version/teams/:team_name/posts/:post_number/star"
 )
 
 // ListPostStargazers calls getting all stargazers in a post API.
@@ -28,6 +29,17 @@ func ListPostStargazers(ctx context.Context, c *gesa.GesaClient, p *types.ListPo
 func CreatePostStar(ctx context.Context, c *gesa.GesaClient, p *types.CreatePostStarInput) (*types.CreatePostStarOutput, error) {
 	res := &types.CreatePostStarOutput{}
 	if err := c.CallAPI(ctx, createPostStarEndpoint, "POST", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// DeletePostStar calls getting all stargazers in a post API.
+// DELETE /v1/teams/:team_name/posts/:post_number/star
+func DeletePostStar(ctx context.Context, c *gesa.GesaClient, p *types.DeletePostStarInput) (*types.DeletePostStarOutput, error) {
+	res := &types.DeletePostStarOutput{}
+	if err := c.CallAPI(ctx, deletePostStarEndpoint, "DELETE", p, res); err != nil {
 		return nil, err
 	}
 

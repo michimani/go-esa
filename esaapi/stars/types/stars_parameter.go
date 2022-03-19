@@ -94,3 +94,29 @@ func (p *CreatePostStarInput) EsaAPIParameter() (*internal.EsaAPIParameter, erro
 		Body:  strings.NewReader(string(json)),
 	}, nil
 }
+
+// DeletePostStarInput is struct for the parameter for
+// DELETE /v1/teams/:team_name/posts/:post_number/star
+type DeletePostStarInput struct {
+	TeamName   string // required
+	PostNumber int    // required
+}
+
+func (p *DeletePostStarInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.PostNumber == 0 {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "DeletePostStarInput.TeamName, ListPostStargazersInput.PostNumber")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  nil,
+	}, nil
+}

@@ -39,3 +39,15 @@ func (r *CreatePostStarOutput) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// DeletePostStarOutput is struct for the response of
+// DELETE /v1/teams/:team_name/posts/:post_number/star
+type DeletePostStarOutput struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *DeletePostStarOutput) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
