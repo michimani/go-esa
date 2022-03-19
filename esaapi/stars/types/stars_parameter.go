@@ -9,9 +9,9 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
-// PostNumberStargazersGetParam is struct for the parameter for
+// ListPostStargazersInput is struct for the parameter for
 // GET /v1/teams/:team_name/posts/:post_number/stargazers
-type PostNumberStargazersGetParam struct {
+type ListPostStargazersInput struct {
 	TeamName   string // required
 	PostNumber int    // required
 
@@ -19,28 +19,28 @@ type PostNumberStargazersGetParam struct {
 	PerPage *gesa.PageNumber
 }
 
-func (p *PostNumberStargazersGetParam) PageValue() (int, bool) {
+func (p *ListPostStargazersInput) PageValue() (int, bool) {
 	if p.Page.IsNull() {
 		return 0, false
 	}
 	return p.Page.SafeInt(), true
 }
 
-func (p *PostNumberStargazersGetParam) PerPageValue() (int, bool) {
+func (p *ListPostStargazersInput) PerPageValue() (int, bool) {
 	if p.PerPage.IsNull() {
 		return 0, false
 	}
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *PostNumberStargazersGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *ListPostStargazersInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.PostNumber == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostNumberStargazersGetParam.TeamName, PostNumberStargazersGetParam.PostNumber")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "ListPostStargazersInput.TeamName, ListPostStargazersInput.PostNumber")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})

@@ -10,15 +10,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_CommentsGetParam_PageValue(t *testing.T) {
+func Test_ListPostCommentsInput_PageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.CommentsGetParam
+		p          *types.ListPostCommentsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.CommentsGetParam{Page: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.CommentsGetParam{}, 0, false},
+		{"true", &types.ListPostCommentsInput{Page: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListPostCommentsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -31,15 +31,15 @@ func Test_CommentsGetParam_PageValue(t *testing.T) {
 	}
 }
 
-func Test_CommentsGetParam_PerPageValue(t *testing.T) {
+func Test_ListPostCommentsInput_PerPageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.CommentsGetParam
+		p          *types.ListPostCommentsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.CommentsGetParam{PerPage: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.CommentsGetParam{}, 0, false},
+		{"true", &types.ListPostCommentsInput{PerPage: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListPostCommentsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -52,16 +52,16 @@ func Test_CommentsGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_CommentsGetParam_EsaAPIParameter(t *testing.T) {
+func Test_ListPostCommentsInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.CommentsGetParam
+		p       *types.ListPostCommentsInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.CommentsGetParam{
+			p: &types.ListPostCommentsInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 			},
@@ -75,7 +75,7 @@ func Test_CommentsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with page",
-			p: &types.CommentsGetParam{
+			p: &types.ListPostCommentsInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				Page:       gesa.NewPageNumber(1),
@@ -92,7 +92,7 @@ func Test_CommentsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with per_page",
-			p: &types.CommentsGetParam{
+			p: &types.ListPostCommentsInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				PerPage:    gesa.NewPageNumber(2),
@@ -109,7 +109,7 @@ func Test_CommentsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with all",
-			p: &types.CommentsGetParam{
+			p: &types.ListPostCommentsInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				Page:       gesa.NewPageNumber(1),
@@ -128,7 +128,7 @@ func Test_CommentsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only TeamName",
-			p: &types.CommentsGetParam{
+			p: &types.ListPostCommentsInput{
 				TeamName: "test-team",
 				Page:     gesa.NewPageNumber(1),
 				PerPage:  gesa.NewPageNumber(2),
@@ -138,7 +138,7 @@ func Test_CommentsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only PostNumber",
-			p: &types.CommentsGetParam{
+			p: &types.ListPostCommentsInput{
 				PostNumber: 1,
 				Page:       gesa.NewPageNumber(1),
 				PerPage:    gesa.NewPageNumber(2),
@@ -168,16 +168,16 @@ func Test_CommentsGetParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_CommentsCommentIDGetParam_EsaAPIParameter(t *testing.T) {
+func Test_GetCommentInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.CommentsCommentIDGetParam
+		p       *types.GetCommentInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.CommentsCommentIDGetParam{
+			p: &types.GetCommentInput{
 				TeamName:  "test-team",
 				CommentID: 1,
 			},
@@ -191,7 +191,7 @@ func Test_CommentsCommentIDGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only TeamName",
-			p: &types.CommentsCommentIDGetParam{
+			p: &types.GetCommentInput{
 				TeamName: "test-team",
 			},
 			expect:  nil,
@@ -199,7 +199,7 @@ func Test_CommentsCommentIDGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only CommentID",
-			p: &types.CommentsCommentIDGetParam{
+			p: &types.GetCommentInput{
 				CommentID: 1,
 			},
 			expect:  nil,
@@ -227,16 +227,16 @@ func Test_CommentsCommentIDGetParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
+func Test_CreateCommentInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.CommentsPostParam
+		p       *types.CreateCommentInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.CommentsPostParam{
+			p: &types.CreateCommentInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				BodyMD:     "test comment",
@@ -252,7 +252,7 @@ func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ok: has user",
-			p: &types.CommentsPostParam{
+			p: &types.CreateCommentInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				BodyMD:     "test comment",
@@ -269,7 +269,7 @@ func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: team_name is empty",
-			p: &types.CommentsPostParam{
+			p: &types.CreateCommentInput{
 				PostNumber: 1,
 				BodyMD:     "test comment",
 			},
@@ -278,7 +278,7 @@ func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_number is empty",
-			p: &types.CommentsPostParam{
+			p: &types.CreateCommentInput{
 				TeamName: "test-team",
 				BodyMD:   "test comment",
 			},
@@ -287,7 +287,7 @@ func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: body_md is empty",
-			p: &types.CommentsPostParam{
+			p: &types.CreateCommentInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 			},
@@ -296,7 +296,7 @@ func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter: all empty",
-			p:       &types.CommentsPostParam{},
+			p:       &types.CreateCommentInput{},
 			expect:  nil,
 			wantErr: true,
 		},
@@ -322,16 +322,16 @@ func Test_CommentsPostParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_CommentsCommentIDPatchParam_EsaAPIParameter(t *testing.T) {
+func Test_UpdateCommentInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.CommentsCommentIDPatchParam
+		p       *types.UpdateCommentInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.CommentsCommentIDPatchParam{
+			p: &types.UpdateCommentInput{
 				TeamName:  "test-team",
 				CommentID: 1,
 			},
@@ -346,7 +346,7 @@ func Test_CommentsCommentIDPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ok: has mody_md",
-			p: &types.CommentsCommentIDPatchParam{
+			p: &types.UpdateCommentInput{
 				TeamName:  "test-team",
 				CommentID: 1,
 				BodyMD:    gesa.String("test comment (updated)"),
@@ -362,7 +362,7 @@ func Test_CommentsCommentIDPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ok: has user",
-			p: &types.CommentsCommentIDPatchParam{
+			p: &types.UpdateCommentInput{
 				TeamName:  "test-team",
 				CommentID: 1,
 				BodyMD:    gesa.String("test comment (updated)"),
@@ -379,7 +379,7 @@ func Test_CommentsCommentIDPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: team_name is empty",
-			p: &types.CommentsCommentIDPatchParam{
+			p: &types.UpdateCommentInput{
 				CommentID: 1,
 			},
 			expect:  nil,
@@ -387,7 +387,7 @@ func Test_CommentsCommentIDPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_number is empty",
-			p: &types.CommentsCommentIDPatchParam{
+			p: &types.UpdateCommentInput{
 				TeamName: "test-team",
 			},
 			expect:  nil,
@@ -395,7 +395,7 @@ func Test_CommentsCommentIDPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter: all empty",
-			p:       &types.CommentsCommentIDPatchParam{},
+			p:       &types.UpdateCommentInput{},
 			expect:  nil,
 			wantErr: true,
 		},
@@ -421,16 +421,16 @@ func Test_CommentsCommentIDPatchParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_CommentsCommentIDDeleteParam_EsaAPIParameter(t *testing.T) {
+func Test_DeleteCommentInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.CommentsCommentIDDeleteParam
+		p       *types.DeleteCommentInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.CommentsCommentIDDeleteParam{
+			p: &types.DeleteCommentInput{
 				TeamName:  "test-team",
 				CommentID: 1,
 			},
@@ -444,7 +444,7 @@ func Test_CommentsCommentIDDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only TeamName",
-			p: &types.CommentsCommentIDDeleteParam{
+			p: &types.DeleteCommentInput{
 				TeamName: "test-team",
 			},
 			expect:  nil,
@@ -452,7 +452,7 @@ func Test_CommentsCommentIDDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only CommentID",
-			p: &types.CommentsCommentIDDeleteParam{
+			p: &types.DeleteCommentInput{
 				CommentID: 1,
 			},
 			expect:  nil,
@@ -480,15 +480,15 @@ func Test_CommentsCommentIDDeleteParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_CommentsTeamNameGetParam_PageValue(t *testing.T) {
+func Test_ListTeamCommentsInput_PageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.CommentsTeamNameGetParam
+		p          *types.ListTeamCommentsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.CommentsTeamNameGetParam{Page: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.CommentsTeamNameGetParam{}, 0, false},
+		{"true", &types.ListTeamCommentsInput{Page: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListTeamCommentsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -501,15 +501,15 @@ func Test_CommentsTeamNameGetParam_PageValue(t *testing.T) {
 	}
 }
 
-func Test_CommentsTeamNameGetParam_PerPageValue(t *testing.T) {
+func Test_ListTeamCommentsInput_PerPageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.CommentsTeamNameGetParam
+		p          *types.ListTeamCommentsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.CommentsTeamNameGetParam{PerPage: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.CommentsTeamNameGetParam{}, 0, false},
+		{"true", &types.ListTeamCommentsInput{PerPage: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListTeamCommentsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -522,16 +522,16 @@ func Test_CommentsTeamNameGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_CommentsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
+func Test_ListTeamCommentsInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.CommentsTeamNameGetParam
+		p       *types.ListTeamCommentsInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.CommentsTeamNameGetParam{
+			p: &types.ListTeamCommentsInput{
 				TeamName: "test-team",
 			},
 			expect: &internal.EsaAPIParameter{
@@ -543,7 +543,7 @@ func Test_CommentsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with page",
-			p: &types.CommentsTeamNameGetParam{
+			p: &types.ListTeamCommentsInput{
 				TeamName: "test-team",
 				Page:     gesa.NewPageNumber(1),
 			},
@@ -558,7 +558,7 @@ func Test_CommentsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with per_page",
-			p: &types.CommentsTeamNameGetParam{
+			p: &types.ListTeamCommentsInput{
 				TeamName: "test-team",
 				PerPage:  gesa.NewPageNumber(2),
 			},
@@ -573,7 +573,7 @@ func Test_CommentsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with all",
-			p: &types.CommentsTeamNameGetParam{
+			p: &types.ListTeamCommentsInput{
 				TeamName: "test-team",
 				Page:     gesa.NewPageNumber(1),
 				PerPage:  gesa.NewPageNumber(2),
@@ -590,7 +590,7 @@ func Test_CommentsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter",
-			p: &types.CommentsTeamNameGetParam{
+			p: &types.ListTeamCommentsInput{
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},

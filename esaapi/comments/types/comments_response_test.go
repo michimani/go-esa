@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
+func Test_ListPostCommentsOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.CommentsGetResponse
+		want *types.ListPostCommentsOutput
 	}{
 		{
 			name: "normal",
@@ -24,7 +24,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsGetResponse{
+			want: &types.ListPostCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -39,7 +39,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsGetResponse{
+			want: &types.ListPostCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -54,7 +54,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsGetResponse{
+			want: &types.ListPostCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -69,7 +69,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.CommentsGetResponse{
+			want: &types.ListPostCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -84,7 +84,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsGetResponse{
+			want: &types.ListPostCommentsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -95,7 +95,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsGetResponse{
+			want: &types.ListPostCommentsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -106,7 +106,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.CommentsGetResponse{
+			want: &types.ListPostCommentsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -115,7 +115,7 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.CommentsGetResponse{}
+			res := &types.ListPostCommentsOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -123,13 +123,13 @@ func Test_CommentsGetResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
+func Test_GetCommentOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.CommentsCommentIDGetResponse
+		want *types.GetCommentOutput
 	}{
 		{
 			name: "normal",
@@ -138,7 +138,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDGetResponse{
+			want: &types.GetCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -153,7 +153,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDGetResponse{
+			want: &types.GetCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -168,7 +168,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDGetResponse{
+			want: &types.GetCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -183,7 +183,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.CommentsCommentIDGetResponse{
+			want: &types.GetCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -198,7 +198,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDGetResponse{
+			want: &types.GetCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -209,7 +209,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDGetResponse{
+			want: &types.GetCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -220,7 +220,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.CommentsCommentIDGetResponse{
+			want: &types.GetCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -229,7 +229,7 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.CommentsCommentIDGetResponse{}
+			res := &types.GetCommentOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -237,13 +237,13 @@ func Test_CommentsCommentIDGetResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
+func Test_CreateCommentOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.CommentsPostResponse
+		want *types.CreateCommentOutput
 	}{
 		{
 			name: "normal",
@@ -252,7 +252,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsPostResponse{
+			want: &types.CreateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -267,7 +267,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsPostResponse{
+			want: &types.CreateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -282,7 +282,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsPostResponse{
+			want: &types.CreateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -297,7 +297,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.CommentsPostResponse{
+			want: &types.CreateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -312,7 +312,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsPostResponse{
+			want: &types.CreateCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -323,7 +323,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsPostResponse{
+			want: &types.CreateCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -334,7 +334,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.CommentsPostResponse{
+			want: &types.CreateCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -343,7 +343,7 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.CommentsPostResponse{}
+			res := &types.CreateCommentOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -351,13 +351,13 @@ func Test_CommentsPostResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
+func Test_UpdateCommentOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.CommentsCommentIDPatchResponse
+		want *types.UpdateCommentOutput
 	}{
 		{
 			name: "normal",
@@ -366,7 +366,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDPatchResponse{
+			want: &types.UpdateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -381,7 +381,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDPatchResponse{
+			want: &types.UpdateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -396,7 +396,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDPatchResponse{
+			want: &types.UpdateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -411,7 +411,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.CommentsCommentIDPatchResponse{
+			want: &types.UpdateCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -426,7 +426,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDPatchResponse{
+			want: &types.UpdateCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -437,7 +437,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDPatchResponse{
+			want: &types.UpdateCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -448,7 +448,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.CommentsCommentIDPatchResponse{
+			want: &types.UpdateCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -457,7 +457,7 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.CommentsCommentIDPatchResponse{}
+			res := &types.UpdateCommentOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -465,13 +465,13 @@ func Test_CommentsCommentIDPatchResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
+func Test_DeleteCommentOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.CommentsCommentIDDeleteResponse
+		want *types.DeleteCommentOutput
 	}{
 		{
 			name: "normal",
@@ -480,7 +480,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDDeleteResponse{
+			want: &types.DeleteCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -495,7 +495,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDDeleteResponse{
+			want: &types.DeleteCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -510,7 +510,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDDeleteResponse{
+			want: &types.DeleteCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -525,7 +525,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.CommentsCommentIDDeleteResponse{
+			want: &types.DeleteCommentOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -540,7 +540,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDDeleteResponse{
+			want: &types.DeleteCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -551,7 +551,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsCommentIDDeleteResponse{
+			want: &types.DeleteCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -562,7 +562,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.CommentsCommentIDDeleteResponse{
+			want: &types.DeleteCommentOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -571,7 +571,7 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.CommentsCommentIDDeleteResponse{}
+			res := &types.DeleteCommentOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -579,13 +579,13 @@ func Test_CommentsCommentIDDeleteResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
+func Test_ListTeamCommentsOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.CommentsTeamNameGetResponse
+		want *types.ListTeamCommentsOutput
 	}{
 		{
 			name: "normal",
@@ -594,7 +594,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsTeamNameGetResponse{
+			want: &types.ListTeamCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -609,7 +609,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsTeamNameGetResponse{
+			want: &types.ListTeamCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -624,7 +624,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsTeamNameGetResponse{
+			want: &types.ListTeamCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -639,7 +639,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.CommentsTeamNameGetResponse{
+			want: &types.ListTeamCommentsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -654,7 +654,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsTeamNameGetResponse{
+			want: &types.ListTeamCommentsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -665,7 +665,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.CommentsTeamNameGetResponse{
+			want: &types.ListTeamCommentsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -676,7 +676,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.CommentsTeamNameGetResponse{
+			want: &types.ListTeamCommentsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -685,7 +685,7 @@ func Test_CommentsTeamNameGetResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.CommentsTeamNameGetResponse{}
+			res := &types.ListTeamCommentsOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)

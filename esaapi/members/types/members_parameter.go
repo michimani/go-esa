@@ -8,61 +8,61 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
-type MembersGetSort string
+type ListMembersSort string
 
 const (
-	MembersGetSortPostsCount   MembersGetSort = "posts_count" // default
-	MembersGetSortJoined       MembersGetSort = "joined"
-	MembersGetSortLastAccessed MembersGetSort = "last_accessed"
+	ListMembersSortPostsCount   ListMembersSort = "posts_count" // default
+	ListMembersSortJoined       ListMembersSort = "joined"
+	ListMembersSortLastAccessed ListMembersSort = "last_accessed"
 )
 
-func (s MembersGetSort) IsValid() bool {
-	return s == MembersGetSortPostsCount || s == MembersGetSortJoined || s == MembersGetSortLastAccessed
+func (s ListMembersSort) IsValid() bool {
+	return s == ListMembersSortPostsCount || s == ListMembersSortJoined || s == ListMembersSortLastAccessed
 }
 
-type MembersGetOrder string
+type ListMembersOrder string
 
 const (
-	MembersGetOrderDesc MembersGetOrder = "desc" // default
-	MembersGetOrderAsc  MembersGetOrder = "asc"
+	ListMembersOrderDesc ListMembersOrder = "desc" // default
+	ListMembersOrderAsc  ListMembersOrder = "asc"
 )
 
-func (o MembersGetOrder) IsValid() bool {
-	return o == MembersGetOrderAsc || o == MembersGetOrderDesc
+func (o ListMembersOrder) IsValid() bool {
+	return o == ListMembersOrderAsc || o == ListMembersOrderDesc
 }
 
-type MembersGetParam struct {
+type ListMembersInput struct {
 	TeamName string
 
-	Sort  MembersGetSort
-	Order MembersGetOrder
+	Sort  ListMembersSort
+	Order ListMembersOrder
 
 	Page    *gesa.PageNumber
 	PerPage *gesa.PageNumber
 }
 
-func (p *MembersGetParam) PageValue() (int, bool) {
+func (p *ListMembersInput) PageValue() (int, bool) {
 	if p.Page.IsNull() {
 		return 0, false
 	}
 	return p.Page.SafeInt(), true
 }
 
-func (p *MembersGetParam) PerPageValue() (int, bool) {
+func (p *ListMembersInput) PerPageValue() (int, bool) {
 	if p.PerPage.IsNull() {
 		return 0, false
 	}
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *MembersGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *ListMembersInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "MembersGetParam.TeamName")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "ListMembersInput.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
@@ -84,19 +84,19 @@ func (p *MembersGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	}, nil
 }
 
-type MembersScreenNameDeleteParam struct {
+type DeleteMemberInput struct {
 	TeamName   string
 	ScreenName string
 }
 
-func (p *MembersScreenNameDeleteParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *DeleteMemberInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.ScreenName == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "MembersScreenNameDeleteParam.TeamName, MembersScreenNameDeleteParam.ScreenName")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "DeleteMemberInput.TeamName, DeleteMemberInput.ScreenName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":screen_name", Value: p.ScreenName})

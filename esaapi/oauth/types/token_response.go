@@ -6,7 +6,7 @@ import (
 	"github.com/michimani/go-esa/gesa"
 )
 
-type OAuthTokenInfoGetResponse struct {
+type GetOAuthTokenInfoOutput struct {
 	ResourceOwnerID *int            `json:"resource_owner_id,omitempty"`
 	Scope           []string        `json:"scope,omitempty"`
 	ExpiresIn       *gesa.Timestamp `json:"expires_in,omitempty"`
@@ -25,7 +25,7 @@ type User struct {
 	ID int `json:"id"`
 }
 
-func (r *OAuthTokenInfoGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *GetOAuthTokenInfoOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}

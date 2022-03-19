@@ -7,9 +7,9 @@ import (
 	"github.com/michimani/go-esa/gesa"
 )
 
-// PostsGetResponse is struct for the response of
+// ListPostsOutput is struct for the response of
 // GET /v1/teams/:team_name/posts
-type PostsGetResponse struct {
+type ListPostsOutput struct {
 	Posts []models.Post `json:"posts"`
 
 	PrevPage   *gesa.PageNumber `json:"prev_page,omitempty"`
@@ -22,61 +22,61 @@ type PostsGetResponse struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *PostsGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *ListPostsOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// PostsPostNumberGetResponse is struct for the response of
+// GetPostOutput is struct for the response of
 // GET /v1/teams/:team_name/posts/:post_number
-type PostsPostNumberGetResponse struct {
+type GetPostOutput struct {
 	models.Post
 
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *PostsPostNumberGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *GetPostOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// PostsPostResponse is struct for the response of
+// CreatePostOutput is struct for the response of
 // POST /v1/teams/:team_name/posts
-type PostsPostResponse struct {
+type CreatePostOutput struct {
 	models.Post
 
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *PostsPostResponse) SetRateLimitInfo(h http.Header) {
+func (r *CreatePostOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// PostsPostNumberPatchResponse is struct for the response of
+// UpdatePostOutput is struct for the response of
 // PATCH /v1/teams/:team_name/posts/:post_number
-type PostsPostNumberPatchResponse struct {
+type UpdatePostOutput struct {
 	models.Post
 
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *PostsPostNumberPatchResponse) SetRateLimitInfo(h http.Header) {
+func (r *UpdatePostOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// PostsPostNumberDeleteResponse is struct for the response of
+// DeletePostOutput is struct for the response of
 // DELETE /v1/teams/:team_name/posts/:post_number
-type PostsPostNumberDeleteResponse struct {
+type DeletePostOutput struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *PostsPostNumberDeleteResponse) SetRateLimitInfo(h http.Header) {
+func (r *DeletePostOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}

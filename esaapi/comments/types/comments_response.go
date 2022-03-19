@@ -7,9 +7,9 @@ import (
 	"github.com/michimani/go-esa/gesa"
 )
 
-// CommentsGetResponse is struct for the response of
+// ListPostCommentsOutput is struct for the response of
 // GET /v1/teams/:team_name/posts/:post_number/comments
-type CommentsGetResponse struct {
+type ListPostCommentsOutput struct {
 	Comments []models.Comment `json:"comments"`
 
 	PrevPage   *gesa.PageNumber `json:"prev_page,omitempty"`
@@ -22,69 +22,69 @@ type CommentsGetResponse struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *CommentsGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *ListPostCommentsOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// CommentsCommentIDGetResponse is struct for the response of
+// GetCommentOutput is struct for the response of
 // GET /v1/teams/:team_name/comments/:comment_id
-type CommentsCommentIDGetResponse struct {
+type GetCommentOutput struct {
 	models.Comment
 
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *CommentsCommentIDGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *GetCommentOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// CommentsPostResponse is struct for the response of
+// CreateCommentOutput is struct for the response of
 // POST /v1/teams/:team_name/posts/:post_number/comments
-type CommentsPostResponse struct {
+type CreateCommentOutput struct {
 	models.Comment
 
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *CommentsPostResponse) SetRateLimitInfo(h http.Header) {
+func (r *CreateCommentOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// CommentsCommentIDPatchResponse is struct for the response of
+// UpdateCommentOutput is struct for the response of
 // PATCH /v1/teams/:team_name/comments/:comment_id
-type CommentsCommentIDPatchResponse struct {
+type UpdateCommentOutput struct {
 	models.Comment
 
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *CommentsCommentIDPatchResponse) SetRateLimitInfo(h http.Header) {
+func (r *UpdateCommentOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// CommentsCommentIDDeleteResponse is struct for the response of
+// DeleteCommentOutput is struct for the response of
 // DELETE /v1/teams/:team_name/comments/:comment_id
-type CommentsCommentIDDeleteResponse struct {
+type DeleteCommentOutput struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *CommentsCommentIDDeleteResponse) SetRateLimitInfo(h http.Header) {
+func (r *DeleteCommentOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-// CommentsTeamNameGetResponse is struct for the response of
+// ListTeamCommentsOutput is struct for the response of
 // GET /v1/teams/:team_name/comments
-type CommentsTeamNameGetResponse struct {
+type ListTeamCommentsOutput struct {
 	Comments []models.Comment `json:"comments"`
 
 	PrevPage   *gesa.PageNumber `json:"prev_page,omitempty"`
@@ -97,7 +97,7 @@ type CommentsTeamNameGetResponse struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *CommentsTeamNameGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *ListTeamCommentsOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}

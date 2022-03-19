@@ -8,16 +8,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_StatsGetParam_EsaAPIParameter(t *testing.T) {
+func Test_GetStatsInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.StatsGetParam
+		p       *types.GetStatsInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.StatsGetParam{
+			p: &types.GetStatsInput{
 				TeamName: "test-team",
 			},
 			expect: &internal.EsaAPIParameter{
@@ -29,7 +29,7 @@ func Test_StatsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter",
-			p:       &types.StatsGetParam{},
+			p:       &types.GetStatsInput{},
 			expect:  nil,
 			wantErr: true,
 		},

@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_PostsGetSort_IsValid(t *testing.T) {
+func Test_ListPostsSort_IsValid(t *testing.T) {
 	cases := []struct {
 		name   string
 		s      string
@@ -29,12 +29,12 @@ func Test_PostsGetSort_IsValid(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			asst.Equal(c.expect, types.PostsGetSort(c.s).IsValid())
+			asst.Equal(c.expect, types.ListPostsSort(c.s).IsValid())
 		})
 	}
 }
 
-func Test_PostsGetOrder_IsValid(t *testing.T) {
+func Test_ListPostsOrder_IsValid(t *testing.T) {
 	cases := []struct {
 		name   string
 		s      string
@@ -48,20 +48,20 @@ func Test_PostsGetOrder_IsValid(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			asst.Equal(c.expect, types.PostsGetOrder(c.s).IsValid())
+			asst.Equal(c.expect, types.ListPostsOrder(c.s).IsValid())
 		})
 	}
 }
 
-func Test_PostsGetParam_PageValue(t *testing.T) {
+func Test_ListPostsInput_PageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.PostsGetParam
+		p          *types.ListPostsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.PostsGetParam{Page: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.PostsGetParam{}, 0, false},
+		{"true", &types.ListPostsInput{Page: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListPostsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -74,15 +74,15 @@ func Test_PostsGetParam_PageValue(t *testing.T) {
 	}
 }
 
-func Test_PostsGetParam_PerPageValue(t *testing.T) {
+func Test_ListPostsInput_PerPageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.PostsGetParam
+		p          *types.ListPostsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.PostsGetParam{PerPage: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.PostsGetParam{}, 0, false},
+		{"true", &types.ListPostsInput{PerPage: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListPostsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -95,16 +95,16 @@ func Test_PostsGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
+func Test_ListPostsInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.PostsGetParam
+		p       *types.ListPostsInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
 			},
 			expect: &internal.EsaAPIParameter{
@@ -116,7 +116,7 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with q",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
 				Q:        "query",
 			},
@@ -131,7 +131,7 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with include",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
 				Include:  "include1,include2",
 			},
@@ -146,7 +146,7 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with page",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
 				Page:     gesa.NewPageNumber(1),
 			},
@@ -161,7 +161,7 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with per_page",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
 				PerPage:  gesa.NewPageNumber(2),
 			},
@@ -176,9 +176,9 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with sort",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
-				Sort:     types.PostsGetSortBestMatch,
+				Sort:     types.ListPostsSortBestMatch,
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
@@ -191,9 +191,9 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with order",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
-				Order:    types.PostsGetOrderAsc,
+				Order:    types.ListPostsOrderAsc,
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
@@ -206,12 +206,12 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with all",
-			p: &types.PostsGetParam{
+			p: &types.ListPostsInput{
 				TeamName: "test-team",
 				Q:        "query",
 				Include:  "include",
-				Sort:     types.PostsGetSortCreated,
-				Order:    types.PostsGetOrderDesc,
+				Sort:     types.ListPostsSortCreated,
+				Order:    types.ListPostsOrderDesc,
 				Page:     gesa.NewPageNumber(1),
 				PerPage:  gesa.NewPageNumber(2),
 			},
@@ -231,9 +231,9 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter",
-			p: &types.PostsGetParam{
-				Sort:    types.PostsGetSortCreated,
-				Order:   types.PostsGetOrderDesc,
+			p: &types.ListPostsInput{
+				Sort:    types.ListPostsSortCreated,
+				Order:   types.ListPostsOrderDesc,
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},
@@ -262,16 +262,16 @@ func Test_PostsGetParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
+func Test_GetPostInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.PostsPostNumberGetParam
+		p       *types.GetPostInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.PostsPostNumberGetParam{
+			p: &types.GetPostInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 			},
@@ -285,7 +285,7 @@ func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with include",
-			p: &types.PostsPostNumberGetParam{
+			p: &types.GetPostInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				Include:    "include1,include2",
@@ -302,7 +302,7 @@ func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: team_name is empty",
-			p: &types.PostsPostNumberGetParam{
+			p: &types.GetPostInput{
 				PostNumber: 1,
 			},
 			expect:  nil,
@@ -310,7 +310,7 @@ func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_number is empty",
-			p: &types.PostsPostNumberGetParam{
+			p: &types.GetPostInput{
 				TeamName: "test-team",
 			},
 			expect:  nil,
@@ -318,7 +318,7 @@ func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter: both are empty",
-			p:       &types.PostsPostNumberGetParam{},
+			p:       &types.GetPostInput{},
 			expect:  nil,
 			wantErr: true,
 		},
@@ -344,16 +344,16 @@ func Test_PostsPostNumberGetParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
+func Test_CreatePostInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.PostsPostParam
+		p       *types.CreatePostInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.PostsPostParam{
+			p: &types.CreatePostInput{
 				TeamName: "test-team",
 				Name:     "test-post",
 			},
@@ -367,7 +367,7 @@ func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: team_name is empty",
-			p: &types.PostsPostParam{
+			p: &types.CreatePostInput{
 				Name: "test-post",
 			},
 			expect:  nil,
@@ -375,7 +375,7 @@ func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_name is empty",
-			p: &types.PostsPostParam{
+			p: &types.CreatePostInput{
 				TeamName: "test-team",
 			},
 			expect:  nil,
@@ -383,7 +383,7 @@ func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter: both are empty",
-			p:       &types.PostsPostParam{},
+			p:       &types.CreatePostInput{},
 			expect:  nil,
 			wantErr: true,
 		},
@@ -409,16 +409,16 @@ func Test_PostsPostParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_PostsPostNumberPatchParam_EsaAPIParameter(t *testing.T) {
+func Test_UpdatePostInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.PostsPostNumberPatchParam
+		p       *types.UpdatePostInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.PostsPostNumberPatchParam{
+			p: &types.UpdatePostInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				BodyMD:     gesa.String("body"),
@@ -434,7 +434,7 @@ func Test_PostsPostNumberPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_number is empty",
-			p: &types.PostsPostNumberPatchParam{
+			p: &types.UpdatePostInput{
 				TeamName: "test-post",
 			},
 			expect:  nil,
@@ -442,7 +442,7 @@ func Test_PostsPostNumberPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_name is empty",
-			p: &types.PostsPostNumberPatchParam{
+			p: &types.UpdatePostInput{
 				PostNumber: 1,
 			},
 			expect:  nil,
@@ -450,7 +450,7 @@ func Test_PostsPostNumberPatchParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: both are empty",
-			p: &types.PostsPostNumberPatchParam{
+			p: &types.UpdatePostInput{
 				BodyMD: gesa.String("body"),
 			},
 			expect:  nil,
@@ -478,16 +478,16 @@ func Test_PostsPostNumberPatchParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_PostsPostNumberDeleteParam_EsaAPIParameter(t *testing.T) {
+func Test_DeletePostInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.PostsPostNumberDeleteParam
+		p       *types.DeletePostInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.PostsPostNumberDeleteParam{
+			p: &types.DeletePostInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 			},
@@ -502,7 +502,7 @@ func Test_PostsPostNumberDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_number is empty",
-			p: &types.PostsPostNumberDeleteParam{
+			p: &types.DeletePostInput{
 				TeamName: "test-post",
 			},
 			expect:  nil,
@@ -510,7 +510,7 @@ func Test_PostsPostNumberDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: post_name is empty",
-			p: &types.PostsPostNumberDeleteParam{
+			p: &types.DeletePostInput{
 				PostNumber: 1,
 			},
 			expect:  nil,
@@ -518,7 +518,7 @@ func Test_PostsPostNumberDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter: both are empty",
-			p:       &types.PostsPostNumberDeleteParam{},
+			p:       &types.DeletePostInput{},
 			expect:  nil,
 			wantErr: true,
 		},

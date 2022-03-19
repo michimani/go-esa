@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
+func Test_GetOAuthTokenInfoOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.OAuthTokenInfoGetResponse
+		want *types.GetOAuthTokenInfoOutput
 	}{
 		{
 			name: "normal",
@@ -24,7 +24,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.OAuthTokenInfoGetResponse{
+			want: &types.GetOAuthTokenInfoOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -39,7 +39,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.OAuthTokenInfoGetResponse{
+			want: &types.GetOAuthTokenInfoOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -54,7 +54,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.OAuthTokenInfoGetResponse{
+			want: &types.GetOAuthTokenInfoOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -69,7 +69,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.OAuthTokenInfoGetResponse{
+			want: &types.GetOAuthTokenInfoOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -84,7 +84,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.OAuthTokenInfoGetResponse{
+			want: &types.GetOAuthTokenInfoOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -95,7 +95,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.OAuthTokenInfoGetResponse{
+			want: &types.GetOAuthTokenInfoOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -106,7 +106,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.OAuthTokenInfoGetResponse{
+			want: &types.GetOAuthTokenInfoOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -115,7 +115,7 @@ func Test_OAuthTokenInfoGetResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.OAuthTokenInfoGetResponse{}
+			res := &types.GetOAuthTokenInfoOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)

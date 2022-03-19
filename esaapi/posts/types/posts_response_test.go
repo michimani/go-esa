@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
+func Test_ListPostsOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.PostsGetResponse
+		want *types.ListPostsOutput
 	}{
 		{
 			name: "normal",
@@ -24,7 +24,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsGetResponse{
+			want: &types.ListPostsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -39,7 +39,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsGetResponse{
+			want: &types.ListPostsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -54,7 +54,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsGetResponse{
+			want: &types.ListPostsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -69,7 +69,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.PostsGetResponse{
+			want: &types.ListPostsOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -84,7 +84,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsGetResponse{
+			want: &types.ListPostsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -95,7 +95,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsGetResponse{
+			want: &types.ListPostsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -106,7 +106,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.PostsGetResponse{
+			want: &types.ListPostsOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -115,7 +115,7 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.PostsGetResponse{}
+			res := &types.ListPostsOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -123,13 +123,13 @@ func Test_PostsGetResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
+func Test_GetPostOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.PostsPostNumberGetResponse
+		want *types.GetPostOutput
 	}{
 		{
 			name: "normal",
@@ -138,7 +138,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberGetResponse{
+			want: &types.GetPostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -153,7 +153,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberGetResponse{
+			want: &types.GetPostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -168,7 +168,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberGetResponse{
+			want: &types.GetPostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -183,7 +183,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.PostsPostNumberGetResponse{
+			want: &types.GetPostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -198,7 +198,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberGetResponse{
+			want: &types.GetPostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -209,7 +209,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberGetResponse{
+			want: &types.GetPostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -220,7 +220,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.PostsPostNumberGetResponse{
+			want: &types.GetPostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -229,7 +229,7 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.PostsPostNumberGetResponse{}
+			res := &types.GetPostOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -237,13 +237,13 @@ func Test_PostsPostNumberGetResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
+func Test_CreatePostOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.PostsPostResponse
+		want *types.CreatePostOutput
 	}{
 		{
 			name: "normal",
@@ -252,7 +252,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostResponse{
+			want: &types.CreatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -267,7 +267,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostResponse{
+			want: &types.CreatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -282,7 +282,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostResponse{
+			want: &types.CreatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -297,7 +297,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.PostsPostResponse{
+			want: &types.CreatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -312,7 +312,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostResponse{
+			want: &types.CreatePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -323,7 +323,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostResponse{
+			want: &types.CreatePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -334,7 +334,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.PostsPostResponse{
+			want: &types.CreatePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -343,7 +343,7 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.PostsPostResponse{}
+			res := &types.CreatePostOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -351,13 +351,13 @@ func Test_PostsPostResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
+func Test_UpdatePostOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.PostsPostNumberPatchResponse
+		want *types.UpdatePostOutput
 	}{
 		{
 			name: "normal",
@@ -366,7 +366,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberPatchResponse{
+			want: &types.UpdatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -381,7 +381,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberPatchResponse{
+			want: &types.UpdatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -396,7 +396,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberPatchResponse{
+			want: &types.UpdatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -411,7 +411,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.PostsPostNumberPatchResponse{
+			want: &types.UpdatePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -426,7 +426,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberPatchResponse{
+			want: &types.UpdatePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -437,7 +437,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberPatchResponse{
+			want: &types.UpdatePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -448,7 +448,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.PostsPostNumberPatchResponse{
+			want: &types.UpdatePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -457,7 +457,7 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.PostsPostNumberPatchResponse{}
+			res := &types.UpdatePostOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -465,13 +465,13 @@ func Test_PostsPostNumberPatchResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
+func Test_DeletePostOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.PostsPostNumberDeleteResponse
+		want *types.DeletePostOutput
 	}{
 		{
 			name: "normal",
@@ -480,7 +480,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberDeleteResponse{
+			want: &types.DeletePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -495,7 +495,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberDeleteResponse{
+			want: &types.DeletePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -510,7 +510,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberDeleteResponse{
+			want: &types.DeletePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -525,7 +525,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.PostsPostNumberDeleteResponse{
+			want: &types.DeletePostOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -540,7 +540,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberDeleteResponse{
+			want: &types.DeletePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -551,7 +551,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.PostsPostNumberDeleteResponse{
+			want: &types.DeletePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -562,7 +562,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.PostsPostNumberDeleteResponse{
+			want: &types.DeletePostOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -571,7 +571,7 @@ func Test_PostsPostNumberDeleteResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.PostsPostNumberDeleteResponse{}
+			res := &types.DeletePostOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)

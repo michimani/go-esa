@@ -126,8 +126,8 @@ func Test_CallAPI(t *testing.T) {
 		clientInput *gesa.NewGesaClientInput
 		endpoint    string
 		method      string
-		params      internal.IParameters
-		response    internal.IResponse
+		params      internal.IInput
+		response    internal.IOutput
 		wantErr     bool
 	}{
 		{
@@ -142,7 +142,7 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
 			params:   &mockAPIParameter{},
-			response: &mockAPIResponse{},
+			response: &mockAPIOutput{},
 			wantErr:  false,
 		},
 		{
@@ -158,7 +158,7 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
 			params:   &mockAPIParameter{},
-			response: &mockAPIResponse{},
+			response: &mockAPIOutput{},
 			wantErr:  false,
 		},
 		{
@@ -173,7 +173,7 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
 			params:   nil,
-			response: &mockAPIResponse{},
+			response: &mockAPIOutput{},
 			wantErr:  true,
 		},
 		{
@@ -188,7 +188,7 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
 			params:   &mockAPIParameter{EsaAPINil: true},
-			response: &mockAPIResponse{},
+			response: &mockAPIOutput{},
 			wantErr:  true,
 		},
 		{
@@ -203,7 +203,7 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
 			params:   &mockAPIParameter{},
-			response: &mockAPIResponse{},
+			response: &mockAPIOutput{},
 			wantErr:  true,
 		},
 		{
@@ -218,7 +218,7 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   http.MethodGet,
 			params:   &mockAPIParameter{},
-			response: &mockAPIResponse{},
+			response: &mockAPIOutput{},
 			wantErr:  true,
 		},
 		{
@@ -233,7 +233,7 @@ func Test_CallAPI(t *testing.T) {
 			endpoint: "test-endpoint",
 			method:   "invalid method",
 			params:   &mockAPIParameter{},
-			response: &mockAPIResponse{},
+			response: &mockAPIOutput{},
 			wantErr:  true,
 		},
 	}
@@ -340,7 +340,7 @@ func Test_Exec(t *testing.T) {
 				AccessToken: "test-token",
 			})
 
-			esaAPIError, err := client.Exec(c.req, &mockAPIResponse{})
+			esaAPIError, err := client.Exec(c.req, &mockAPIOutput{})
 
 			if c.wantErr {
 				assert.Nil(tt, esaAPIError)

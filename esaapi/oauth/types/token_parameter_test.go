@@ -8,10 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_OAuthTokenInfoGetParam_EsaAPIParameter(t *testing.T) {
+func Test_GetOAuthTokenInfoInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name   string
-		p      *types.OAuthTokenInfoGetParam
+		p      *types.GetOAuthTokenInfoInput
 		expect *internal.EsaAPIParameter
 	}{
 		{
@@ -21,7 +21,7 @@ func Test_OAuthTokenInfoGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:   "ok: empty",
-			p:      &types.OAuthTokenInfoGetParam{},
+			p:      &types.GetOAuthTokenInfoInput{},
 			expect: &internal.EsaAPIParameter{},
 		},
 	}

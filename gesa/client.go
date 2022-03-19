@@ -22,7 +22,7 @@ type NewGesaClientInput struct {
 }
 
 type IGesaClient interface {
-	Exec(req *http.Request, r internal.IResponse) error
+	Exec(req *http.Request, r internal.IOutput) error
 }
 
 type GesaClient struct {
@@ -35,7 +35,7 @@ type GesaClient struct {
 type ClientResponse struct {
 	StatusCode int
 	Status     string
-	Response   internal.IResponse
+	Response   internal.IOutput
 }
 
 var defaultHTTPClient = &http.Client{
@@ -82,7 +82,7 @@ func (c *GesaClient) AccessToken() string {
 	return c.accessToken
 }
 
-func (c *GesaClient) CallAPI(ctx context.Context, endpoint, method string, p internal.IParameters, r internal.IResponse) error {
+func (c *GesaClient) CallAPI(ctx context.Context, endpoint, method string, p internal.IInput, r internal.IOutput) error {
 	req, err := c.prepare(ctx, endpoint, method, p)
 	if err != nil {
 		return wrapErr(err)
@@ -103,7 +103,7 @@ var okCodes map[int]struct{} = map[int]struct{}{
 	http.StatusNoContent: {},
 }
 
-func (c *GesaClient) Exec(req *http.Request, r internal.IResponse) (*EsaAPIError, error) {
+func (c *GesaClient) Exec(req *http.Request, r internal.IOutput) (*EsaAPIError, error) {
 	res, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func (c *GesaClient) Exec(req *http.Request, r internal.IResponse) (*EsaAPIError
 	return nil, nil
 }
 
-func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p internal.IParameters) (*http.Request, error) {
+func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p internal.IInput) (*http.Request, error) {
 	if p == nil {
 		return nil, errors.New("parameter is nil")
 	}

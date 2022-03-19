@@ -29,11 +29,11 @@
 //             panic(err)
 //         }
 //
-//         oauthTokenInfoGet(c)
+//         getOAuthTokenInfo(c)
 //     }
 //
-//     func oauthTokenInfoGet(c *gesa.GesaClient) {
-//         r, err := oauth.OAuthTokenInfoGet(context.Background(), c, &types.OAuthTokenInfoGetParam{})
+//     func getOAuthTokenInfo(c *gesa.GesaClient) {
+//         r, err := oauth.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
 //         if err != nil {
 //             fmt.Println(err)
 //

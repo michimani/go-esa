@@ -9,15 +9,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_PostNumberStargazersGetParam_PageValue(t *testing.T) {
+func Test_ListPostStargazersInput_PageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.PostNumberStargazersGetParam
+		p          *types.ListPostStargazersInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.PostNumberStargazersGetParam{Page: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.PostNumberStargazersGetParam{}, 0, false},
+		{"true", &types.ListPostStargazersInput{Page: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListPostStargazersInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -30,15 +30,15 @@ func Test_PostNumberStargazersGetParam_PageValue(t *testing.T) {
 	}
 }
 
-func Test_PostNumberStargazersGetParam_PerPageValue(t *testing.T) {
+func Test_ListPostStargazersInput_PerPageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.PostNumberStargazersGetParam
+		p          *types.ListPostStargazersInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.PostNumberStargazersGetParam{PerPage: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.PostNumberStargazersGetParam{}, 0, false},
+		{"true", &types.ListPostStargazersInput{PerPage: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListPostStargazersInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -51,16 +51,16 @@ func Test_PostNumberStargazersGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_PostNumberStargazersGetParam_EsaAPIParameter(t *testing.T) {
+func Test_ListPostStargazersInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.PostNumberStargazersGetParam
+		p       *types.ListPostStargazersInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.PostNumberStargazersGetParam{
+			p: &types.ListPostStargazersInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 			},
@@ -74,7 +74,7 @@ func Test_PostNumberStargazersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with page",
-			p: &types.PostNumberStargazersGetParam{
+			p: &types.ListPostStargazersInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				Page:       gesa.NewPageNumber(1),
@@ -91,7 +91,7 @@ func Test_PostNumberStargazersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with per_page",
-			p: &types.PostNumberStargazersGetParam{
+			p: &types.ListPostStargazersInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				PerPage:    gesa.NewPageNumber(2),
@@ -108,7 +108,7 @@ func Test_PostNumberStargazersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with all",
-			p: &types.PostNumberStargazersGetParam{
+			p: &types.ListPostStargazersInput{
 				TeamName:   "test-team",
 				PostNumber: 1,
 				Page:       gesa.NewPageNumber(1),
@@ -127,7 +127,7 @@ func Test_PostNumberStargazersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only TeamName",
-			p: &types.PostNumberStargazersGetParam{
+			p: &types.ListPostStargazersInput{
 				TeamName: "test-team",
 				Page:     gesa.NewPageNumber(1),
 				PerPage:  gesa.NewPageNumber(2),
@@ -137,7 +137,7 @@ func Test_PostNumberStargazersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: has only PostNumber",
-			p: &types.PostNumberStargazersGetParam{
+			p: &types.ListPostStargazersInput{
 				PostNumber: 1,
 				Page:       gesa.NewPageNumber(1),
 				PerPage:    gesa.NewPageNumber(2),
