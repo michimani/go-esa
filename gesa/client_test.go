@@ -22,21 +22,21 @@ func (mp testParameter) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	return &internal.EsaAPIParameter{}, nil
 }
 
-func Test_NewGesaClient(t *testing.T) {
+func Test_NewClient(t *testing.T) {
 	cases := []struct {
 		name    string
-		in      *gesa.NewGesaClientInput
+		in      *gesa.NewClientInput
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			in: &gesa.NewGesaClientInput{
+			in: &gesa.NewClientInput{
 				AccessToken: "test-token",
 			},
 		},
 		{
 			name: "ok: with http client",
-			in: &gesa.NewGesaClientInput{
+			in: &gesa.NewClientInput{
 				HTTPClient: &http.Client{
 					Timeout: time.Duration(300) * time.Second,
 				},
@@ -45,31 +45,31 @@ func Test_NewGesaClient(t *testing.T) {
 		},
 		{
 			name: "ok: api version",
-			in: &gesa.NewGesaClientInput{
+			in: &gesa.NewClientInput{
 				AccessToken: "test-token",
 				APIVersion:  gesa.DefaultAPIVersion,
 			},
 		},
 		{
 			name: "ok: debug",
-			in: &gesa.NewGesaClientInput{
+			in: &gesa.NewClientInput{
 				AccessToken: "test-token",
 				Debug:       true,
 			},
 		},
 		{
 			name:    "ng: empty parameters",
-			in:      &gesa.NewGesaClientInput{},
+			in:      &gesa.NewClientInput{},
 			wantErr: true,
 		},
 		{
 			name:    "ng: empty parameter",
-			in:      &gesa.NewGesaClientInput{},
+			in:      &gesa.NewClientInput{},
 			wantErr: true,
 		},
 		{
 			name: "ng: invalid api version",
-			in: &gesa.NewGesaClientInput{
+			in: &gesa.NewClientInput{
 				AccessToken: "test-token",
 				APIVersion:  gesa.EsaAPIVersion("invalid version"),
 			},
@@ -86,7 +86,7 @@ func Test_NewGesaClient(t *testing.T) {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
 
-			client, err := gesa.NewGesaClient(c.in)
+			client, err := gesa.NewClient(c.in)
 			if c.wantErr {
 				asst.NotNil(err)
 				asst.Nil(client)
@@ -99,11 +99,11 @@ func Test_NewGesaClient(t *testing.T) {
 	}
 }
 
-func Test_GesaClient_AccessToken(t *testing.T) {
-	okClient, _ := gesa.NewGesaClient(&gesa.NewGesaClientInput{AccessToken: "test-token"})
+func Test_Client_AccessToken(t *testing.T) {
+	okClient, _ := gesa.NewClient(&gesa.NewClientInput{AccessToken: "test-token"})
 	cases := []struct {
 		name   string
-		client *gesa.GesaClient
+		client *gesa.Client
 		expect string
 	}{
 		{"not nil", okClient, "test-token"},
@@ -123,7 +123,7 @@ func Test_CallAPI(t *testing.T) {
 	cases := []struct {
 		name        string
 		mockInput   *mockInput
-		clientInput *gesa.NewGesaClientInput
+		clientInput *gesa.NewClientInput
 		endpoint    string
 		method      string
 		params      internal.IInput
@@ -136,7 +136,7 @@ func Test_CallAPI(t *testing.T) {
 				ResponseStatusCode: http.StatusOK,
 				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),
 			},
-			clientInput: &gesa.NewGesaClientInput{
+			clientInput: &gesa.NewClientInput{
 				AccessToken: "test-token",
 			},
 			endpoint: "test-endpoint",
@@ -151,7 +151,7 @@ func Test_CallAPI(t *testing.T) {
 				ResponseStatusCode: http.StatusOK,
 				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),
 			},
-			clientInput: &gesa.NewGesaClientInput{
+			clientInput: &gesa.NewClientInput{
 				AccessToken: "test-token",
 				Debug:       true,
 			},
@@ -167,7 +167,7 @@ func Test_CallAPI(t *testing.T) {
 				ResponseStatusCode: http.StatusOK,
 				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),
 			},
-			clientInput: &gesa.NewGesaClientInput{
+			clientInput: &gesa.NewClientInput{
 				AccessToken: "test-token",
 			},
 			endpoint: "test-endpoint",
@@ -182,7 +182,7 @@ func Test_CallAPI(t *testing.T) {
 				ResponseStatusCode: http.StatusOK,
 				ResponseBody:       io.NopCloser(strings.NewReader(`{"message": "ok"}`)),
 			},
-			clientInput: &gesa.NewGesaClientInput{
+			clientInput: &gesa.NewClientInput{
 				AccessToken: "test-token",
 			},
 			endpoint: "test-endpoint",
@@ -197,7 +197,7 @@ func Test_CallAPI(t *testing.T) {
 				ResponseStatusCode: http.StatusInternalServerError,
 				ResponseBody:       io.NopCloser(strings.NewReader(`{}`)),
 			},
-			clientInput: &gesa.NewGesaClientInput{
+			clientInput: &gesa.NewClientInput{
 				AccessToken: "test-token",
 			},
 			endpoint: "test-endpoint",
@@ -212,7 +212,7 @@ func Test_CallAPI(t *testing.T) {
 				ResponseStatusCode: http.StatusOK,
 				ResponseBody:       io.NopCloser(strings.NewReader(`///`)),
 			},
-			clientInput: &gesa.NewGesaClientInput{
+			clientInput: &gesa.NewClientInput{
 				AccessToken: "test-token",
 			},
 			endpoint: "test-endpoint",
@@ -227,7 +227,7 @@ func Test_CallAPI(t *testing.T) {
 				ResponseStatusCode: http.StatusOK,
 				ResponseBody:       io.NopCloser(strings.NewReader(`{}`)),
 			},
-			clientInput: &gesa.NewGesaClientInput{
+			clientInput: &gesa.NewClientInput{
 				AccessToken: "test-token",
 			},
 			endpoint: "test-endpoint",
@@ -243,7 +243,7 @@ func Test_CallAPI(t *testing.T) {
 			mockClient := newMockHTTPClient(c.mockInput)
 			in := c.clientInput
 			in.HTTPClient = mockClient
-			client, _ := gesa.NewGesaClient(in)
+			client, _ := gesa.NewClient(in)
 
 			err := client.CallAPI(context.Background(), c.endpoint, c.method, c.params, c.response)
 			if c.wantErr {
@@ -335,7 +335,7 @@ func Test_Exec(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			mockClient := newMockHTTPClient(c.mockInput)
-			client, _ := gesa.NewGesaClient(&gesa.NewGesaClientInput{
+			client, _ := gesa.NewClient(&gesa.NewClientInput{
 				HTTPClient:  mockClient,
 				AccessToken: "test-token",
 			})

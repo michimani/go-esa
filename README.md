@@ -12,37 +12,37 @@ Unofficial esa SDK for the Go programming language.
 
 Progress of supporting APIs...
 
-- **OAuth - 認証と認可**
+- **OAuth**
   - `GET /oauth/token/info`
-- **Teams - チーム**
+- **Team**
   - `GET /v1/teams`
   - `GET /v1/teams/:team_name`
-- **Stats - 統計情報**
+- **Stats**
   - `GET /v1/teams/:team_name/stats`
-- **Members - メンバー**
+- **Member**
   - `GET /v1/teams/:team_name/members`
   - `DELETE /v1/teams/:team_name/members/:screen_name`
-- **Posts - 記事**
+- **Post**
   - `GET /v1/teams/docs/posts`
   - `GET /v1/teams/:team_name/posts/:post_number`
   - `POST /v1/teams/:team_name/posts`
   - `PATCH /v1/teams/:team_name/posts/:post_number`
   - `DELETE /v1/teams/:team_name/posts/:post_number`
-- **Comments - コメント**
+- **Comment**
   - `GET /v1/teams/:team_name/posts/:post_number/comments`
   - `GET /v1/teams/:team_name/comments/:comment_id`
   - `POST /v1/teams/:team_name/posts/:post_number/comments`
   - `PATCH /v1/teams/:team_name/comments/:comment_id`
   - `DELETE /v1/teams/:team_name/comments/:comment_id`
   - `GET /v1/teams/:team_name/comments`
-- **Stars - スター**
+- **Star**
   - `GET /v1/teams/:team_name/posts/:post_number/stargazers`
   - `POST /v1/teams/:team_name/posts/:post_number/star`
   - `DELETE /v1/teams/:team_name/posts/:post_number/star`
   - `GET /v1/teams/:team_name/comments/:comment_id/stargazers`
   - `POST /v1/teams/:team_name/comments/:comment_id/star`
   - `DELETE /v1/teams/:team_name/comments/:comment_id/star`
-- **Watches - ウォッチ**
+- **Watch**
   - `GET /v1/teams/:team_name/posts/:post_number/watchers`
 
 # Sample
@@ -55,14 +55,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/michimani/go-esa/esaapi/oauth"
-	"github.com/michimani/go-esa/esaapi/oauth/types"
+	"github.com/michimani/go-esa/esaapi/oauthtoken"
+	"github.com/michimani/go-esa/esaapi/oauthtoken/types"
 	"github.com/michimani/go-esa/gesa"
 )
 
 func main() {
 	token := "your-access-token"
-	c, err := gesa.NewGesaClient(&gesa.NewGesaClientInput{
+	c, err := gesa.NewClient(&gesa.NewClientInput{
 		AccessToken: token,
 	})
 
@@ -73,7 +73,7 @@ func main() {
 	getOAuthTokenInfo(c)
 }
 
-func getOAuthTokenInfo(c *gesa.GesaClient) {
+func getOAuthTokenInfo(c *gesa.Client) {
 	r, err := oauth.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
 	if err != nil {
 		fmt.Println(err)

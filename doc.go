@@ -3,8 +3,8 @@
 // Getting started: To get information of OAuth access token.
 //
 //	go get github.com/michimani/go-esa/gesa
-// 	go get github.com/michimani/go-esa/esaapi/oauth
-//	go get github.com/michimani/go-esa/esaapi/oauth/types
+// 	go get github.com/michimani/go-esa/esaapi/oauthtoken
+//	go get github.com/michimani/go-esa/esaapi/oauthtoken/types
 //
 //
 //     package main
@@ -14,14 +14,14 @@
 //         "fmt"
 //         "os"
 //
-//         "github.com/michimani/go-esa/esaapi/oauth"
-//         "github.com/michimani/go-esa/esaapi/oauth/types"
+//         "github.com/michimani/go-esa/esaapi/oauthtoken"
+//         "github.com/michimani/go-esa/esaapi/oauthtoken/types"
 //         "github.com/michimani/go-esa/gesa"
 //     )
 //
 //     func main() {
 //         token := "your-access-token"
-//         c, err := gesa.NewGesaClient(&gesa.NewGesaClientInput{
+//         c, err := gesa.NewClient(&gesa.NewClientInput{
 //             AccessToken: token,
 //         })
 //
@@ -32,7 +32,7 @@
 //         getOAuthTokenInfo(c)
 //     }
 //
-//     func getOAuthTokenInfo(c *gesa.GesaClient) {
+//     func getOAuthTokenInfo(c *gesa.Client) {
 //         r, err := oauth.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
 //         if err != nil {
 //             fmt.Println(err)
