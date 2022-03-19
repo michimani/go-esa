@@ -7,9 +7,9 @@ import (
 	"github.com/michimani/go-esa/gesa"
 )
 
-// PostNumberStargazersGetResponse is struct for the response of
+// ListPostStargazersOutput is struct for the response of
 // GET /v1/teams/:team_name/posts/:post_number/stargazers
-type PostNumberStargazersGetResponse struct {
+type ListPostStargazersOutput struct {
 	Stargazers []models.Stargazer `json:"stargazers"`
 
 	PrevPage   *gesa.PageNumber `json:"prev_page,omitempty"`
@@ -22,7 +22,7 @@ type PostNumberStargazersGetResponse struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *PostNumberStargazersGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *ListPostStargazersOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
