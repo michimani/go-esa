@@ -208,6 +208,15 @@ func Test_CreatePostStarInput_EsaAPIParameter(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "ng: not has required parameter: body is empty",
+			p: &types.CreatePostStarInput{
+				TeamName:   "test-team",
+				PostNumber: 1,
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
 			name:    "ng: not has required parameter: both are empty",
 			p:       &types.CreatePostStarInput{},
 			expect:  nil,
