@@ -38,6 +38,7 @@ Progress of supporting APIs...
 - **Stars - スター**
   - `GET /v1/teams/:team_name/posts/:post_number/stargazers`
   - `POST /v1/teams/:team_name/posts/:post_number/star`
+  - `DELETE /v1/teams/:team_name/posts/:post_number/star`
 
 # Sample
 
