@@ -35,8 +35,9 @@ Progress of supporting APIs...
   - `PATCH /v1/teams/:team_name/comments/:comment_id`
   - `DELETE /v1/teams/:team_name/comments/:comment_id`
   - `GET /v1/teams/:team_name/comments`
-- **Star - スター**
+- **Stars - スター**
   - `GET /v1/teams/:team_name/posts/:post_number/stargazers`
+  - `POST /v1/teams/:team_name/posts/:post_number/star`
 
 # Sample
 
