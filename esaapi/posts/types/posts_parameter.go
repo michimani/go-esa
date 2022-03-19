@@ -11,75 +11,75 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
-type PostsGetSort string
+type ListPostsSort string
 
 const (
-	PostsGetSortUpdated   PostsGetSort = "updated" // default
-	PostsGetSortCreated   PostsGetSort = "created"
-	PostsGetSortNumber    PostsGetSort = "number"
-	PostsGetSortStars     PostsGetSort = "stars"
-	PostsGetSortWatches   PostsGetSort = "watches"
-	PostsGetSortComments  PostsGetSort = "comments"
-	PostsGetSortBestMatch PostsGetSort = "best_match"
+	ListPostsSortUpdated   ListPostsSort = "updated" // default
+	ListPostsSortCreated   ListPostsSort = "created"
+	ListPostsSortNumber    ListPostsSort = "number"
+	ListPostsSortStars     ListPostsSort = "stars"
+	ListPostsSortWatches   ListPostsSort = "watches"
+	ListPostsSortComments  ListPostsSort = "comments"
+	ListPostsSortBestMatch ListPostsSort = "best_match"
 )
 
-func (s PostsGetSort) IsValid() bool {
-	return s == PostsGetSortUpdated ||
-		s == PostsGetSortCreated ||
-		s == PostsGetSortNumber ||
-		s == PostsGetSortStars ||
-		s == PostsGetSortWatches ||
-		s == PostsGetSortComments ||
-		s == PostsGetSortBestMatch
+func (s ListPostsSort) IsValid() bool {
+	return s == ListPostsSortUpdated ||
+		s == ListPostsSortCreated ||
+		s == ListPostsSortNumber ||
+		s == ListPostsSortStars ||
+		s == ListPostsSortWatches ||
+		s == ListPostsSortComments ||
+		s == ListPostsSortBestMatch
 }
 
-type PostsGetOrder string
+type ListPostsOrder string
 
 const (
-	PostsGetOrderDesc PostsGetOrder = "desc" // default
-	PostsGetOrderAsc  PostsGetOrder = "asc"
+	ListPostsOrderDesc ListPostsOrder = "desc" // default
+	ListPostsOrderAsc  ListPostsOrder = "asc"
 )
 
-func (o PostsGetOrder) IsValid() bool {
-	return o == PostsGetOrderAsc || o == PostsGetOrderDesc
+func (o ListPostsOrder) IsValid() bool {
+	return o == ListPostsOrderAsc || o == ListPostsOrderDesc
 }
 
-type PostsGetParam struct {
+type ListPostsInput struct {
 	// Path parameter
 	TeamName string
 
 	// Query parameters
 	Q       string
 	Include string
-	Sort    PostsGetSort
-	Order   PostsGetOrder
+	Sort    ListPostsSort
+	Order   ListPostsOrder
 
 	Page    *gesa.PageNumber
 	PerPage *gesa.PageNumber
 }
 
-func (p *PostsGetParam) PageValue() (int, bool) {
+func (p *ListPostsInput) PageValue() (int, bool) {
 	if p.Page.IsNull() {
 		return 0, false
 	}
 	return p.Page.SafeInt(), true
 }
 
-func (p *PostsGetParam) PerPageValue() (int, bool) {
+func (p *ListPostsInput) PerPageValue() (int, bool) {
 	if p.PerPage.IsNull() {
 		return 0, false
 	}
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *PostsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *ListPostsInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsGetParam.TeamName")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "ListPostsInput.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
@@ -107,7 +107,7 @@ func (p *PostsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	}, nil
 }
 
-type PostsPostNumberGetParam struct {
+type GetPostInput struct {
 	// Path parameter
 	TeamName   string
 	PostNumber int
@@ -116,14 +116,14 @@ type PostsPostNumberGetParam struct {
 	Include string
 }
 
-func (p *PostsPostNumberGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *GetPostInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.PostNumber == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostNumberGetParam.TeamName, PostsPostNumberGetParam.PostNumber")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "GetPostInput.TeamName, GetPostInput.PostNumber")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
@@ -140,7 +140,7 @@ func (p *PostsPostNumberGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, 
 	}, nil
 }
 
-type PostsPostParam struct {
+type CreatePostInput struct {
 	// Path parameter
 	TeamName string `json:"-,omitempty"`
 
@@ -154,11 +154,11 @@ type PostsPostParam struct {
 	User     *string
 }
 
-type postsPostPayload struct {
-	Post postsPostPayloadPost `json:"post"`
+type createPostPayload struct {
+	Post createPostPayloadPost `json:"post"`
 }
 
-type postsPostPayloadPost struct {
+type createPostPayloadPost struct {
 	Name     string    `json:"name"` // required
 	BodyMD   *string   `json:"body_md,omitempty"`
 	Tags     []*string `json:"tags,omitempty"`
@@ -168,23 +168,23 @@ type postsPostPayloadPost struct {
 	User     *string   `json:"user,omitempty"`
 }
 
-func (p *PostsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *CreatePostInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostParam.TeamName")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CreatePostInput.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 
 	if p.Name == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostParam.Name")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "CreatePostInput.Name")
 	}
 
-	payload := &postsPostPayload{
-		Post: postsPostPayloadPost{
+	payload := &createPostPayload{
+		Post: createPostPayloadPost{
 			Name:     p.Name,
 			BodyMD:   p.BodyMD,
 			Tags:     p.Tags,
@@ -207,7 +207,7 @@ func (p *PostsPostParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	}, nil
 }
 
-type PostsPostNumberPatchParam struct {
+type UpdatePostInput struct {
 	// Path parameter
 	TeamName   string `json:"-"`
 	PostNumber int    `json:"-"`
@@ -230,11 +230,11 @@ type OriginalRevision struct {
 	User   *string `json:"user,omitempty"`
 }
 
-type postsPostNumberPatchPayload struct {
-	Post postsPostNumberPatchPayloadPost `json:"post"`
+type updatePostPayload struct {
+	Post updatePostPayloadPost `json:"post"`
 }
 
-type postsPostNumberPatchPayloadPost struct {
+type updatePostPayloadPost struct {
 	Name             string            `json:"name,omitempty"`
 	BodyMD           *string           `json:"body_md,omitempty"`
 	Tags             []*string         `json:"tags,omitempty"`
@@ -246,20 +246,20 @@ type postsPostNumberPatchPayloadPost struct {
 	OriginalRevision *OriginalRevision `json:"original_revision,omitempty"`
 }
 
-func (p *PostsPostNumberPatchParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *UpdatePostInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.PostNumber == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostNumberPatchParam.TeamName, PostsPostNumberPatchParam.PostNumber")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "UpdatePostInput.TeamName, UpdatePostInput.PostNumber")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
 
-	payload := &postsPostNumberPatchPayload{
-		Post: postsPostNumberPatchPayloadPost{
+	payload := &updatePostPayload{
+		Post: updatePostPayloadPost{
 			Name:             p.Name,
 			BodyMD:           p.BodyMD,
 			Tags:             p.Tags,
@@ -284,20 +284,20 @@ func (p *PostsPostNumberPatchParam) EsaAPIParameter() (*internal.EsaAPIParameter
 	}, nil
 }
 
-type PostsPostNumberDeleteParam struct {
+type DeletePostInput struct {
 	// Path parameter
 	TeamName   string `json:"-"`
 	PostNumber int    `json:"-"`
 }
 
-func (p *PostsPostNumberDeleteParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *DeletePostInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" || p.PostNumber == 0 {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "PostsPostNumberDeleteParam.TeamName, PostsPostNumberDeleteParam.PostNumber")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "DeletePostInput.TeamName, DeletePostInput.PostNumber")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 	pp = append(pp, internal.PathParameter{Key: ":post_number", Value: strconv.Itoa(p.PostNumber)})
