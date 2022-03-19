@@ -27,3 +27,15 @@ func (r *ListPostStargazersOutput) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// CreatePostStarOutput is struct for the response of
+// POST /v1/teams/:team_name/posts/:post_number/star
+type CreatePostStarOutput struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *CreatePostStarOutput) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}

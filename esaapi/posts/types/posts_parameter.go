@@ -142,7 +142,7 @@ func (p *GetPostInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 
 type CreatePostInput struct {
 	// Path parameter
-	TeamName string `json:"-,omitempty"`
+	TeamName string `json:"-"`
 
 	// Payload
 	Name     string // required
