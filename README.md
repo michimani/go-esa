@@ -55,8 +55,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/michimani/go-esa/esaapi/oauth"
-	"github.com/michimani/go-esa/esaapi/oauth/types"
+	"github.com/michimani/go-esa/esaapi/oauthtoken"
+	"github.com/michimani/go-esa/esaapi/oauthtoken/types"
 	"github.com/michimani/go-esa/gesa"
 )
 
