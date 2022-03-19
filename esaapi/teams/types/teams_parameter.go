@@ -8,26 +8,26 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
-type TeamsGetParam struct {
+type ListTeamsInput struct {
 	Page    *gesa.PageNumber
 	PerPage *gesa.PageNumber
 }
 
-func (p *TeamsGetParam) PageValue() (int, bool) {
+func (p *ListTeamsInput) PageValue() (int, bool) {
 	if p.Page.IsNull() {
 		return 0, false
 	}
 	return p.Page.SafeInt(), true
 }
 
-func (p *TeamsGetParam) PerPageValue() (int, bool) {
+func (p *ListTeamsInput) PerPageValue() (int, bool) {
 	if p.PerPage.IsNull() {
 		return 0, false
 	}
 	return p.PerPage.SafeInt(), true
 }
 
-func (p *TeamsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *ListTeamsInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
@@ -43,18 +43,18 @@ func (p *TeamsGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	}, nil
 }
 
-type TeamsTeamNameGetParam struct {
+type GetTeamInput struct {
 	TeamName string
 }
 
-func (p *TeamsTeamNameGetParam) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+func (p *GetTeamInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
 	if p == nil {
 		return nil, errors.New(internal.ErrorParameterIsNil)
 	}
 
 	pp := internal.PathParameterList{}
 	if p.TeamName == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "TeamsTeamNameGetParam.TeamName")
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "GetTeamInput.TeamName")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
 

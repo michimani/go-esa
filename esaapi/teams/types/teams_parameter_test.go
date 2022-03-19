@@ -9,15 +9,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_TeamsGetParam_PageValue(t *testing.T) {
+func Test_ListTeamsInput_PageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.TeamsGetParam
+		p          *types.ListTeamsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.TeamsGetParam{Page: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.TeamsGetParam{}, 0, false},
+		{"true", &types.ListTeamsInput{Page: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListTeamsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -30,15 +30,15 @@ func Test_TeamsGetParam_PageValue(t *testing.T) {
 	}
 }
 
-func Test_TeamsGetParam_PerPageValue(t *testing.T) {
+func Test_ListTeamsInput_PerPageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.TeamsGetParam
+		p          *types.ListTeamsInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.TeamsGetParam{PerPage: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.TeamsGetParam{}, 0, false},
+		{"true", &types.ListTeamsInput{PerPage: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListTeamsInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -51,16 +51,16 @@ func Test_TeamsGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_TeamsGetParam_EsaAPIParameter(t *testing.T) {
+func Test_ListTeamsInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.TeamsGetParam
+		p       *types.ListTeamsInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p:    &types.TeamsGetParam{},
+			p:    &types.ListTeamsInput{},
 			expect: &internal.EsaAPIParameter{
 				Path:  internal.PathParameterList{},
 				Query: internal.QueryParameterList{},
@@ -68,7 +68,7 @@ func Test_TeamsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with page",
-			p: &types.TeamsGetParam{
+			p: &types.ListTeamsInput{
 				Page: gesa.NewPageNumber(1),
 			},
 			expect: &internal.EsaAPIParameter{
@@ -80,7 +80,7 @@ func Test_TeamsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with per_page",
-			p: &types.TeamsGetParam{
+			p: &types.ListTeamsInput{
 				PerPage: gesa.NewPageNumber(2),
 			},
 			expect: &internal.EsaAPIParameter{
@@ -92,7 +92,7 @@ func Test_TeamsGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with all",
-			p: &types.TeamsGetParam{
+			p: &types.ListTeamsInput{
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},
@@ -126,16 +126,16 @@ func Test_TeamsGetParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_TeamsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
+func Test_GetTeamInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.TeamsTeamNameGetParam
+		p       *types.GetTeamInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.TeamsTeamNameGetParam{
+			p: &types.GetTeamInput{
 				TeamName: "test-team",
 			},
 			expect: &internal.EsaAPIParameter{
@@ -147,7 +147,7 @@ func Test_TeamsTeamNameGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter",
-			p:       &types.TeamsTeamNameGetParam{},
+			p:       &types.GetTeamInput{},
 			expect:  nil,
 			wantErr: true,
 		},

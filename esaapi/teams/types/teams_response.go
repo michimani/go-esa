@@ -7,7 +7,7 @@ import (
 	"github.com/michimani/go-esa/gesa"
 )
 
-type TeamsGetResponse struct {
+type ListTeamsOutput struct {
 	Teams      []models.Team    `json:"teams"`
 	PrevPage   *gesa.PageNumber `json:"prev_page,omitempty"`
 	NextPage   *gesa.PageNumber `json:"next_page,omitempty"`
@@ -19,19 +19,19 @@ type TeamsGetResponse struct {
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *TeamsGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *ListTeamsOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
 }
 
-type TeamsTeamNameGetResponse struct {
+type GetTeamOutput struct {
 	models.Team
 
 	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
 }
 
-func (r *TeamsTeamNameGetResponse) SetRateLimitInfo(h http.Header) {
+func (r *GetTeamOutput) SetRateLimitInfo(h http.Header) {
 	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
 		r.RateLimitInfo = rri
 	}
