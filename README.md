@@ -42,6 +42,8 @@ Progress of supporting APIs...
   - `GET /v1/teams/:team_name/comments/:comment_id/stargazers`
   - `POST /v1/teams/:team_name/comments/:comment_id/star`
   - `DELETE /v1/teams/:team_name/comments/:comment_id/star`
+- **Watches - ウォッチ**
+  - `GET /v1/teams/:team_name/posts/:post_number/watchers`
 
 # Sample
 
