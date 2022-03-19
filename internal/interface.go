@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-type IParameters interface {
+type IInput interface {
 	EsaAPIParameter() (*EsaAPIParameter, error)
 }
 
@@ -13,6 +13,6 @@ type IPaginationParameters interface {
 	PerPageValue() (int, bool)
 }
 
-type IResponse interface {
+type IOutput interface {
 	SetRateLimitInfo(h http.Header)
 }

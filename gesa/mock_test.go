@@ -52,6 +52,6 @@ func (mp mockAPIParameter) EsaAPIParameter() (*internal.EsaAPIParameter, error) 
 	return &internal.EsaAPIParameter{}, nil
 }
 
-type mockAPIResponse struct{}
+type mockAPIOutput struct{}
 
-func (mr mockAPIResponse) SetRateLimitInfo(h http.Header) {}
+func (mr mockAPIOutput) SetRateLimitInfo(h http.Header) {}
