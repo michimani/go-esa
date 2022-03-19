@@ -13,7 +13,7 @@ const (
 
 // ListWatchers calls getting all watchers in a post API.
 // GET /v1/teams/:team_name/posts/:post_number/watchers
-func ListWatchers(ctx context.Context, c *gesa.GesaClient, p *types.ListWatchersInput) (*types.ListWatchersOutput, error) {
+func ListWatchers(ctx context.Context, c *gesa.Client, p *types.ListWatchersInput) (*types.ListWatchersOutput, error) {
 	res := &types.ListWatchersOutput{}
 	if err := c.CallAPI(ctx, listWatchersEndpoint, "GET", p, res); err != nil {
 		return nil, err

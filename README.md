@@ -62,7 +62,7 @@ import (
 
 func main() {
 	token := "your-access-token"
-	c, err := gesa.NewGesaClient(&gesa.NewGesaClientInput{
+	c, err := gesa.NewClient(&gesa.NewClientInput{
 		AccessToken: token,
 	})
 
@@ -73,7 +73,7 @@ func main() {
 	getOAuthTokenInfo(c)
 }
 
-func getOAuthTokenInfo(c *gesa.GesaClient) {
+func getOAuthTokenInfo(c *gesa.Client) {
 	r, err := oauth.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
 	if err != nil {
 		fmt.Println(err)

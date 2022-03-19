@@ -17,7 +17,7 @@ const (
 
 // ListPosts calls getting posts API.
 // GET /:esa_api_version/teams/:team_name/posts
-func ListPosts(ctx context.Context, c *gesa.GesaClient, p *types.ListPostsInput) (*types.ListPostsOutput, error) {
+func ListPosts(ctx context.Context, c *gesa.Client, p *types.ListPostsInput) (*types.ListPostsOutput, error) {
 	res := &types.ListPostsOutput{}
 	if err := c.CallAPI(ctx, listPostsEndpoint, "GET", p, res); err != nil {
 		return nil, err
@@ -28,7 +28,7 @@ func ListPosts(ctx context.Context, c *gesa.GesaClient, p *types.ListPostsInput)
 
 // GetPost calls getting a post API.
 // GET /:esa_api_version/teams/:team_name/posts/:post_number
-func GetPost(ctx context.Context, c *gesa.GesaClient, p *types.GetPostInput) (*types.GetPostOutput, error) {
+func GetPost(ctx context.Context, c *gesa.Client, p *types.GetPostInput) (*types.GetPostOutput, error) {
 	res := &types.GetPostOutput{}
 	if err := c.CallAPI(ctx, getPostEndpoint, "GET", p, res); err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ func GetPost(ctx context.Context, c *gesa.GesaClient, p *types.GetPostInput) (*t
 
 // CreatePost calls creating a new post API.
 // POST /:esa_api_version/teams/:team_name/posts
-func CreatePost(ctx context.Context, c *gesa.GesaClient, p *types.CreatePostInput) (*types.CreatePostOutput, error) {
+func CreatePost(ctx context.Context, c *gesa.Client, p *types.CreatePostInput) (*types.CreatePostOutput, error) {
 	res := &types.CreatePostOutput{}
 	if err := c.CallAPI(ctx, createPostEndpoint, "POST", p, res); err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func CreatePost(ctx context.Context, c *gesa.GesaClient, p *types.CreatePostInpu
 
 // UpdatePost calls updating a post API.
 // PATCH /:esa_api_version/teams/:team_name/posts/:post_number
-func UpdatePost(ctx context.Context, c *gesa.GesaClient, p *types.UpdatePostInput) (*types.UpdatePostOutput, error) {
+func UpdatePost(ctx context.Context, c *gesa.Client, p *types.UpdatePostInput) (*types.UpdatePostOutput, error) {
 	res := &types.UpdatePostOutput{}
 	if err := c.CallAPI(ctx, updatePostEndpoint, "PATCH", p, res); err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func UpdatePost(ctx context.Context, c *gesa.GesaClient, p *types.UpdatePostInpu
 
 // DeletePost calls updating a post API.
 // DELETE /:esa_api_version/teams/:team_name/posts/:post_number
-func DeletePost(ctx context.Context, c *gesa.GesaClient, p *types.DeletePostInput) (*types.DeletePostOutput, error) {
+func DeletePost(ctx context.Context, c *gesa.Client, p *types.DeletePostInput) (*types.DeletePostOutput, error) {
 	res := &types.DeletePostOutput{}
 	if err := c.CallAPI(ctx, deletePostEndpoint, "DELETE", p, res); err != nil {
 		return nil, err

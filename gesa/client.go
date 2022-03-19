@@ -14,18 +14,18 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
-type NewGesaClientInput struct {
+type NewClientInput struct {
 	HTTPClient  *http.Client
 	AccessToken string
 	APIVersion  EsaAPIVersion
 	Debug       bool
 }
 
-type IGesaClient interface {
+type IClient interface {
 	Exec(req *http.Request, r internal.IOutput) error
 }
 
-type GesaClient struct {
+type Client struct {
 	client      *http.Client
 	accessToken string
 	apiVersion  EsaAPIVersion
@@ -42,9 +42,9 @@ var defaultHTTPClient = &http.Client{
 	Timeout: time.Duration(30) * time.Second,
 }
 
-func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
+func NewClient(in *NewClientInput) (*Client, error) {
 	if in == nil {
-		return nil, fmt.Errorf("NewGesaClientInput is nil.")
+		return nil, fmt.Errorf("NewClientInput is nil.")
 	}
 
 	if in.AccessToken == "" {
@@ -58,7 +58,7 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 		return nil, fmt.Errorf("Invalid esa API version.")
 	}
 
-	c := GesaClient{
+	c := Client{
 		client:      defaultHTTPClient,
 		accessToken: in.AccessToken,
 		apiVersion:  apiVersion,
@@ -75,14 +75,14 @@ func NewGesaClient(in *NewGesaClientInput) (*GesaClient, error) {
 	return &c, nil
 }
 
-func (c *GesaClient) AccessToken() string {
+func (c *Client) AccessToken() string {
 	if c == nil {
 		return ""
 	}
 	return c.accessToken
 }
 
-func (c *GesaClient) CallAPI(ctx context.Context, endpoint, method string, p internal.IInput, r internal.IOutput) error {
+func (c *Client) CallAPI(ctx context.Context, endpoint, method string, p internal.IInput, r internal.IOutput) error {
 	req, err := c.prepare(ctx, endpoint, method, p)
 	if err != nil {
 		return wrapErr(err)
@@ -103,7 +103,7 @@ var okCodes map[int]struct{} = map[int]struct{}{
 	http.StatusNoContent: {},
 }
 
-func (c *GesaClient) Exec(req *http.Request, r internal.IOutput) (*EsaAPIError, error) {
+func (c *Client) Exec(req *http.Request, r internal.IOutput) (*EsaAPIError, error) {
 	res, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -141,7 +141,7 @@ func (c *GesaClient) Exec(req *http.Request, r internal.IOutput) (*EsaAPIError, 
 	return nil, nil
 }
 
-func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p internal.IInput) (*http.Request, error) {
+func (c *Client) prepare(ctx context.Context, endpointBase, method string, p internal.IInput) (*http.Request, error) {
 	if p == nil {
 		return nil, errors.New("parameter is nil")
 	}
@@ -170,7 +170,7 @@ func (c *GesaClient) prepare(ctx context.Context, endpointBase, method string, p
 	return req, nil
 }
 
-func (c *GesaClient) resolveEndpoint(base string, eap internal.EsaAPIParameter) (string, error) {
+func (c *Client) resolveEndpoint(base string, eap internal.EsaAPIParameter) (string, error) {
 	endpoint := internal.ResolveEndpoint(base, eap.Path, eap.Query)
 	return c.apiVersion.ResolveEndpoint(endpoint)
 }

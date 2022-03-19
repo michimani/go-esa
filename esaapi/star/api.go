@@ -18,7 +18,7 @@ const (
 
 // ListPostStargazers calls getting all stargazers in a post API.
 // GET /v1/teams/:team_name/posts/:post_number/stargazers
-func ListPostStargazers(ctx context.Context, c *gesa.GesaClient, p *types.ListPostStargazersInput) (*types.ListPostStargazersOutput, error) {
+func ListPostStargazers(ctx context.Context, c *gesa.Client, p *types.ListPostStargazersInput) (*types.ListPostStargazersOutput, error) {
 	res := &types.ListPostStargazersOutput{}
 	if err := c.CallAPI(ctx, listPostStargazersEndpoint, "GET", p, res); err != nil {
 		return nil, err
@@ -29,7 +29,7 @@ func ListPostStargazers(ctx context.Context, c *gesa.GesaClient, p *types.ListPo
 
 // CreatePostStar calls getting all stargazers in a post API.
 // POST /v1/teams/:team_name/posts/:post_number/star
-func CreatePostStar(ctx context.Context, c *gesa.GesaClient, p *types.CreatePostStarInput) (*types.CreatePostStarOutput, error) {
+func CreatePostStar(ctx context.Context, c *gesa.Client, p *types.CreatePostStarInput) (*types.CreatePostStarOutput, error) {
 	res := &types.CreatePostStarOutput{}
 	if err := c.CallAPI(ctx, createPostStarEndpoint, "POST", p, res); err != nil {
 		return nil, err
@@ -40,7 +40,7 @@ func CreatePostStar(ctx context.Context, c *gesa.GesaClient, p *types.CreatePost
 
 // DeletePostStar calls getting all stargazers in a post API.
 // DELETE /v1/teams/:team_name/posts/:post_number/star
-func DeletePostStar(ctx context.Context, c *gesa.GesaClient, p *types.DeletePostStarInput) (*types.DeletePostStarOutput, error) {
+func DeletePostStar(ctx context.Context, c *gesa.Client, p *types.DeletePostStarInput) (*types.DeletePostStarOutput, error) {
 	res := &types.DeletePostStarOutput{}
 	if err := c.CallAPI(ctx, deletePostStarEndpoint, "DELETE", p, res); err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func DeletePostStar(ctx context.Context, c *gesa.GesaClient, p *types.DeletePost
 
 // ListCommentStargazers calls getting all stargazers in a comment API.
 // GET /v1/teams/:team_name/comments/:comment_id/stargazers
-func ListCommentStargazers(ctx context.Context, c *gesa.GesaClient, p *types.ListCommentStargazersInput) (*types.ListCommentStargazersOutput, error) {
+func ListCommentStargazers(ctx context.Context, c *gesa.Client, p *types.ListCommentStargazersInput) (*types.ListCommentStargazersOutput, error) {
 	res := &types.ListCommentStargazersOutput{}
 	if err := c.CallAPI(ctx, listCommentStargazersEndpoint, "GET", p, res); err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func ListCommentStargazers(ctx context.Context, c *gesa.GesaClient, p *types.Lis
 
 // CreateCommentStar calls getting all stargazers in a comment API.
 // POST /v1/teams/:team_name/comments/:comment_id/star
-func CreateCommentStar(ctx context.Context, c *gesa.GesaClient, p *types.CreateCommentStarInput) (*types.CreateCommentStarOutput, error) {
+func CreateCommentStar(ctx context.Context, c *gesa.Client, p *types.CreateCommentStarInput) (*types.CreateCommentStarOutput, error) {
 	res := &types.CreateCommentStarOutput{}
 	if err := c.CallAPI(ctx, createCommentStarEndpoint, "POST", p, res); err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func CreateCommentStar(ctx context.Context, c *gesa.GesaClient, p *types.CreateC
 
 // DeleteCommentStar calls getting all stargazers in a comment API.
 // DELETE /v1/teams/:team_name/comments/:comment_id/star
-func DeleteCommentStar(ctx context.Context, c *gesa.GesaClient, p *types.DeleteCommentStarInput) (*types.DeleteCommentStarOutput, error) {
+func DeleteCommentStar(ctx context.Context, c *gesa.Client, p *types.DeleteCommentStarInput) (*types.DeleteCommentStarOutput, error) {
 	res := &types.DeleteCommentStarOutput{}
 	if err := c.CallAPI(ctx, deleteCommentStarEndpoint, "DELETE", p, res); err != nil {
 		return nil, err
