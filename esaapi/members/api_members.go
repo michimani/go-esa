@@ -8,26 +8,26 @@ import (
 )
 
 const (
-	membersGetEndpoint              = "https://api.esa.io/:esa_api_version/teams/:team_name/members"
-	membersScreenNameDeleteEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/members/:screen_name"
+	listMembersEndpoint  = "https://api.esa.io/:esa_api_version/teams/:team_name/members"
+	deleteMemberEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/members/:screen_name"
 )
 
-// MembersGet calls getting members API.
+// ListMembers calls getting members API.
 // GET /:esa_api_version/teams/:team_name/members
-func MembersGet(ctx context.Context, c *gesa.GesaClient, p *types.MembersGetParam) (*types.MembersGetResponse, error) {
-	res := &types.MembersGetResponse{}
-	if err := c.CallAPI(ctx, membersGetEndpoint, "GET", p, res); err != nil {
+func ListMembers(ctx context.Context, c *gesa.GesaClient, p *types.ListMembersInput) (*types.ListMembersOutput, error) {
+	res := &types.ListMembersOutput{}
+	if err := c.CallAPI(ctx, listMembersEndpoint, "GET", p, res); err != nil {
 		return nil, err
 	}
 
 	return res, nil
 }
 
-// MembersScreenNameDelete calls deleting a member API.
+// DeleteMember calls deleting a member API.
 // DELETE /:esa_api_version/teams/:team_name/members/:screen_name
-func MembersScreenNameDelete(ctx context.Context, c *gesa.GesaClient, p *types.MembersScreenNameDeleteParam) (*types.MembersScreenNameDeleteResponse, error) {
-	res := &types.MembersScreenNameDeleteResponse{}
-	if err := c.CallAPI(ctx, membersScreenNameDeleteEndpoint, "DELETE", p, res); err != nil {
+func DeleteMember(ctx context.Context, c *gesa.GesaClient, p *types.DeleteMemberInput) (*types.DeleteMemberOutput, error) {
+	res := &types.DeleteMemberOutput{}
+	if err := c.CallAPI(ctx, deleteMemberEndpoint, "DELETE", p, res); err != nil {
 		return nil, err
 	}
 

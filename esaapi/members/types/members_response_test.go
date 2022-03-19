@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
+func Test_ListMembersOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.MembersGetResponse
+		want *types.ListMembersOutput
 	}{
 		{
 			name: "normal",
@@ -24,7 +24,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersGetResponse{
+			want: &types.ListMembersOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -39,7 +39,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersGetResponse{
+			want: &types.ListMembersOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -54,7 +54,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersGetResponse{
+			want: &types.ListMembersOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -69,7 +69,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.MembersGetResponse{
+			want: &types.ListMembersOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -84,7 +84,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersGetResponse{
+			want: &types.ListMembersOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -95,7 +95,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersGetResponse{
+			want: &types.ListMembersOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -106,7 +106,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.MembersGetResponse{
+			want: &types.ListMembersOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -115,7 +115,7 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.MembersGetResponse{}
+			res := &types.ListMembersOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)
@@ -123,13 +123,13 @@ func Test_MembersGetResponse_SetRateLimitInfo(t *testing.T) {
 	}
 }
 
-func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
+func Test_DeleteMemberOutput_SetRateLimitInfo(t *testing.T) {
 	resetTimestamp := gesa.Timestamp(100000000)
 
 	cases := []struct {
 		name string
 		h    http.Header
-		want *types.MembersScreenNameDeleteResponse
+		want *types.DeleteMemberOutput
 	}{
 		{
 			name: "normal",
@@ -138,7 +138,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersScreenNameDeleteResponse{
+			want: &types.DeleteMemberOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -153,7 +153,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersScreenNameDeleteResponse{
+			want: &types.DeleteMemberOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     0,
 					Remaining: 100,
@@ -168,7 +168,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersScreenNameDeleteResponse{
+			want: &types.DeleteMemberOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 0,
@@ -183,7 +183,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{},
 			},
-			want: &types.MembersScreenNameDeleteResponse{
+			want: &types.DeleteMemberOutput{
 				RateLimitInfo: &gesa.RateLimitInformation{
 					Limit:     1,
 					Remaining: 100,
@@ -198,7 +198,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersScreenNameDeleteResponse{
+			want: &types.DeleteMemberOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -209,7 +209,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"a"},
 				"X-RateLimit-Reset":     []string{"100000000"},
 			},
-			want: &types.MembersScreenNameDeleteResponse{
+			want: &types.DeleteMemberOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -220,7 +220,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 				"X-RateLimit-Remaining": []string{"100"},
 				"X-RateLimit-Reset":     []string{"a"},
 			},
-			want: &types.MembersScreenNameDeleteResponse{
+			want: &types.DeleteMemberOutput{
 				RateLimitInfo: nil,
 			},
 		},
@@ -229,7 +229,7 @@ func Test_MembersScreenNameDeleteResponse_SetRateLimitInfo(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			res := &types.MembersScreenNameDeleteResponse{}
+			res := &types.DeleteMemberOutput{}
 			res.SetRateLimitInfo(c.h)
 
 			asst.Equal(c.want.RateLimitInfo, res.RateLimitInfo)

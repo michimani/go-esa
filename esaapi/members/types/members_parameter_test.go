@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_MembersGetSort_IsValid(t *testing.T) {
+func Test_ListMembersSort_IsValid(t *testing.T) {
 	cases := []struct {
 		name   string
 		s      string
@@ -24,12 +24,12 @@ func Test_MembersGetSort_IsValid(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			asst.Equal(c.expect, types.MembersGetSort(c.s).IsValid())
+			asst.Equal(c.expect, types.ListMembersSort(c.s).IsValid())
 		})
 	}
 }
 
-func Test_MembersGetOrder_IsValid(t *testing.T) {
+func Test_ListMembersOrder_IsValid(t *testing.T) {
 	cases := []struct {
 		name   string
 		s      string
@@ -43,20 +43,20 @@ func Test_MembersGetOrder_IsValid(t *testing.T) {
 	for _, c := range cases {
 		t.Run(c.name, func(tt *testing.T) {
 			asst := assert.New(tt)
-			asst.Equal(c.expect, types.MembersGetOrder(c.s).IsValid())
+			asst.Equal(c.expect, types.ListMembersOrder(c.s).IsValid())
 		})
 	}
 }
 
-func Test_MembersGetParam_PageValue(t *testing.T) {
+func Test_ListMembersInput_PageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.MembersGetParam
+		p          *types.ListMembersInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.MembersGetParam{Page: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.MembersGetParam{}, 0, false},
+		{"true", &types.ListMembersInput{Page: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListMembersInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -69,15 +69,15 @@ func Test_MembersGetParam_PageValue(t *testing.T) {
 	}
 }
 
-func Test_MembersGetParam_PerPageValue(t *testing.T) {
+func Test_ListMembersInput_PerPageValue(t *testing.T) {
 	cases := []struct {
 		name       string
-		p          *types.MembersGetParam
+		p          *types.ListMembersInput
 		expectInt  int
 		expectBool bool
 	}{
-		{"true", &types.MembersGetParam{PerPage: gesa.NewPageNumber(1)}, 1, true},
-		{"false", &types.MembersGetParam{}, 0, false},
+		{"true", &types.ListMembersInput{PerPage: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListMembersInput{}, 0, false},
 	}
 
 	for _, c := range cases {
@@ -90,16 +90,16 @@ func Test_MembersGetParam_PerPageValue(t *testing.T) {
 	}
 }
 
-func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
+func Test_ListMembersInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.MembersGetParam
+		p       *types.ListMembersInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.MembersGetParam{
+			p: &types.ListMembersInput{
 				TeamName: "test-team",
 			},
 			expect: &internal.EsaAPIParameter{
@@ -111,7 +111,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with page",
-			p: &types.MembersGetParam{
+			p: &types.ListMembersInput{
 				TeamName: "test-team",
 				Page:     gesa.NewPageNumber(1),
 			},
@@ -126,7 +126,7 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with per_page",
-			p: &types.MembersGetParam{
+			p: &types.ListMembersInput{
 				TeamName: "test-team",
 				PerPage:  gesa.NewPageNumber(2),
 			},
@@ -141,9 +141,9 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with sort",
-			p: &types.MembersGetParam{
+			p: &types.ListMembersInput{
 				TeamName: "test-team",
-				Sort:     types.MembersGetSortJoined,
+				Sort:     types.ListMembersSortJoined,
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
@@ -156,9 +156,9 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with order",
-			p: &types.MembersGetParam{
+			p: &types.ListMembersInput{
 				TeamName: "test-team",
-				Order:    types.MembersGetOrderAsc,
+				Order:    types.ListMembersOrderAsc,
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
@@ -171,10 +171,10 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "with all",
-			p: &types.MembersGetParam{
+			p: &types.ListMembersInput{
 				TeamName: "test-team",
-				Sort:     types.MembersGetSortPostsCount,
-				Order:    types.MembersGetOrderDesc,
+				Sort:     types.ListMembersSortPostsCount,
+				Order:    types.ListMembersOrderDesc,
 				Page:     gesa.NewPageNumber(1),
 				PerPage:  gesa.NewPageNumber(2),
 			},
@@ -192,9 +192,9 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter",
-			p: &types.MembersGetParam{
-				Sort:    types.MembersGetSortPostsCount,
-				Order:   types.MembersGetOrderDesc,
+			p: &types.ListMembersInput{
+				Sort:    types.ListMembersSortPostsCount,
+				Order:   types.ListMembersOrderDesc,
 				Page:    gesa.NewPageNumber(1),
 				PerPage: gesa.NewPageNumber(2),
 			},
@@ -223,16 +223,16 @@ func Test_MembersGetParam_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
+func Test_DeleteMemberInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.MembersScreenNameDeleteParam
+		p       *types.DeleteMemberInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.MembersScreenNameDeleteParam{
+			p: &types.DeleteMemberInput{
 				TeamName:   "test-team",
 				ScreenName: "test-screen-name",
 			},
@@ -246,7 +246,7 @@ func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: only team_name",
-			p: &types.MembersScreenNameDeleteParam{
+			p: &types.DeleteMemberInput{
 				TeamName: "test-team",
 			},
 			expect:  nil,
@@ -254,7 +254,7 @@ func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name: "ng: not has required parameter: only screen_name",
-			p: &types.MembersScreenNameDeleteParam{
+			p: &types.DeleteMemberInput{
 				ScreenName: "test-screen-name",
 			},
 			expect:  nil,
@@ -262,7 +262,7 @@ func Test_MembersScreenNameDeleteParam_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter: both",
-			p:       &types.MembersScreenNameDeleteParam{},
+			p:       &types.DeleteMemberInput{},
 			expect:  nil,
 			wantErr: true,
 		},
