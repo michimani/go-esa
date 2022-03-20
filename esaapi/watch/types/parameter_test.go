@@ -166,3 +166,62 @@ func Test_ListWatchersInput_EsaAPIParameter(t *testing.T) {
 		})
 	}
 }
+
+func Test_CreateWatchInput_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name    string
+		p       *types.CreateWatchInput
+		expect  *internal.EsaAPIParameter
+		wantErr bool
+	}{
+		{
+			name: "ok",
+			p: &types.CreateWatchInput{
+				TeamName:   "test-team",
+				PostNumber: 1,
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+					{Key: ":post_number", Value: "1"},
+				},
+				Query: internal.QueryParameterList{},
+			},
+		},
+		{
+			name: "ng: not has required parameter: has only TeamName",
+			p: &types.CreateWatchInput{
+				TeamName: "test-team",
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name: "ng: not has required parameter: has only PostNumber",
+			p: &types.CreateWatchInput{
+				PostNumber: 1,
+			},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+			ep, err := c.p.EsaAPIParameter()
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}

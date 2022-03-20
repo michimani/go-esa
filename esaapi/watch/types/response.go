@@ -27,3 +27,15 @@ func (r *ListWatchersOutput) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// CreateWatchOutput is struct for the response of
+// POST /v1/teams/:team_name/posts/:post_number/watch
+type CreateWatchOutput struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *CreateWatchOutput) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}

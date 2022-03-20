@@ -44,6 +44,7 @@ Progress of supporting APIs...
   - `DELETE /v1/teams/:team_name/comments/:comment_id/star`
 - **Watch**
   - `GET /v1/teams/:team_name/posts/:post_number/watchers`
+  - `POST /v1/teams/:team_name/posts/:post_number/watch`
 
 # Sample
 
