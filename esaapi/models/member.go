@@ -20,3 +20,14 @@ type User struct {
 	ScreenName string `json:"screen_name"`
 	Icon       string `json:"icon"`
 }
+
+type Me struct {
+	ID         int        `json:"id"`
+	Name       string     `json:"name"`
+	ScreenName string     `json:"screen_name"`
+	CreatedAt  *time.Time `json:"created_at"`
+	UpdatedAt  *time.Time `json:"updated_at"`
+	Icon       string     `json:"icon"`
+	Email      string     `json:"email"`
+	Teams      []Team     `json:"teams,omitempty"`
+}
