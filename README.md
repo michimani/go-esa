@@ -48,6 +48,8 @@ Progress of supporting APIs...
   - `DELETE /v1/teams/:team_name/posts/:post_number/watch`
 - **Tag**
   - `GET v1/teams/:team_name/tags`
+- **User**
+  - `GET /v1/user`
 
 # Sample
 
