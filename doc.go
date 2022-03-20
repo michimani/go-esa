@@ -33,7 +33,7 @@
 //     }
 //
 //     func getOAuthTokenInfo(c *gesa.Client) {
-//         r, err := oauth.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
+//         r, err := oauthtoken.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
 //         if err != nil {
 //             fmt.Println(err)
 //

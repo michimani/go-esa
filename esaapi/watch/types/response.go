@@ -39,3 +39,15 @@ func (r *CreateWatchOutput) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+// DeleteWatchOutput is struct for the response of
+// DELETE /v1/teams/:team_name/posts/:post_number/watch
+type DeleteWatchOutput struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *DeleteWatchOutput) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
