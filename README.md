@@ -106,9 +106,9 @@ func getOAuthTokenInfo(c *gesa.Client) {
 }
 ```
 
-# Licence
+# License
 
-[MIT](https://github.com/michimani/go-esa/blob/main/LICENCE)
+[MIT](https://github.com/michimani/go-esa/blob/main/LICENSE)
 
 # Author
 
