@@ -8,26 +8,28 @@ import (
 )
 
 const (
-	RATE_LIMIT_LIMIT_HEADER_KEY     = "X-RateLimit-Limit"
-	RATE_LIMIT_REMAINING_HEADER_KEY = "X-RateLimit-Remaining"
-	RATE_LIMIT_RESET_HEADER_KEY     = "X-RateLimit-Reset"
+	RATE_LIMIT_LIMIT_HEADER_KEY     = "x-ratelimit-limit"
+	RATE_LIMIT_REMAINING_HEADER_KEY = "x-ratelimit-remaining"
+	RATE_LIMIT_RESET_HEADER_KEY     = "x-ratelimit-reset"
 )
 
 func GetRateLimitInformation(resHeader http.Header) (*RateLimitInformation, error) {
+	lh := internal.HeaderKeyToLower(resHeader)
+
 	i := RateLimitInformation{}
-	limit, err := rateLimitLimit(resHeader)
+	limit, err := rateLimitLimit(lh)
 	if err != nil {
 		return nil, err
 	}
 	i.Limit = limit
 
-	remaining, err := rateLimitRemaining(resHeader)
+	remaining, err := rateLimitRemaining(lh)
 	if err != nil {
 		return nil, err
 	}
 	i.Remaining = remaining
 
-	reset, err := rateLimitReset(resHeader)
+	reset, err := rateLimitReset(lh)
 	if err != nil {
 		return nil, err
 	}
