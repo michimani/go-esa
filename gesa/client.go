@@ -133,7 +133,7 @@ func (c *Client) Exec(req *http.Request, r internal.IOutput) (*EsaAPIError, erro
 	}
 
 	if c.debug {
-		fmt.Printf("------DEBUG------\nraw response\n%s\n------DEBUG END------\n", debugBuf.String())
+		fmt.Printf("------DEBUG------\n[response header]\n%v\n[response body]\n%s\n------DEBUG END------\n", res.Header, debugBuf.String())
 	}
 
 	r.SetRateLimitInfo(res.Header)

@@ -50,3 +50,39 @@ func Test_HeaderValue(t *testing.T) {
 		})
 	}
 }
+
+func Test_HeaderKeyToLower(t *testing.T) {
+	cases := []struct {
+		name   string
+		header http.Header
+		expect http.Header
+	}{
+		{
+			name: "ok",
+			header: http.Header{
+				"Key1": []string{"value1-1", "value1-2"},
+				"KEY2": []string{"value2-1", "value2-2"},
+				"key3": []string{"value3-1", "value3-2"},
+			},
+			expect: http.Header{
+				"key1": []string{"value1-1", "value1-2"},
+				"key2": []string{"value2-1", "value2-2"},
+				"key3": []string{"value3-1", "value3-2"},
+			},
+		},
+		{
+			name:   "ok: empty",
+			header: http.Header{},
+			expect: http.Header{},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			lh := internal.HeaderKeyToLower(c.header)
+
+			assert.Len(tt, lh, len(c.expect))
+			assert.Equal(tt, c.expect, lh)
+		})
+	}
+}
