@@ -46,6 +46,8 @@ Progress of supporting APIs...
   - `GET /v1/teams/:team_name/posts/:post_number/watchers`
   - `POST /v1/teams/:team_name/posts/:post_number/watch`
   - `DELETE /v1/teams/:team_name/posts/:post_number/watch`
+- **Tag**
+  - `GET v1/teams/:team_name/tags`
 
 # Sample
 
