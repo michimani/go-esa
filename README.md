@@ -45,6 +45,7 @@ Progress of supporting APIs...
 - **Watch**
   - `GET /v1/teams/:team_name/posts/:post_number/watchers`
   - `POST /v1/teams/:team_name/posts/:post_number/watch`
+  - `DELETE /v1/teams/:team_name/posts/:post_number/watch`
 
 # Sample
 
@@ -75,7 +76,7 @@ func main() {
 }
 
 func getOAuthTokenInfo(c *gesa.Client) {
-	r, err := oauth.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
+	r, err := oauthtoken.GetOAuthTokenInfo(context.Background(), c, &types.GetOAuthTokenInfoInput{})
 	if err != nil {
 		fmt.Println(err)
 
