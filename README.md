@@ -53,6 +53,7 @@ Progress of supporting APIs...
 - **Emoji**
   - `GET /v1/teams/:team_name/emojis`
   - `POST /v1/teams/:team_name/emojis`
+  - `DELETE /v1/teams/:team_name/emojis/:code`
 - **User**
   - `GET /v1/user`
 
