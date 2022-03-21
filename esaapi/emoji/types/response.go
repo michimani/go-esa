@@ -18,3 +18,15 @@ func (r *ListEmojisOutput) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+type CreateEmojiOutput struct {
+	Code string `json:"code"`
+
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *CreateEmojiOutput) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}

@@ -52,6 +52,7 @@ Progress of supporting APIs...
   - `POST v1/teams/:team_name/categories/batch_move`
 - **Emoji**
   - `GET /v1/teams/:team_name/emojis`
+  - `POST /v1/teams/:team_name/emojis`
 - **User**
   - `GET /v1/user`
 

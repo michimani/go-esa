@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	listEmojisEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/emojis"
+	listEmojisEndpoint  = "https://api.esa.io/:esa_api_version/teams/:team_name/emojis"
+	createEmojiEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/emojis"
 )
 
 // ListEmojis calls getting all emojis in the team API.
@@ -16,6 +17,17 @@ const (
 func ListEmojis(ctx context.Context, c *gesa.Client, p *types.ListEmojisInput) (*types.ListEmojisOutput, error) {
 	res := &types.ListEmojisOutput{}
 	if err := c.CallAPI(ctx, listEmojisEndpoint, "GET", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// CreateEmoji calls creating new emoji API.
+// POST /v1/teams/:team_name/emojis
+func CreateEmoji(ctx context.Context, c *gesa.Client, p *types.CreateEmojiInput) (*types.CreateEmojiOutput, error) {
+	res := &types.CreateEmojiOutput{}
+	if err := c.CallAPI(ctx, createEmojiEndpoint, "POST", p, res); err != nil {
 		return nil, err
 	}
 
