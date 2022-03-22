@@ -1,6 +1,7 @@
 go-esa
 ===
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/michimani/go-esa.svg)](https://pkg.go.dev/github.com/michimani/go-esa)  
 [![codecov](https://codecov.io/gh/michimani/go-esa/branch/main/graph/badge.svg?token=JL9T8F4GBX)](https://codecov.io/gh/michimani/go-esa)  
 
 Unofficial esa SDK for the Go programming language.
