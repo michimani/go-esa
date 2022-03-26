@@ -11,6 +11,7 @@ const (
 	getURLInvitationEndpoint        = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation"
 	regenerateURLInvitationEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation_regenerator"
 	createEmailInvitations          = "https://api.esa.io/:esa_api_version/teams/:team_name/invitations"
+	listEmailInvitations            = "https://api.esa.io/:esa_api_version/teams/:team_name/invitations"
 )
 
 // GetURLInvitation calls getting a invitation URL API.
@@ -29,6 +30,17 @@ func GetURLInvitation(ctx context.Context, c *gesa.Client, p *types.GetURLInvita
 func RegenerateURLInvitation(ctx context.Context, c *gesa.Client, p *types.RegenerateURLInvitationInput) (*types.RegenerateURLInvitationOutput, error) {
 	res := &types.RegenerateURLInvitationOutput{}
 	if err := c.CallAPI(ctx, regenerateURLInvitationEndpoint, "POST", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// ListEmailInvitations calls create email invitations API.
+// POST /v1/teams/:team_name/invitations
+func ListEmailInvitations(ctx context.Context, c *gesa.Client, p *types.ListEmailInvitationsInput) (*types.ListEmailInvitationsOutput, error) {
+	res := &types.ListEmailInvitationsOutput{}
+	if err := c.CallAPI(ctx, listEmailInvitations, "GET", p, res); err != nil {
 		return nil, err
 	}
 

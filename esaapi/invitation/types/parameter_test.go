@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/michimani/go-esa/esaapi/invitation/types"
+	"github.com/michimani/go-esa/gesa"
 	"github.com/michimani/go-esa/internal"
 	"github.com/stretchr/testify/assert"
 )
@@ -78,6 +79,145 @@ func Test_RegenerateURLInvitationInput_EsaAPIParameter(t *testing.T) {
 		{
 			name:    "ng: not has required parameter",
 			p:       &types.RegenerateURLInvitationInput{},
+			expect:  nil,
+			wantErr: true,
+		},
+		{
+			name:    "ng: nil",
+			p:       nil,
+			expect:  nil,
+			wantErr: true,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+			ep, err := c.p.EsaAPIParameter()
+			if c.wantErr {
+				asst.Error(err)
+				asst.Nil(ep)
+				return
+			}
+			assert.Equal(tt, c.expect, ep)
+		})
+	}
+}
+
+func Test_ListEmailInvitationsInput_PageValue(t *testing.T) {
+	cases := []struct {
+		name       string
+		p          *types.ListEmailInvitationsInput
+		expectInt  int
+		expectBool bool
+	}{
+		{"true", &types.ListEmailInvitationsInput{Page: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListEmailInvitationsInput{}, 0, false},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+			i, b := c.p.PageValue()
+			asst.Equal(c.expectInt, i)
+			asst.Equal(c.expectBool, b)
+		})
+	}
+}
+
+func Test_ListEmailInvitationsInput_PerPageValue(t *testing.T) {
+	cases := []struct {
+		name       string
+		p          *types.ListEmailInvitationsInput
+		expectInt  int
+		expectBool bool
+	}{
+		{"true", &types.ListEmailInvitationsInput{PerPage: gesa.NewPageNumber(1)}, 1, true},
+		{"false", &types.ListEmailInvitationsInput{}, 0, false},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(tt *testing.T) {
+			asst := assert.New(tt)
+			i, b := c.p.PerPageValue()
+			asst.Equal(c.expectInt, i)
+			asst.Equal(c.expectBool, b)
+		})
+	}
+}
+
+func Test_ListEmailInvitationsInput_EsaAPIParameter(t *testing.T) {
+	cases := []struct {
+		name    string
+		p       *types.ListEmailInvitationsInput
+		expect  *internal.EsaAPIParameter
+		wantErr bool
+	}{
+		{
+			name: "ok",
+			p: &types.ListEmailInvitationsInput{
+				TeamName: "test-team",
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{},
+			},
+		},
+		{
+			name: "with page",
+			p: &types.ListEmailInvitationsInput{
+				TeamName: "test-team",
+				Page:     gesa.NewPageNumber(1),
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "page", Value: "1"},
+				},
+			},
+		},
+		{
+			name: "with per_page",
+			p: &types.ListEmailInvitationsInput{
+				TeamName: "test-team",
+				PerPage:  gesa.NewPageNumber(2),
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "per_page", Value: "2"},
+				},
+			},
+		},
+		{
+			name: "with all",
+			p: &types.ListEmailInvitationsInput{
+				TeamName: "test-team",
+				Page:     gesa.NewPageNumber(1),
+				PerPage:  gesa.NewPageNumber(2),
+			},
+			expect: &internal.EsaAPIParameter{
+				Path: internal.PathParameterList{
+					{Key: ":team_name", Value: "test-team"},
+				},
+				Query: internal.QueryParameterList{
+					{Key: "page", Value: "1"},
+					{Key: "per_page", Value: "2"},
+				},
+			},
+		},
+		{
+			name: "ng: not has required parameter",
+			p: &types.ListEmailInvitationsInput{
+				Page:    gesa.NewPageNumber(1),
+				PerPage: gesa.NewPageNumber(2),
+			},
 			expect:  nil,
 			wantErr: true,
 		},
