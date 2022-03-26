@@ -57,6 +57,9 @@ Progress of supporting APIs...
   - `DELETE /v1/teams/:team_name/emojis/:code`
 - **User**
   - `GET /v1/user`
+- **Invitation**
+  - `GET /v1/teams/:team_name/invitation`
+  - `POST /v1/teams/:team_name/invitation_regenerator`
 
 # Sample
 
