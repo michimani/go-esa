@@ -17,3 +17,15 @@ func (r *GetInvitationOutput) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+type RegenerateInvitationOutput struct {
+	URL string `json:"url"`
+
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *RegenerateInvitationOutput) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
