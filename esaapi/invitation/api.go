@@ -10,8 +10,9 @@ import (
 const (
 	getURLInvitationEndpoint        = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation"
 	regenerateURLInvitationEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation_regenerator"
-	createEmailInvitations          = "https://api.esa.io/:esa_api_version/teams/:team_name/invitations"
-	listEmailInvitations            = "https://api.esa.io/:esa_api_version/teams/:team_name/invitations"
+	createEmailInvitationsEndpoint  = "https://api.esa.io/:esa_api_version/teams/:team_name/invitations"
+	listEmailInvitationsEndpoint    = "https://api.esa.io/:esa_api_version/teams/:team_name/invitations"
+	deleteEmailInvitationEndpoint   = "https://api.esa.io/:esa_api_version/teams/:team_name/invitations/:code"
 )
 
 // GetURLInvitation calls getting a invitation URL API.
@@ -36,11 +37,11 @@ func RegenerateURLInvitation(ctx context.Context, c *gesa.Client, p *types.Regen
 	return res, nil
 }
 
-// ListEmailInvitations calls create email invitations API.
+// ListEmailInvitations calls getting list of all email invitations API.
 // POST /v1/teams/:team_name/invitations
 func ListEmailInvitations(ctx context.Context, c *gesa.Client, p *types.ListEmailInvitationsInput) (*types.ListEmailInvitationsOutput, error) {
 	res := &types.ListEmailInvitationsOutput{}
-	if err := c.CallAPI(ctx, listEmailInvitations, "GET", p, res); err != nil {
+	if err := c.CallAPI(ctx, listEmailInvitationsEndpoint, "GET", p, res); err != nil {
 		return nil, err
 	}
 
@@ -51,7 +52,18 @@ func ListEmailInvitations(ctx context.Context, c *gesa.Client, p *types.ListEmai
 // POST /v1/teams/:team_name/invitations
 func CreateEmailInvitations(ctx context.Context, c *gesa.Client, p *types.CreateEmailInvitationsInput) (*types.CreateEmailInvitationsOutput, error) {
 	res := &types.CreateEmailInvitationsOutput{}
-	if err := c.CallAPI(ctx, createEmailInvitations, "POST", p, res); err != nil {
+	if err := c.CallAPI(ctx, createEmailInvitationsEndpoint, "POST", p, res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+// DeleteEmailInvitation calls delete email invitation API.
+// DELETE /v1/teams/:team_name/invitations/:code
+func DeleteEmailInvitation(ctx context.Context, c *gesa.Client, p *types.DeleteEmailInvitationInput) (*types.DeleteEmailInvitationOutput, error) {
+	res := &types.DeleteEmailInvitationOutput{}
+	if err := c.CallAPI(ctx, deleteEmailInvitationEndpoint, "DELETE", p, res); err != nil {
 		return nil, err
 	}
 

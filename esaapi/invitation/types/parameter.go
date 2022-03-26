@@ -142,3 +142,27 @@ func (p *CreateEmailInvitationsInput) EsaAPIParameter() (*internal.EsaAPIParamet
 		Body:  strings.NewReader(string(json)),
 	}, nil
 }
+
+type DeleteEmailInvitationInput struct {
+	TeamName string // required
+	Code     string // required
+}
+
+func (p *DeleteEmailInvitationInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
+	if p == nil {
+		return nil, errors.New(internal.ErrorParameterIsNil)
+	}
+
+	pp := internal.PathParameterList{}
+	if p.TeamName == "" || p.Code == "" {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "DeleteEmailInvitationInput.TeamName, DeleteEmailInvitationInput.Code")
+	}
+	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
+	pp = append(pp, internal.PathParameter{Key: ":code", Value: p.Code})
+
+	return &internal.EsaAPIParameter{
+		Path:  pp,
+		Query: internal.QueryParameterList{},
+		Body:  nil,
+	}, nil
+}

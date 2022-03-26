@@ -63,6 +63,7 @@ Progress of supporting APIs...
 - **Invitation by Email**
   - `POST /v1/teams/:team_name/invitations`
   - `GET /v1/teams/:team_name/invitations`
+  - `DELETE /v1/teams/:team_name/invitations/:code`
 
 # Sample
 
