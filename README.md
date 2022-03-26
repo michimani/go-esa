@@ -62,6 +62,7 @@ Progress of supporting APIs...
   - `POST /v1/teams/:team_name/invitation_regenerator`
 - **Invitation by Email**
   - `POST /v1/teams/:team_name/invitations`
+  - `GET /v1/teams/:team_name/invitations`
 
 # Sample
 
