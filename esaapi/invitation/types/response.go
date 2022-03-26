@@ -61,3 +61,13 @@ func (r *CreateEmailInvitationsOutput) SetRateLimitInfo(h http.Header) {
 		r.RateLimitInfo = rri
 	}
 }
+
+type DeleteEmailInvitationOutput struct {
+	RateLimitInfo *gesa.RateLimitInformation `json:"-"`
+}
+
+func (r *DeleteEmailInvitationOutput) SetRateLimitInfo(h http.Header) {
+	if rri, err := gesa.GetRateLimitInformation(h); err == nil {
+		r.RateLimitInfo = rri
+	}
+}
