@@ -8,16 +8,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_GetInvitationInput_EsaAPIParameter(t *testing.T) {
+func Test_GetURLInvitationInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.GetInvitationInput
+		p       *types.GetURLInvitationInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.GetInvitationInput{
+			p: &types.GetURLInvitationInput{
 				TeamName: "test-team",
 			},
 			expect: &internal.EsaAPIParameter{
@@ -29,7 +29,7 @@ func Test_GetInvitationInput_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter",
-			p:       &types.GetInvitationInput{},
+			p:       &types.GetURLInvitationInput{},
 			expect:  nil,
 			wantErr: true,
 		},
@@ -55,16 +55,16 @@ func Test_GetInvitationInput_EsaAPIParameter(t *testing.T) {
 	}
 }
 
-func Test_RegenerateInvitationInput_EsaAPIParameter(t *testing.T) {
+func Test_RegenerateURLInvitationInput_EsaAPIParameter(t *testing.T) {
 	cases := []struct {
 		name    string
-		p       *types.RegenerateInvitationInput
+		p       *types.RegenerateURLInvitationInput
 		expect  *internal.EsaAPIParameter
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			p: &types.RegenerateInvitationInput{
+			p: &types.RegenerateURLInvitationInput{
 				TeamName: "test-team",
 			},
 			expect: &internal.EsaAPIParameter{
@@ -76,7 +76,7 @@ func Test_RegenerateInvitationInput_EsaAPIParameter(t *testing.T) {
 		},
 		{
 			name:    "ng: not has required parameter",
-			p:       &types.RegenerateInvitationInput{},
+			p:       &types.RegenerateURLInvitationInput{},
 			expect:  nil,
 			wantErr: true,
 		},

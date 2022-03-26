@@ -8,26 +8,26 @@ import (
 )
 
 const (
-	getInvitationEndpoint        = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation"
-	regenerateInvitationEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation_regenerator"
+	getURLInvitationEndpoint        = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation"
+	regenerateURLInvitationEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/invitation_regenerator"
 )
 
-// GetInvitation calls getting a invitation API.
+// GetURLInvitation calls getting a invitation URL API.
 // GET /v1/teams/:team_name/invitation
-func GetInvitation(ctx context.Context, c *gesa.Client, p *types.GetInvitationInput) (*types.GetInvitationOutput, error) {
-	res := &types.GetInvitationOutput{}
-	if err := c.CallAPI(ctx, getInvitationEndpoint, "GET", p, res); err != nil {
+func GetURLInvitation(ctx context.Context, c *gesa.Client, p *types.GetURLInvitationInput) (*types.GetURLInvitationOutput, error) {
+	res := &types.GetURLInvitationOutput{}
+	if err := c.CallAPI(ctx, getURLInvitationEndpoint, "GET", p, res); err != nil {
 		return nil, err
 	}
 
 	return res, nil
 }
 
-// RegenerateInvitation calls regenerating a invitation API.
+// RegenerateURLInvitation calls regenerating a invitation URL API.
 // POST /v1/teams/:team_name/invitation_regenerator
-func RegenerateInvitation(ctx context.Context, c *gesa.Client, p *types.RegenerateInvitationInput) (*types.RegenerateInvitationOutput, error) {
-	res := &types.RegenerateInvitationOutput{}
-	if err := c.CallAPI(ctx, regenerateInvitationEndpoint, "POST", p, res); err != nil {
+func RegenerateURLInvitation(ctx context.Context, c *gesa.Client, p *types.RegenerateURLInvitationInput) (*types.RegenerateURLInvitationOutput, error) {
+	res := &types.RegenerateURLInvitationOutput{}
+	if err := c.CallAPI(ctx, regenerateURLInvitationEndpoint, "POST", p, res); err != nil {
 		return nil, err
 	}
 
