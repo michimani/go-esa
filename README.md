@@ -126,6 +126,10 @@ func getOAuthTokenInfo(c *gesa.Client) {
 }
 ```
 
+## More examples
+
+See [_examples](https://github.com/michimani/go-esa/tree/main/_examples) directory.
+
 # License
 
 [MIT](https://github.com/michimani/go-esa/blob/main/LICENSE)
