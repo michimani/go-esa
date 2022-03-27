@@ -1,6 +1,7 @@
 CHANGELOG DEV
 ===
-This is a version of CHANGELOG less than v1.0.0
+
+This is the CHANGELOG less than v1.0.0
 
 ## [Unreleased]
 
