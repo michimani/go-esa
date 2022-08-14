@@ -14,6 +14,7 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
+// NewClientInput は gesa.Client を生成する際のパラメータを表す構造体
 type NewClientInput struct {
 	HTTPClient  *http.Client
 	AccessToken string
@@ -21,10 +22,12 @@ type NewClientInput struct {
 	Debug       bool
 }
 
+// IClient は gesa.Client のインターフェース
 type IClient interface {
 	Exec(req *http.Request, r internal.IOutput) error
 }
 
+// Client は esa API を実行するためのクライアントを表す構造体
 type Client struct {
 	client      *http.Client
 	accessToken string
@@ -42,6 +45,8 @@ var defaultHTTPClient = &http.Client{
 	Timeout: time.Duration(30) * time.Second,
 }
 
+// NewClient は gesa.Client を生成してそのポインタを返す
+// in が nil だったり不正なフィールドがある場合は nil と error を返す
 func NewClient(in *NewClientInput) (*Client, error) {
 	if in == nil {
 		return nil, fmt.Errorf("NewClientInput is nil.")
