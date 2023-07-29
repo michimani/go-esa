@@ -9,7 +9,7 @@ import (
 
 const (
 	listMembersEndpoint  = "https://api.esa.io/:esa_api_version/teams/:team_name/members"
-	deleteMemberEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/members/:screen_name"
+	deleteMemberEndpoint = "https://api.esa.io/:esa_api_version/teams/:team_name/members/:screen_name_or_email"
 )
 
 // ListMembers calls getting members API.
@@ -24,7 +24,7 @@ func ListMembers(ctx context.Context, c *gesa.Client, p *types.ListMembersInput)
 }
 
 // DeleteMember calls deleting a member API.
-// DELETE /:esa_api_version/teams/:team_name/members/:screen_name
+// DELETE /:esa_api_version/teams/:team_name/members/:screen_name_or_email
 func DeleteMember(ctx context.Context, c *gesa.Client, p *types.DeleteMemberInput) (*types.DeleteMemberOutput, error) {
 	res := &types.DeleteMemberOutput{}
 	if err := c.CallAPI(ctx, deleteMemberEndpoint, "DELETE", p, res); err != nil {
