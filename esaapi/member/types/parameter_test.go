@@ -233,13 +233,13 @@ func Test_DeleteMemberInput_EsaAPIParameter(t *testing.T) {
 		{
 			name: "ok",
 			p: &types.DeleteMemberInput{
-				TeamName:   "test-team",
-				ScreenName: "test-screen-name",
+				TeamName:          "test-team",
+				ScreenNameOrEmail: "test-screen-name",
 			},
 			expect: &internal.EsaAPIParameter{
 				Path: internal.PathParameterList{
 					{Key: ":team_name", Value: "test-team"},
-					{Key: ":screen_name", Value: "test-screen-name"},
+					{Key: ":screen_name_or_email", Value: "test-screen-name"},
 				},
 				Query: internal.QueryParameterList{},
 			},
@@ -253,9 +253,9 @@ func Test_DeleteMemberInput_EsaAPIParameter(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "ng: not has required parameter: only screen_name",
+			name: "ng: not has required parameter: only screen_name_or_email",
 			p: &types.DeleteMemberInput{
-				ScreenName: "test-screen-name",
+				ScreenNameOrEmail: "test-screen-name",
 			},
 			expect:  nil,
 			wantErr: true,

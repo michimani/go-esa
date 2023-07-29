@@ -85,8 +85,8 @@ func (p *ListMembersInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) 
 }
 
 type DeleteMemberInput struct {
-	TeamName   string
-	ScreenName string
+	TeamName          string
+	ScreenNameOrEmail string
 }
 
 func (p *DeleteMemberInput) EsaAPIParameter() (*internal.EsaAPIParameter, error) {
@@ -95,11 +95,11 @@ func (p *DeleteMemberInput) EsaAPIParameter() (*internal.EsaAPIParameter, error)
 	}
 
 	pp := internal.PathParameterList{}
-	if p.TeamName == "" || p.ScreenName == "" {
-		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "DeleteMemberInput.TeamName, DeleteMemberInput.ScreenName")
+	if p.TeamName == "" || p.ScreenNameOrEmail == "" {
+		return nil, fmt.Errorf(internal.ErrorRequiredParameterEmpty, "DeleteMemberInput.TeamName, DeleteMemberInput.ScreenNameOrEmail")
 	}
 	pp = append(pp, internal.PathParameter{Key: ":team_name", Value: p.TeamName})
-	pp = append(pp, internal.PathParameter{Key: ":screen_name", Value: p.ScreenName})
+	pp = append(pp, internal.PathParameter{Key: ":screen_name_or_email", Value: p.ScreenNameOrEmail})
 
 	return &internal.EsaAPIParameter{
 		Path:  pp,
