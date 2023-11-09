@@ -9,16 +9,18 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Go 1.18
+    - name: Set up Go 1.21
       uses: actions/setup-go@v3
       with:
-        go-version: 1.18
+        go-version: 1.21
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
     - name: Get dependencies
-      run: go install
+      run: |
+        go version
+        go install
 
     - name: Test code
       run: go test github.com/michimani/go-esa/... -shuffle=on
