@@ -3,8 +3,8 @@ package invitation
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/invitation/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/invitation/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

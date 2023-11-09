@@ -3,8 +3,8 @@ package oauthtoken
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/oauthtoken/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/oauthtoken/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

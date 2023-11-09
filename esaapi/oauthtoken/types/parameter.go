@@ -1,6 +1,6 @@
 package types
 
-import "github.com/michimani/go-esa/internal"
+import "github.com/michimani/go-esa/v2/internal"
 
 type GetOAuthTokenInfoInput struct{}
 

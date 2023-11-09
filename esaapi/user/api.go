@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/user/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/user/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

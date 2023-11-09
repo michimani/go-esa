@@ -3,8 +3,8 @@ package member
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/member/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/member/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

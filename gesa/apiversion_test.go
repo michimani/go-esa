@@ -3,7 +3,7 @@ package gesa_test
 import (
 	"testing"
 
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/gesa"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -3,8 +3,8 @@ package stats
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/stats/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/stats/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/michimani/go-esa/internal"
+	"github.com/michimani/go-esa/v2/internal"
 )
 
 type RoundTripFunc func(req *http.Request) *http.Response

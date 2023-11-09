@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/michimani/go-esa/internal"
+	"github.com/michimani/go-esa/v2/internal"
 )
 
 const (

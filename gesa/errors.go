@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/michimani/go-esa/internal"
+	"github.com/michimani/go-esa/v2/internal"
 )
 
 type GesaError struct {
