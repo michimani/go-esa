@@ -3,7 +3,7 @@ package types
 import (
 	"net/http"
 
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 // BatchMoveOutput is struct for the response of

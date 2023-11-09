@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/michimani/go-esa/esaapi/tag/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/tag/types"
+	"github.com/michimani/go-esa/v2/gesa"
 	"github.com/stretchr/testify/assert"
 )
 

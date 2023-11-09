@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/gesa"
 	"github.com/stretchr/testify/assert"
 )
 

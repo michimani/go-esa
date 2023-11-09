@@ -3,8 +3,8 @@ package star
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/star/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/star/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/michimani/go-esa/esaapi/models"
-	"github.com/michimani/go-esa/esaapi/post"
-	"github.com/michimani/go-esa/esaapi/post/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/models"
+	"github.com/michimani/go-esa/v2/esaapi/post"
+	"github.com/michimani/go-esa/v2/esaapi/post/types"
+	"github.com/michimani/go-esa/v2/gesa"
 
 	"github.com/olekukonko/tablewriter"
 )

@@ -3,8 +3,8 @@ package tag
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/tag/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/tag/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/michimani/go-esa/gesa"
-	"github.com/michimani/go-esa/internal"
+	"github.com/michimani/go-esa/v2/gesa"
+	"github.com/michimani/go-esa/v2/internal"
 	"github.com/stretchr/testify/assert"
 )
 

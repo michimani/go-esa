@@ -1,4 +1,4 @@
-module github.com/michimani/go-esa
+module github.com/michimani/go-esa/v2
 
 go 1.21.4
 

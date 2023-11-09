@@ -3,8 +3,8 @@ package emoji
 import (
 	"context"
 
-	"github.com/michimani/go-esa/esaapi/emoji/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/emoji/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const (

@@ -3,6 +3,17 @@ CHANGELOG
 
 This is the CHANGELOG in stable version.
 
+v2.1.0 (2023-11-09)
+===
+
+### Updates
+
+* Bump up Go version to 1.21
+
+### Fixes
+
+* Change module path to `/v2`
+
 v2.0.0 (2023-07-29)
 ===
 

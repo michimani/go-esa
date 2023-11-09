@@ -7,9 +7,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/michimani/go-esa/esaapi/post"
-	"github.com/michimani/go-esa/esaapi/post/types"
-	"github.com/michimani/go-esa/gesa"
+	"github.com/michimani/go-esa/v2/esaapi/post"
+	"github.com/michimani/go-esa/v2/esaapi/post/types"
+	"github.com/michimani/go-esa/v2/gesa"
 )
 
 const endCode = "EOF"
