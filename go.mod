@@ -1,6 +1,6 @@
 module github.com/michimani/go-esa
 
-go 1.22
+go 1.25
 
 require github.com/stretchr/testify v1.8.4
 
