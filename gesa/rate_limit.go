@@ -13,6 +13,8 @@ const (
 	RATE_LIMIT_RESET_HEADER_KEY     = "x-ratelimit-reset"
 )
 
+// GetRateLimitInformation は http.Header から RateLimit に関する情報を取得し
+// RateLimitInformation を返す
 func GetRateLimitInformation(resHeader http.Header) (*RateLimitInformation, error) {
 	lh := internal.HeaderKeyToLower(resHeader)
 
