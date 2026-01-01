@@ -8,12 +8,14 @@ import (
 	"github.com/michimani/go-esa/internal"
 )
 
+// GesaError は gesa.Client が返すエラーを表す構造体
 type GesaError struct {
 	err   error
 	OnAPI bool
 	EsaAPIError
 }
 
+// EsaAPIError は esa API が返すエラーを表す構造体
 type EsaAPIError struct {
 	Status        string                `json:"-"`
 	StatusCode    int                   `json:"-"`
@@ -64,6 +66,7 @@ func (e *GesaError) Unwrap() error {
 	return e.err
 }
 
+// Summary は esa API が返すエラー内容を要約して string 型で返す
 func (e *EsaAPIError) Summary() string {
 	if e == nil {
 		return ""
