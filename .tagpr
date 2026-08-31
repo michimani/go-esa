@@ -1,0 +1,10 @@
+# tagpr config
+# https://github.com/Songmu/tagpr
+
+[tagpr]
+	vPrefix = true
+	releaseBranch = main
+	versionFile = -
+	changelog = true
+	changelogFile = CHANGELOG.md
+	release = true
