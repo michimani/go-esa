@@ -38,6 +38,8 @@ github.com/mattn/go-runewidth v0.0.19 h1:v++JhqYnZuu5jSKrk9RbgF5v4CGUjqRfBm05byF
 github.com/mattn/go-runewidth v0.0.19/go.mod h1:XBkDxAl56ILZc9knddidhrOlY5R/pDhgLpndooCuJAs=
 github.com/michimani/go-esa v1.2.0 h1:n1OPqNm0l8ZycI/OblmA4XdFdWMgf5r7rgEIzC55M3U=
 github.com/michimani/go-esa v1.2.0/go.mod h1:dY63AiV/KGl5uceaVPQNC+jNbx6oBJg5apsdNufaHg0=
+github.com/michimani/go-esa v1.2.1 h1:txLfR+ih9qpLzUDmu7tzqP9+IZJkpBhNJkYVbsnlQ7A=
+github.com/michimani/go-esa v1.2.1/go.mod h1:RndzBoZ1E5I5QfplJOYQGo1LcFPkt0krSmfiXaBxoa4=
 github.com/olekukonko/cat v0.0.0-20250911104152-50322a0618f6 h1:zrbMGy9YXpIeTnGj4EljqMiZsIcE09mmF8XsD5AYOJc=
 github.com/olekukonko/cat v0.0.0-20250911104152-50322a0618f6/go.mod h1:rEKTHC9roVVicUIfZK7DYrdIoM0EOr8mK1Hj5s3JjH0=
 github.com/olekukonko/errors v1.1.0 h1:RNuGIh15QdDenh+hNvKrJkmxxjV4hcS50Db478Ou5sM=
