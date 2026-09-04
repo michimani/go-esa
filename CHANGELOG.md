@@ -24,6 +24,11 @@ This is the CHANGELOG in stable version.
 
 - release 🚀
 
+## [v1.2.2](https://github.com/michimani/go-esa/compare/v1.2.1...v1.2.2) - 2026-09-04
+
+- fix(deps): update module github.com/michimani/go-esa to v1.2.1 by @renovate[bot] in https://github.com/michimani/go-esa/pull/178
+- chore(deps): update songmu/tagpr action to v1.20.3 by @renovate[bot] in https://github.com/michimani/go-esa/pull/180
+
 ## [v1.2.1](https://github.com/michimani/go-esa/compare/v1.2.0...v1.2.1) - 2026-08-31
 
 - Bump actions/download-artifact from 2 to 4.1.7 in /.github/workflows by @dependabot[bot] in https://github.com/michimani/go-esa/pull/132
