@@ -4,7 +4,7 @@ go 1.25
 
 require (
 	github.com/michimani/go-esa v1.2.1
-	github.com/olekukonko/tablewriter v1.1.4
+	github.com/olekukonko/tablewriter v1.1.5
 )
 
 require (
