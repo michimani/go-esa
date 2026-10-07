@@ -3,7 +3,7 @@ module gesa-example-1
 go 1.25
 
 require (
-	github.com/michimani/go-esa v1.2.1
+	github.com/michimani/go-esa v1.2.2
 	github.com/olekukonko/tablewriter v1.1.5
 )
 
