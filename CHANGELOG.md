@@ -24,6 +24,11 @@ This is the CHANGELOG in stable version.
 
 - release 🚀
 
+## [v1.2.3](https://github.com/michimani/go-esa/compare/v1.2.2...v1.2.3) - 2026-10-10
+
+- chore(deps): update songmu/tagpr action to v1.21.2 by @renovate[bot] in https://github.com/michimani/go-esa/pull/185
+- fix(deps): update module github.com/michimani/go-esa to v1.2.2 by @renovate[bot] in https://github.com/michimani/go-esa/pull/184
+
 ## [v1.2.2](https://github.com/michimani/go-esa/compare/v1.2.1...v1.2.2) - 2026-10-04
 
 - fix(deps): update module github.com/michimani/go-esa to v1.2.1 by @renovate[bot] in https://github.com/michimani/go-esa/pull/178
